@@ -45,7 +45,7 @@ public class CustomAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.fragment_posts, parent, false);
         }
-        final TextView name=(TextView)convertView.findViewById(R.id.writer_name);
+        final TextView name=(TextView)convertView.findViewById(R.id.user_name);
         final TextView content=(TextView)convertView.findViewById(R.id.post_text);
         final String s = contentslist.get(position);
 

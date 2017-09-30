@@ -44,9 +44,9 @@ public class PostsFragment extends Fragment {
 
         View view= inflater.inflate(R.layout.fragment_posts, container, false);
 
-        writer_image=(ImageView)view.findViewById(R.id.writer_image);
+        writer_image=(ImageView)view.findViewById(R.id.user_image);
 
-        writer_name=(TextView)view.findViewById(R.id.writer_name);
+        writer_name=(TextView)view.findViewById(R.id.user_name);
         writer_name.setText(name);
 
         post_image=(ImageView)view.findViewById(R.id.post_image);
