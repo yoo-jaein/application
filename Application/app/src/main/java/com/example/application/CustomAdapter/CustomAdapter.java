@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.application.R;
@@ -47,6 +48,10 @@ public class CustomAdapter extends BaseAdapter {
         }
         final TextView name=(TextView)convertView.findViewById(R.id.user_name);
         final TextView content=(TextView)convertView.findViewById(R.id.post_text);
+
+        final ImageButton likebutton=(ImageButton)convertView.findViewById(R.id.likeButton);
+        final ImageButton unlikebutton=(ImageButton)convertView.findViewById(R.id.unlikeButton);
+
         final String s = contentslist.get(position);
 
         Thread mThread = new Thread() {
@@ -54,7 +59,20 @@ public class CustomAdapter extends BaseAdapter {
                 try {
                     name.setText(s);
                     content.setText(s);
-
+                    likebutton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            unlikebutton.setVisibility(View.VISIBLE);
+                            likebutton.setVisibility(View.INVISIBLE);
+                        }
+                    });
+                    unlikebutton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            likebutton.setVisibility(View.VISIBLE);
+                            unlikebutton.setVisibility(View.INVISIBLE);
+                        }
+                    });
                 } catch (Exception ex) {
 
                 }
