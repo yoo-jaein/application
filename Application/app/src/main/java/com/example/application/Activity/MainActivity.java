@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.application.BackPressCloseHandler;
 import com.example.application.Fragment.LikeListFragment;
 import com.example.application.Fragment.MyPageFragment;
 import com.example.application.Fragment.TimeLineFragment;
@@ -27,7 +28,7 @@ import com.example.application.R;
 public class MainActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
+    private BackPressCloseHandler backPressCloseHandler;
     private ViewPager mViewPager;
 
     @Override
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        backPressCloseHandler = new BackPressCloseHandler(this);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -59,6 +61,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        backPressCloseHandler.onBackPressed();
     }
 
     @Override
