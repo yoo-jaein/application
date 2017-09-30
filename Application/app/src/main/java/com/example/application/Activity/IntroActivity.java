@@ -1,6 +1,8 @@
 package com.example.application.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,21 +13,36 @@ import com.example.application.R;
 
 public class IntroActivity extends AppCompatActivity {
 
+    private Handler handler;
+
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            Intent intent = new Intent(IntroActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        init();
+        handler.postDelayed(runnable, 1500);
     }
+
+    public void init() {
+        handler = new Handler();
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        handler.removeCallbacks(runnable);
+    }
+
+
 
 }
