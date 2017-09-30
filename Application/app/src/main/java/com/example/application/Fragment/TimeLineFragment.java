@@ -10,5 +10,5 @@ import android.view.ViewGroup;
 
 import com.example.application.R;
 public class TimeLineFragment extends Fragment {
- 
+
 }

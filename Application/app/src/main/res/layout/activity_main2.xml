@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.application.Activity.MainActivity">
+    tools:context="com.example.application.Activity.Main2Activity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -24,6 +24,11 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
         </android.support.v7.widget.Toolbar>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </android.support.design.widget.AppBarLayout>
 

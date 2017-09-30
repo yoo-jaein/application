@@ -10,15 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activity.MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".Activity.IntroActivity"
             android:label="@string/title_activity_intro"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -30,7 +21,16 @@
             android:name=".Activity.WritingNewPostActivity"
             android:label="@string/title_activity_writing_new_post"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.Main2Activity"
+            android:label="@string/title_activity_main2"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
