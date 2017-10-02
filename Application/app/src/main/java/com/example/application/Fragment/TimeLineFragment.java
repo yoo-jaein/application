@@ -1,6 +1,8 @@
 package com.example.application.Fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +12,16 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.example.application.CustomAdapter.CustomAdapter;
+import com.example.application.PhysicalArchitecture.ClientControl;
+import com.example.application.ProblemDomain.Constants;
 import com.example.application.R;
 
 import java.util.ArrayList;
 
 public class TimeLineFragment extends Fragment {
+
+    private Handler handler;
+    private ClientControl client = null;
 
     boolean clickedCategory=false;
 
@@ -29,6 +36,24 @@ public class TimeLineFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view;
         view =inflater.inflate(R.layout.fragment_time_line, container, false);
+
+        if(client == null)
+            client = ClientControl.getClientControl();
+
+        handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg){
+                if(msg.what== Constants.RECEIVE_SUCCESSS){
+
+                }else if(msg.what==Constants.RECEIVE_FAILED){
+
+                }
+            }
+        };
+
+        client.setHandler(handler);
+
+        client.refresh();
 
         timeline=(ListView)view.findViewById(R.id.timeline);
         ArrayList<String> arr=new ArrayList<String>();

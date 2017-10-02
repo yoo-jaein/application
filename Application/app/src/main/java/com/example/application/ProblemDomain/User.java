@@ -3,6 +3,7 @@ package com.example.application.ProblemDomain;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * @author 안준영
@@ -14,9 +15,8 @@ public class User implements Serializable {
 
 	private int index;
 	private String id, pw;
-	private ArrayList<Integer> likeList;
-	private ArrayList<Integer> myList;
-
+	private ArrayList<Object> likeList;
+	private ArrayList<Object> myList;
 	private File Fimage;
 	private byte[] Iimage;
 
@@ -24,8 +24,10 @@ public class User implements Serializable {
 		this.index = 0;
 		this.id = null;
 		this.pw = null;
-		this.likeList = new ArrayList<Integer>();
-		this.myList = new ArrayList<Integer>();
+		this.likeList = new ArrayList<Object>();
+		this.myList = new ArrayList<Object>();
+		this.Fimage = null;
+		this.Iimage = null;
 	}
 
 	public User(int index, String id, String pw) {
@@ -33,8 +35,10 @@ public class User implements Serializable {
 		this.index = index;
 		this.id = id;
 		this.pw = pw;
-		this.likeList = new ArrayList<Integer>();
-		this.myList = new ArrayList<Integer>();
+		this.likeList = new ArrayList<Object>();
+		this.myList = new ArrayList<Object>();
+		this.Fimage = null;
+		this.Iimage = null;
 
 	}
 
@@ -50,11 +54,11 @@ public class User implements Serializable {
 		return index;
 	}
 
-	public ArrayList<Integer> getLikeList() {
+	public ArrayList<Object> getLikeList() {
 		return likeList;
 	}
 
-	public ArrayList<Integer> getMyList() {
+	public ArrayList<Object> getMyList() {
 		return myList;
 	}
 
@@ -84,11 +88,11 @@ public class User implements Serializable {
 		this.pw = pw;
 	}
 
-	public void setUserLikeList(ArrayList<Integer> likeList) {
+	public void setUserLikeList(ArrayList<Object> likeList) {
 		this.likeList = likeList;
 	}
 
-	public void setUserMyList(ArrayList<Integer> myList) {
+	public void setUserMyList(ArrayList<Object> myList) {
 		this.myList = myList;
 	}
 
@@ -111,7 +115,8 @@ public class User implements Serializable {
 	@Override
 	public String toString() {
 		return "User [index=" + index + ", id=" + id + ", pw=" + pw + ", likeList=" + likeList + ", myList=" + myList
-				+ "]";
+				+ ", Fimage=" + Fimage + ", Iimage=" + Arrays.toString(Iimage) + "]";
 	}
+
 
 }

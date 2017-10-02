@@ -16,19 +16,15 @@ public class Constants implements Serializable{
     public static final int AREA_TOUR_CODE      = 3;
     public static final int LOCATION_TOUR_CODE  = 4;
 
-    // youtubeURL call(my API)
-    public static final int GET_CONTENT         = 1;
-    public static final int GET_TYPE            = 2;
-    public static final int ADD                 = 3;
-    public static final int URL_CONTENT         = 4;
-    public static final int URL_TYPE            = 5;
-
     // index
     public static final int NAME = 0;
     public static final int CODE = 1;
 
-    public static final String YOUTUBE_KEY = "import android.support.v4.app.Fragment";
-
     public static final int RECEIVE_SUCCESSS = 1;
     public static final int RECEIVE_FAILED = 2;
+
+    public static final int GET_PICTURE_URI = 1;
+    public static final int GET_LOCATION_URI = 2;
+    public static final int GET_LOCATION = 3;
+    public static final int GO_TO_MAIN = 4;
 }

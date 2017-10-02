@@ -2,6 +2,8 @@ package com.example.application.Fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +12,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.application.PhysicalArchitecture.ClientControl;
+import com.example.application.ProblemDomain.Constants;
 import com.example.application.R;
 
 
 public class PostsFragment extends Fragment {
+
+    private ClientControl client = null;
+    private Handler handler;
 
     public ImageView writer_image;
     public ImageView post_image;
@@ -37,6 +44,8 @@ public class PostsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(client == null)
+            client = ClientControl.getClientControl();
     }
 
     @Override
@@ -57,4 +66,19 @@ public class PostsFragment extends Fragment {
         return view;
     }
 
+    public void setWriter_image(ImageView writer_image) {
+        this.writer_image = writer_image;
+    }
+
+    public void setPost_image(ImageView post_image) {
+        this.post_image = post_image;
+    }
+
+    public void setWriter_name(TextView writer_name) {
+        this.writer_name = writer_name;
+    }
+
+    public void setPost_text(TextView post_text) {
+        this.post_text = post_text;
+    }
 }

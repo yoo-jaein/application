@@ -23,6 +23,7 @@ import com.example.application.BackPressCloseHandler;
 import com.example.application.Fragment.LikeListFragment;
 import com.example.application.Fragment.MyPageFragment;
 import com.example.application.Fragment.TimeLineFragment;
+import com.example.application.PhysicalArchitecture.ClientControl;
 import com.example.application.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private BackPressCloseHandler backPressCloseHandler;
     private ViewPager mViewPager;
+
+    private ClientControl client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+        client = ClientControl.getClientControl();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

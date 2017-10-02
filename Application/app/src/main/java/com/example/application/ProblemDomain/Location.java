@@ -3,42 +3,47 @@ package com.example.application.ProblemDomain;
 import java.io.Serializable;
 
 public class Location implements Serializable{
-    private static final long serialVersionUID = 200L;
+	private static final long serialVersionUID = 200L;
 
-	int bigLocation;
-	int midLocation;
-	int smallLocation;
+	private String bigLocation;
+	private String midLocation;
+	private String smallLocation;
 
-	int contentID;
-	int contentTypeID;
-	String title;
+	private int contentID;
+	private int contentTypeID;
+	private String title;
+
+	private double mapX;
+	private double mapY;
+
 	public Location(){
-		bigLocation = 0;
-		midLocation = 0;
-		smallLocation = 0;
+		bigLocation = "";
+		midLocation = "";
+		smallLocation = "";
 		contentID = 0;
 		contentTypeID = 0;
+		mapX=-1;
+		mapY=-1;
 		title = null;
 	}
-	public int getBigLocation() {
+	public String getBigLocation() {
 		return bigLocation;
 	}
-	public void setBigLocation(int bigLocation) {
+	public void setBigLocation(String bigLocation) {
 		this.bigLocation = bigLocation;
 	}
-	public int getMidLocation() {
+	public String getMidLocation() {
 		return midLocation;
 	}
-	public void setMidLocation(int midLocation) {
+	public void setMidLocation(String midLocation) {
 		this.midLocation = midLocation;
 	}
-	public int getSmallLocation() {
+	public String getSmallLocation() {
 		return bigLocation;
 	}
-	public void setSmallLocation(int smallLocation) {
+	public void setSmallLocation(String smallLocation) {
 		this.smallLocation = smallLocation;
 	}
-
 	public int getContentID() {
 		return contentID;
 	}
@@ -57,6 +62,19 @@ public class Location implements Serializable{
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	public double getMapX() {
+		return mapX;
+	}
+	public void setMapX(double mapX) {
+		this.mapX = mapX;
+	}
+	public double getMapY() {
+		return mapY;
+	}
+	public void setMapY(double mapY) {
+		this.mapY = mapY;
+	}
+
 	@Override
 	public String toString() {
 		return "Location [bigLocation=" + bigLocation + ", midLocation=" + midLocation + ", smallLocation="

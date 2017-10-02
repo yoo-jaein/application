@@ -5,9 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.application.PhysicalArchitecture.ClientControl;
 import com.example.application.R;
 
 public class WritingNewPostActivity extends AppCompatActivity {
+
+    ClientControl client;
 
     Button fin;
     Button del;
@@ -33,6 +36,7 @@ public class WritingNewPostActivity extends AppCompatActivity {
             }
         });
 
+        client = ClientControl.getClientControl();
     }
 
 }

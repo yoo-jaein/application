@@ -9,9 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.example.application.PhysicalArchitecture.ClientControl;
 import com.example.application.R;
 
 public class IntroActivity extends AppCompatActivity {
+
+    ClientControl client;
 
     private Handler handler;
 
@@ -30,6 +33,10 @@ public class IntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
         init();
+
+        client = ClientControl.getClientControl();
+        client.client.start();
+
         handler.postDelayed(runnable, 1500);
     }
 
