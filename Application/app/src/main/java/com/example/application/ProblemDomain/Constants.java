@@ -27,4 +27,7 @@ public class Constants implements Serializable{
     public static final int GET_LOCATION_URI = 2;
     public static final int GET_LOCATION = 3;
     public static final int GO_TO_MAIN = 4;
+
+
+
 }
