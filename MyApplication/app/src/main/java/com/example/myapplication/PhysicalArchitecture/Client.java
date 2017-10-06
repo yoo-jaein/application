@@ -2,10 +2,10 @@ package com.example.myapplication.PhysicalArchitecture;
 
 import android.util.Log;
 
-import com.example.application.Foundation.PostsList;
-import com.example.application.ProblemDomain.Constants;
-import com.example.application.ProblemDomain.Posts;
-import com.example.application.ProblemDomain.User;
+import com.example.myapplication.Foundation.PostsList;
+import com.example.myapplication.ProblemDomain.Constants;
+import com.example.myapplication.ProblemDomain.Posts;
+import com.example.myapplication.ProblemDomain.User;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,7 +18,7 @@ public class Client extends Thread implements Serializable
 	Socket sock;
 	public clientWrite clientW;
 	public clientRead clientR;
-	private ClientControl cControl;
+	private ClientController cControl;
 
 	private static final String host = "222.104.203.106";
 	private static final int port = 11114;
@@ -72,10 +72,10 @@ public class Client extends Thread implements Serializable
 		}
 	}
 
-	public ClientControl getcControl() {
+	public ClientController getcControl() {
 		return cControl;
 	}
-	public void setcControl(ClientControl cControl) {
+	public void setcControl(ClientController cControl) {
 		this.cControl = cControl;
 	}
 }
@@ -83,9 +83,9 @@ public class Client extends Thread implements Serializable
 class clientRead extends Thread implements Serializable
 {
 	Socket socket;
-	private ClientControl cControl;
+	private ClientController cControl;
 
-	public clientRead(Socket socket,ClientControl cControl)
+	public clientRead(Socket socket,ClientController cControl)
 	{
 		this.socket=socket;
 		this.cControl=cControl;

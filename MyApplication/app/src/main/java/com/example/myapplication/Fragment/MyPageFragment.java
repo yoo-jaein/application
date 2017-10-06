@@ -10,17 +10,17 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.application.CustomAdapter.CustomAdapter;
-import com.example.application.PhysicalArchitecture.ClientControl;
-import com.example.application.ProblemDomain.Constants;
-import com.example.application.R;
+import com.example.myapplication.CustomAdapter.CustomAdapter;
+import com.example.myapplication.PhysicalArchitecture.ClientController;
+import com.example.myapplication.ProblemDomain.Constants;
+import com.example.myapplication.R;
 
 import java.util.ArrayList;
 
 public class MyPageFragment extends Fragment {
 
     private Handler handler;
-    private ClientControl client = null;
+    private ClientController client = null;
     TextView nametext;
     ListView mylist;
 
@@ -32,7 +32,7 @@ public class MyPageFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(client == null)
-            client = ClientControl.getClientControl();
+            client = ClientController.getClientControl();
 
         handler = new Handler(){
             @Override

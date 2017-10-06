@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.application.R;
+import com.example.myapplication.R;
 
 import java.util.ArrayList;
 

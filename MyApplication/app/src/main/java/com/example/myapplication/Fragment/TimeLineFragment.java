@@ -11,17 +11,17 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.example.application.CustomAdapter.CustomAdapter;
-import com.example.application.PhysicalArchitecture.ClientControl;
-import com.example.application.ProblemDomain.Constants;
-import com.example.application.R;
+import com.example.myapplication.CustomAdapter.CustomAdapter;
+import com.example.myapplication.PhysicalArchitecture.ClientController;
+import com.example.myapplication.ProblemDomain.Constants;
+import com.example.myapplication.R;
 
 import java.util.ArrayList;
 
 public class TimeLineFragment extends Fragment {
 
     private Handler handler;
-    private ClientControl client = null;
+    private ClientController client = null;
 
     boolean clickedCategory=false;
 
@@ -38,7 +38,7 @@ public class TimeLineFragment extends Fragment {
         view =inflater.inflate(R.layout.fragment_time_line, container, false);
 
         if(client == null)
-            client = ClientControl.getClientControl();
+            client = ClientController.getClientControl();
 
         handler = new Handler(){
             @Override

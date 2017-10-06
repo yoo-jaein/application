@@ -20,7 +20,7 @@ import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
-import com.example.application.R;
+import com.example.myapplication.R;
 
 import java.util.List;
 

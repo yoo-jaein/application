@@ -1,6 +1,6 @@
 package com.example.myapplication.Foundation;
 
-import com.example.application.ProblemDomain.Posts;
+import com.example.myapplication.ProblemDomain.Posts;
 
 import java.io.Serializable;
 import java.util.ArrayList;

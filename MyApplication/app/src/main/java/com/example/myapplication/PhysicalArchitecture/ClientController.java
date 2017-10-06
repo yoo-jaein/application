@@ -2,14 +2,14 @@ package com.example.myapplication.PhysicalArchitecture;
 
 import android.os.Handler;
 
-import com.example.application.Foundation.PostsList;
-import com.example.application.ProblemDomain.Posts;
-import com.example.application.ProblemDomain.User;
+import com.example.myapplication.Foundation.PostsList;
+import com.example.myapplication.ProblemDomain.Posts;
+import com.example.myapplication.ProblemDomain.User;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ClientControl implements Serializable{
+public class ClientController implements Serializable{
 
 	private ArrayList<Posts> timeLine;
 	private ArrayList<Posts> myPostsList;
@@ -20,6 +20,7 @@ public class ClientControl implements Serializable{
 	private Handler handler = null;
 
 	private String message = "";
+
 	/*
        checking request complete
      */
@@ -43,9 +44,9 @@ public class ClientControl implements Serializable{
 	private long startTime = 0;
 
 	public Client client;
-	private static ClientControl cControl = new ClientControl();
+	private static ClientController cControl = new ClientController();
 
-	public ClientControl() {
+	public ClientController() {
 		timeLine = new ArrayList<Posts>();
 		myPostsList = new ArrayList<Posts>();
 		myLikeList  = new ArrayList<Posts>();
@@ -55,7 +56,7 @@ public class ClientControl implements Serializable{
 		client = new Client();
 	}
 
-	public static ClientControl getClientControl(){
+	public static ClientController getClientControl(){
 		return cControl;
 	}
 

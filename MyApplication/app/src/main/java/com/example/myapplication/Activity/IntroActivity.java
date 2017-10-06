@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.application.PhysicalArchitecture.ClientControl;
-import com.example.application.R;
+import com.example.myapplication.PhysicalArchitecture.ClientController;
+import com.example.myapplication.R;
 
 public class IntroActivity extends AppCompatActivity {
 
-    ClientControl client;
+    ClientController client;
 
     private Handler handler;
 
@@ -30,7 +30,7 @@ public class IntroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_intro);
         init();
 
-        client = ClientControl.getClientControl();
+        client = ClientController.getClientControl();
         client.client.start();
 
         handler.postDelayed(runnable, 1500);

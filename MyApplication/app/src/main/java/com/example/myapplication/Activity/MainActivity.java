@@ -19,12 +19,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.application.BackPressCloseHandler;
-import com.example.application.Fragment.LikeListFragment;
-import com.example.application.Fragment.MyPageFragment;
-import com.example.application.Fragment.TimeLineFragment;
-import com.example.application.PhysicalArchitecture.ClientControl;
-import com.example.application.R;
+import com.example.myapplication.BackPressCloseHandler;
+import com.example.myapplication.Fragment.LikeListFragment;
+import com.example.myapplication.Fragment.MyPageFragment;
+import com.example.myapplication.Fragment.TimeLineFragment;
+import com.example.myapplication.PhysicalArchitecture.ClientController;
+import com.example.myapplication.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private BackPressCloseHandler backPressCloseHandler;
     private ViewPager mViewPager;
 
-    private ClientControl client;
+    private ClientController client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        client = ClientControl.getClientControl();
+        client = ClientController.getClientControl();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

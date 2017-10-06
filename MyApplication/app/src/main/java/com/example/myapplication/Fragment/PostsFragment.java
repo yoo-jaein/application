@@ -11,13 +11,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.application.PhysicalArchitecture.ClientControl;
-import com.example.application.R;
+import com.example.myapplication.PhysicalArchitecture.ClientController;
+import com.example.myapplication.R;
 
 
 public class PostsFragment extends Fragment {
 
-    private ClientControl client = null;
+    private ClientController client = null;
     private Handler handler;
 
     public ImageView writer_image;
@@ -43,7 +43,7 @@ public class PostsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(client == null)
-            client = ClientControl.getClientControl();
+            client = ClientController.getClientControl();
     }
 
     @Override
