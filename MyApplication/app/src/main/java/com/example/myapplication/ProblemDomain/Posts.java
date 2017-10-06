@@ -2,18 +2,20 @@ package com.example.myapplication.ProblemDomain;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class Posts implements Serializable{
 
 	private static final long serialVersionUID = 300L;
 
-	private int index;
+	private int postsID;
+
 	private Location locationInfo;
 	private Song song;
 	private String comment;
 
 	private int userID;
-	private int postsID;
+
 	private int like;
 
 	private long createTime;
@@ -21,10 +23,9 @@ public class Posts implements Serializable{
 	private byte[] Iimage;
 
 	public Posts(){
-		this.index = 0;
+		this.postsID = 0;
 		this.locationInfo = new Location();
 		this.song = null;
-		this.postsID = 0;
 		this.like = 0;
 		this.createTime = 0;
 		this.Fimage = null;
@@ -32,10 +33,9 @@ public class Posts implements Serializable{
 	}
 
 	public Posts(int index){
-		this.index = index;
+		this.postsID = index;
 		this.locationInfo = new Location();
 		this.song = null;
-		this.postsID = 0;
 		this.like = 0;
 		this.createTime = 0;
 		this.Fimage = null;
@@ -43,10 +43,10 @@ public class Posts implements Serializable{
 	}
 
 	public int getPostsIndex(){
-		return index;
+		return postsID;
 	}
-	public void setPostsIndex(int index){
-		this.index = index;
+	public void setPostsIndex(int postsID){
+		this.postsID = postsID;
 	}
 
 	public Location getLocationInfo() {
@@ -62,11 +62,11 @@ public class Posts implements Serializable{
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-	public int getPostsID() {
-		return postsID;
+	public int getUserID() {
+		return userID;
 	}
-	public void setPostsID(int postsID) {
-		this.postsID = postsID;
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
 	public int getLike() {
 		return like;
@@ -80,9 +80,14 @@ public class Posts implements Serializable{
 	public void setCreateTime(long createTime) {
 		this.createTime = createTime;
 	}
-
+	public void setSong(Song song){
+		this.song = song;
+	}
+	public Song getSong(){
+		return song;
+	}
 	public String getFileName(){
-		return Integer.toString(index);
+		return Integer.toString(postsID);
 	}
 	public File getFImage(){
 		return Fimage;
@@ -103,7 +108,10 @@ public class Posts implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Posts [index=" + index + ", locationInfo=" + locationInfo + ",song=" + song.toString() + ", comment=" + comment + ", postsID=" + postsID + ", like=" + like
-				+ ", createTime=" + createTime + ", Fimage=" + Fimage + ", Iimage=" + Iimage + "]";
+		return "Posts [postsID=" + postsID + ", locationInfo=" + locationInfo + ", song=" + song + ", comment=" + comment
+				+ ", userID=" + userID + ", like=" + like + ", createTime=" + createTime + ", Fimage=" + Fimage
+				+ ", Iimage=" + Arrays.toString(Iimage) + "]";
 	}
+
+
 }

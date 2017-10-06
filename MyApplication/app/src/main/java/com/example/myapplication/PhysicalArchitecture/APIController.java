@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.example.myapplication.ProblemDomain.Constants;
 import com.example.myapplication.ProblemDomain.Location;
+import com.example.myapplication.ProblemDomain.Song;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -32,30 +33,50 @@ public class APIController {
 
     private static final String MELON_INIT_URI = "http://apis.skplanetx.com/melon/";
     private static final String MELON_API_KEY = "254504f1-4949-3f5b-95d9-4325510614f1";
+    private static final String MELON_VERSION = "?version=";
+    private static final String MELON_PAGE = "&page=";
+    private static final String MELON_COUNT = "&count=";
+    private static final String MELON_SEARCH_KEYWORD = "&searchKeyword=";
 
-    private static final int AREA_CODE = 1;   // search area code
-    private static final int CATEGORY_CODE = 2;   // search category code
-    private static final int AREA_BASED_LIST = 3;   // search tour list by area code
-    private static final int LOCATION_BASED_LIST = 4;   // search tour list by x, y location
+
+    private static final int SEARCH_BY_AREA_CODE = 1;   // search area code
+    private static final int SEARCH_BY_CATEGORY_CODE = 2;   // search category code
+    private static final int SEARCH_BY_AREA_BASED_LIST = 3;   // search tour list by area code
+    private static final int SEARCH_BY_LOCATION_BASED_LIST = 4;   // search tour list by x, y location
+
+    private static final int SEARCH_ALBUM = 5;  // search album
+    private static final int SEARCH_ARTIST = 6; // search artist
+    private static final int SEARCH_SONG = 7;   // search song
 
     private Handler handler = null;
+    private MelonAPIThread melonAPIThread = null;
 
     private String getQueryMode(int code) {
         switch (code) {
-            case AREA_CODE:
+            case SEARCH_BY_AREA_CODE:
                 return "areaCode";
-            case CATEGORY_CODE:
+            case SEARCH_BY_CATEGORY_CODE:
                 return "categoryCode";
-            case AREA_BASED_LIST:
+            case SEARCH_BY_AREA_BASED_LIST:
                 return "areaBasedList";
-            case LOCATION_BASED_LIST:
+            case SEARCH_BY_LOCATION_BASED_LIST:
                 return "locationBasedList";
+            case SEARCH_ALBUM:
+                return "albums";
+            case SEARCH_ARTIST:
+                return "artists";
+            case SEARCH_SONG:
+                return "songs";
             default:
                 return "";
         }
     }
 
-    public void getLocationListByCurrent(double mapX, double mapY, int radius, Handler handler){
+    public void setHandlerNull(){
+        this.handler = null;
+    }
+
+    public void getLocationList(double mapX, double mapY, int radius, Handler handler){
         if(this.handler != null)
             return;
 
@@ -72,8 +93,116 @@ public class APIController {
         query += "&numOfRows=";
         query += 50;
 
-        thread = new TourAPIThread(LOCATION_BASED_LIST, query);
+        thread = new TourAPIThread(SEARCH_BY_LOCATION_BASED_LIST, query);
         thread.start();
+    }
+
+    public void getSongList(String keyword, Handler handler){
+        this.handler = handler;
+
+        melonAPIThread = new MelonAPIThread(SEARCH_SONG, keyword);
+
+        melonAPIThread.start();
+    }
+
+    public void playSong(){
+
+    }
+
+    class MelonAPIThread extends Thread {
+        private ArrayList<Song> songList;
+        private String keyword = "";
+        private String call;
+        private String queryURL;
+        private boolean play = false;
+
+        private MelonAPIThread(int callCode, String keyword){
+            this.call = getQueryMode(callCode);
+            this.keyword = keyword;
+
+            String queryURL = "" + MELON_INIT_URI + call + MELON_VERSION + "1" + MELON_PAGE + "1"
+                    + MELON_COUNT + "10" + MELON_SEARCH_KEYWORD + keyword;
+
+            songList = new ArrayList<Song>();
+        }
+
+        @Override
+        public void run() {
+
+            if (!play) {
+                Log.d("URL", queryURL);
+
+                try {
+                    Song song = new Song();
+
+                    URL url = new URL(queryURL);
+                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                    InputStream is = new BufferedInputStream(urlConnection.getInputStream());
+
+                    XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                    XmlPullParser xpp = factory.newPullParser();
+                    xpp.setInput(new InputStreamReader(is, "UTF-8"));
+
+                    String tag;
+
+                    xpp.next();
+                    int eventType = xpp.getEventType();
+
+                    while (eventType != XmlPullParser.END_DOCUMENT) {
+                        switch (eventType) {
+                            case XmlPullParser.START_DOCUMENT:
+                                break;
+
+                            case XmlPullParser.START_TAG:
+                                tag = xpp.getName();
+
+                                if (tag.equals("songId")) {
+                                    xpp.next();
+                                    if (song.getSongId() != -1) {
+                                        songList.add(song);
+                                        song = new Song();
+                                    }
+                                    song.setSongId(Integer.parseInt(xpp.getText()));
+                                } else if (tag.equals("songName")) {
+                                    xpp.next();
+                                    song.setSongName(xpp.getText());
+                                } else if (tag.equals("albumId")) {
+                                    xpp.next();
+                                    song.setAlbumId(Integer.parseInt(xpp.getText()));
+                                } else if (tag.equals("albumName")) {
+                                    xpp.next();
+                                    song.setAlbumName(xpp.getText());
+                                } else if (tag.equals("artistId")) {
+                                    xpp.next();
+                                    if (song.getArtistId() == -1)
+                                        song.setArtistId(Integer.parseInt(xpp.getText()));
+                                } else if (tag.equals("artistName")) {
+                                    xpp.next();
+                                    if (song.getArtistName() == null)
+                                        song.setArtistName(xpp.getText());
+                                }
+
+                            case XmlPullParser.TEXT:
+                                break;
+                            case XmlPullParser.END_TAG:
+                                tag = xpp.getName();
+                                break;
+                        }
+                        eventType = xpp.next();
+                    }
+                    songList.add(song);
+                    Message message;
+
+                    message = Message.obtain(handler, Constants.RECEIVE_LOCATION_LIST, songList);
+
+                    // if get data fininsh, edit main thread UI
+                    handler.sendMessage(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     class TourAPIThread extends Thread {
@@ -84,7 +213,7 @@ public class APIController {
         private String query = "";
         private String call;
 
-        public TourAPIThread(int callCode, String query) {
+        private TourAPIThread(int callCode, String query) {
             this.call = getQueryMode(callCode);
             this.query = query;
 
@@ -195,6 +324,7 @@ public class APIController {
                 else
                     message = Message.obtain(handler, Constants.RECEIVE_LOCATION_LIST, locationList);
 
+                // if get data fininsh, edit main thread UI
                 handler.sendMessage(message);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -202,7 +332,7 @@ public class APIController {
         }
     }
 
-    class MelonAPIThread extends Thread {}
+
 
 }
 

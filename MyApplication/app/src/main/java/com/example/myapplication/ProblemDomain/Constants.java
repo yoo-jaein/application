@@ -15,9 +15,9 @@ public class Constants implements Serializable{
     public static final int NAME = 0;
     public static final int CODE = 1;
 
+    // handler request code
     public static final int RECEIVE_FAILED = -1;
     public static final int RECEIVE_SUCCESSS = 1;
-
     public static final int RECEIVE_CODE_LIST = 2;
     public static final int RECEIVE_LOCATION_LIST = 3;
 
