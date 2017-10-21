@@ -1,5 +1,7 @@
 package com.example.myapplication.PhysicalArchitecture;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -31,13 +33,12 @@ public class APIController {
     private static final String TOUR_MOBILE_OS = "&MobileOS=AND";
     private static final String TOUR_MOBILE_APP = "&MobileApp=Application";
 
-    private static final String MELON_INIT_URI = "http://apis.skplanetx.com/melon/";
+    private static final String MELON_SEARCH_INIT_URI = "http://apis.skplanetx.com/melon/";
     private static final String MELON_API_KEY = "254504f1-4949-3f5b-95d9-4325510614f1";
     private static final String MELON_VERSION = "?version=";
     private static final String MELON_PAGE = "&page=";
     private static final String MELON_COUNT = "&count=";
     private static final String MELON_SEARCH_KEYWORD = "&searchKeyword=";
-
 
     private static final int SEARCH_BY_AREA_CODE = 1;   // search area code
     private static final int SEARCH_BY_CATEGORY_CODE = 2;   // search category code
@@ -48,8 +49,14 @@ public class APIController {
     private static final int SEARCH_ARTIST = 6; // search artist
     private static final int SEARCH_SONG = 7;   // search song
 
+    private static APIController apiController = new APIController();
+
     private Handler handler = null;
     private MelonAPIThread melonAPIThread = null;
+
+    public static APIController getAPIController(){
+        return apiController;
+    }
 
     private String getQueryMode(int code) {
         switch (code) {
@@ -77,9 +84,6 @@ public class APIController {
     }
 
     public void getLocationList(double mapX, double mapY, int radius, Handler handler){
-        if(this.handler != null)
-            return;
-
         this.handler = handler;
         TourAPIThread thread;
 
@@ -105,10 +109,6 @@ public class APIController {
         melonAPIThread.start();
     }
 
-    public void playSong(){
-
-    }
-
     class MelonAPIThread extends Thread {
         private ArrayList<Song> songList;
         private String keyword = "";
@@ -120,88 +120,100 @@ public class APIController {
             this.call = getQueryMode(callCode);
             this.keyword = keyword;
 
-            String queryURL = "" + MELON_INIT_URI + call + MELON_VERSION + "1" + MELON_PAGE + "1"
+            queryURL = "" + MELON_SEARCH_INIT_URI + call + MELON_VERSION + "1" + MELON_PAGE + "1"
                     + MELON_COUNT + "10" + MELON_SEARCH_KEYWORD + keyword;
 
             songList = new ArrayList<Song>();
+
+            Log.d("test", "create query : " + queryURL);
         }
 
         @Override
         public void run() {
+            Log.d("URL", queryURL);
 
-            if (!play) {
-                Log.d("URL", queryURL);
+            try {
+                Song song = new Song();
 
-                try {
-                    Song song = new Song();
+                URL url = new URL(queryURL);
 
-                    URL url = new URL(queryURL);
-                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.setRequestProperty("Accept", "application/xml");
+                urlConnection.setRequestProperty("appKey", MELON_API_KEY);
 
-                    InputStream is = new BufferedInputStream(urlConnection.getInputStream());
+                InputStream is = new BufferedInputStream(urlConnection.getInputStream());
 
-                    XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-                    XmlPullParser xpp = factory.newPullParser();
-                    xpp.setInput(new InputStreamReader(is, "UTF-8"));
+                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                XmlPullParser xpp = factory.newPullParser();
 
-                    String tag;
+                xpp.setInput(new InputStreamReader(is, "UTF-8"));
 
-                    xpp.next();
-                    int eventType = xpp.getEventType();
+                String tag;
 
-                    while (eventType != XmlPullParser.END_DOCUMENT) {
-                        switch (eventType) {
-                            case XmlPullParser.START_DOCUMENT:
-                                break;
+                xpp.next();
+                int eventType = xpp.getEventType();
 
-                            case XmlPullParser.START_TAG:
-                                tag = xpp.getName();
+                while (eventType != XmlPullParser.END_DOCUMENT) {
+                    switch (eventType) {
+                        case XmlPullParser.START_DOCUMENT:
+                            break;
 
-                                if (tag.equals("songId")) {
-                                    xpp.next();
-                                    if (song.getSongId() != -1) {
-                                        songList.add(song);
-                                        song = new Song();
-                                    }
-                                    song.setSongId(Integer.parseInt(xpp.getText()));
-                                } else if (tag.equals("songName")) {
-                                    xpp.next();
-                                    song.setSongName(xpp.getText());
-                                } else if (tag.equals("albumId")) {
-                                    xpp.next();
-                                    song.setAlbumId(Integer.parseInt(xpp.getText()));
-                                } else if (tag.equals("albumName")) {
-                                    xpp.next();
-                                    song.setAlbumName(xpp.getText());
-                                } else if (tag.equals("artistId")) {
-                                    xpp.next();
-                                    if (song.getArtistId() == -1)
-                                        song.setArtistId(Integer.parseInt(xpp.getText()));
-                                } else if (tag.equals("artistName")) {
-                                    xpp.next();
-                                    if (song.getArtistName() == null)
-                                        song.setArtistName(xpp.getText());
+                        case XmlPullParser.START_TAG:
+                            tag = xpp.getName();
+
+                            if (tag.equals("songId")) {
+                                xpp.next();
+                                if (song.getSongId() != -1) {
+                                    songList.add(song);
+                                    song = new Song();
                                 }
+                                song.setSongId(Integer.parseInt(xpp.getText()));
+                            } else if (tag.equals("songName")) {
+                                xpp.next();
+                                song.setSongName(xpp.getText());
+                                Log.d("test", "songName : " + xpp.getText());
+                            } else if (tag.equals("albumId")) {
+                                xpp.next();
+                                song.setAlbumId(Integer.parseInt(xpp.getText()));
+                            } else if (tag.equals("albumName")) {
+                                xpp.next();
+                                song.setAlbumName(xpp.getText());
+                            } else if (tag.equals("artistId")) {
+                                xpp.next();
+                                if (song.getArtistId() == -1)
+                                    song.setArtistId(Integer.parseInt(xpp.getText()));
+                            } else if (tag.equals("artistName")) {
+                                xpp.next();
+                                if (song.getArtistName() == null)
+                                    song.setArtistName(xpp.getText());
+                            } else if (tag.equals("menuId")) {
+                                xpp.next();
+                                if (song.getMenuId() == -1)
+                                    song.setMenuId(Integer.parseInt(xpp.getText()));
+                            }
 
-                            case XmlPullParser.TEXT:
-                                break;
-                            case XmlPullParser.END_TAG:
-                                tag = xpp.getName();
-                                break;
-                        }
-                        eventType = xpp.next();
+                        case XmlPullParser.TEXT:
+                            break;
+                        case XmlPullParser.END_TAG:
+                            tag = xpp.getName();
+                            break;
                     }
-                    songList.add(song);
-                    Message message;
-
-                    message = Message.obtain(handler, Constants.RECEIVE_LOCATION_LIST, songList);
-
-                    // if get data fininsh, edit main thread UI
-                    handler.sendMessage(message);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    eventType = xpp.next();
                 }
+                songList.add(song);
+                Message message;
+
+                message = Message.obtain(handler, Constants.RECEIVE_LOCATION_LIST, songList);
+                message.what = Constants.RECEIVE_SUCCESSS;
+
+                // if get data fininsh, edit main thread UI
+                handler.sendMessage(message);
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
         }
     }
 
@@ -317,12 +329,17 @@ public class APIController {
                 list.add(NAME, nameList);
                 list.add(CODE, codeList);
                 locationList.add(location);
+
+                for(int i=0; i<locationList.size(); i++)
+                    Log.d("test", locationList.get(i).toString());
+
                 Message message;
 
                 if(nameCodeList)
                     message = Message.obtain(handler, Constants.RECEIVE_CODE_LIST, list);
                 else
                     message = Message.obtain(handler, Constants.RECEIVE_LOCATION_LIST, locationList);
+                message.what = Constants.RECEIVE_SUCCESSS;
 
                 // if get data fininsh, edit main thread UI
                 handler.sendMessage(message);
@@ -331,8 +348,6 @@ public class APIController {
             }
         }
     }
-
-
 
 }
 

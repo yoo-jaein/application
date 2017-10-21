@@ -1,16 +1,21 @@
 package com.example.myapplication.ProblemDomain;
 
+import java.io.Serializable;
+
 /**
  * Created by jm on 2017-10-03.
  */
 
-public class Song {
+public class Song implements Serializable {
+    private static final long serialVersionUID = 100L;
+
     private int songId;
     private String songName;
     private int albumId;
     private String albumName;
     private int artistId;
     private String artistName;
+    private int menuId;
 
     public Song(){
         this.songId = -1;
@@ -19,15 +24,17 @@ public class Song {
         this.albumName = null;
         this.artistId = -1;
         this.artistName = null;
+        this.menuId = -1;
     }
 
-    public Song(int songId, String songName, int albumId, String albumName, int artistId, String artistName) {
+    public Song(int songId, String songName, int albumId, String albumName, int artistId, String artistName, int menuId) {
         this.songId = songId;
         this.songName = songName;
         this.albumId = albumId;
         this.albumName = albumName;
         this.artistId = artistId;
         this.artistName = artistName;
+        this.menuId = menuId;
     }
 
     public int getSongId() {
@@ -76,5 +83,25 @@ public class Song {
 
     public void setArtistName(String artistName) {
         this.artistName = artistName;
+    }
+
+    public int getMenuId() {
+        return menuId;
+    }
+
+    public void setMenuId(int menuId) {
+        this.menuId = menuId;
+    }
+
+    @Override
+    public String toString() {
+        return "Song{" +
+                "songId=" + songId +
+                ", songName='" + songName + '\'' +
+                ", albumId=" + albumId +
+                ", albumName='" + albumName + '\'' +
+                ", artistId=" + artistId +
+                ", artistName='" + artistName + '\'' +
+                '}';
     }
 }

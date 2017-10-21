@@ -47,6 +47,8 @@
             android:label="@string/title_activity_settings"
             android:theme="@style/Theme.AppCompat.Light"></activity>
         <activity android:name=".Activity.HelpActivity"></activity>
+        <activity android:name=".Activity.SearchLocationActivity" />
+        <activity android:name=".Activity.SearchSongActivity"></activity>
     </application>
 
 
