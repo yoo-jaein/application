@@ -36,7 +36,7 @@ public class WritingNewPostActivity extends AppCompatActivity {
             }
         });
 
-        client = ClientController.getClientControl();
+        /*client = ClientController.getClientControl();*/
     }
 
 }
