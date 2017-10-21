@@ -8,12 +8,6 @@
     android:orientation="vertical"
     tools:context=".Fragment.PostsFragment">
 
-    <include
-        layout="@layout/user_info"
-        layout_width="match_parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -21,38 +15,36 @@
         <ImageView
             android:id="@+id/post_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
+            android:layout_height="300dp"
             android:layout_alignParentStart="true"
-            app:srcCompat="@mipmap/ic_launcher" />
+            android:layout_alignParentTop="true"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/postpicture" />
 
         <ImageButton
             android:id="@+id/likeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="80dp"
-            android:layout_marginTop="14dp"
+            android:layout_alignTop="@+id/unlikeButton"
             android:background="#00000000"
-            android:visibility="visible"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/fullhearticon" />
 
         <ImageButton
             android:id="@+id/unlikeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="80dp"
-            android:layout_marginTop="14dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="#00000000"
-            app:srcCompat="@android:drawable/btn_star_big_off" />
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/emptyhearticon"
+            android:layout_alignBottom="@+id/post_image"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView

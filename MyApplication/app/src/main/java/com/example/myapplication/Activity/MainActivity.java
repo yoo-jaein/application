@@ -11,12 +11,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.myapplication.BackPressCloseHandler;
@@ -34,14 +35,20 @@ public class MainActivity extends AppCompatActivity {
 
     private ClientController client;
 
+    boolean option =false;
+
+    ImageButton op1;
+    ImageButton op2;
+    ImageButton op3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         CheckAppFirstExecute();
-
+/*
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);*/
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -65,6 +72,41 @@ public class MainActivity extends AppCompatActivity {
                 //finish();
             }
         });
+
+        op1=(ImageButton)findViewById(R.id.mainoptionone);
+        op2=(ImageButton)findViewById(R.id.mainoptiontwo);
+        op3=(ImageButton)findViewById(R.id.mainoptionthree);
+
+        op1.setVisibility(View.INVISIBLE);
+        op2.setVisibility(View.INVISIBLE);
+        op3.setVisibility(View.INVISIBLE);
+
+        ImageButton optionButton=(ImageButton)findViewById(R.id.mainoptionButton);
+        optionButton.bringToFront();
+        optionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("test","option button onclick listener :");
+
+                if(option) {
+                    Log.d("test", ""+ option);
+                    op1.setVisibility(View.INVISIBLE);
+                    op2.setVisibility(View.INVISIBLE);
+                    op3.setVisibility(View.INVISIBLE);
+                } else {
+                    op1.setVisibility(View.VISIBLE);
+                    op2.setVisibility(View.VISIBLE);
+                    op3.setVisibility(View.VISIBLE);
+                    op1.bringToFront();
+                    op2.bringToFront();
+                    op3.bringToFront();
+                    Log.d("test", ""+ option);
+
+                }
+                option = !option;
+            }
+        });
+
 
     }
 

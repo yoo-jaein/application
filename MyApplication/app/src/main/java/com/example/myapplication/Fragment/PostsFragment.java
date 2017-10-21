@@ -24,10 +24,12 @@ public class PostsFragment extends Fragment {
     public ImageView post_image;
     public TextView writer_name;
     public TextView post_text;
-    public ImageButton like_button;
 
     String name;
     String contents;
+
+    ImageButton likebutton;
+    ImageButton unlikebutton;
 
     public PostsFragment() {
         Bundle args=getArguments();
@@ -50,6 +52,8 @@ public class PostsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view= inflater.inflate(R.layout.fragment_posts, container, false);
+        likebutton=(ImageButton)view.findViewById(R.id.likeButton);
+        unlikebutton=(ImageButton)view.findViewById(R.id.unlikeButton);
 
         writer_image=(ImageView)view.findViewById(R.id.user_image);
 
@@ -60,6 +64,25 @@ public class PostsFragment extends Fragment {
 
         post_text=(TextView)view.findViewById(R.id.post_text);
         post_text.setText(contents);
+
+        likebutton.setVisibility(View.INVISIBLE);
+        unlikebutton.setVisibility(View.VISIBLE);
+        likebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("test","postfrag: likebutton listener");
+                unlikebutton.setVisibility(View.VISIBLE);
+                likebutton.setVisibility(View.INVISIBLE);
+            }
+        });
+        unlikebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("test","postfrag: unlikebutton listener");
+                likebutton.setVisibility(View.VISIBLE);
+                unlikebutton.setVisibility(View.INVISIBLE);
+            }
+        });
 
         return view;
     }

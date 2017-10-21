@@ -1,6 +1,7 @@
 package com.example.myapplication.CustomAdapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,24 +47,26 @@ public class CustomAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.fragment_posts, parent, false);
         }
-        final TextView name=(TextView)convertView.findViewById(R.id.user_name);
         final TextView content=(TextView)convertView.findViewById(R.id.post_text);
 
         final ImageButton likebutton=(ImageButton)convertView.findViewById(R.id.likeButton);
         final ImageButton unlikebutton=(ImageButton)convertView.findViewById(R.id.unlikeButton);
 
         final String s = contentslist.get(position);
-
         Thread mThread = new Thread() {
             public void run() {
                 try {
-                    name.setText(s);
                     content.setText(s);
+                    likebutton.setVisibility(View.INVISIBLE);
+                    unlikebutton.setVisibility(View.VISIBLE);
+                    unlikebutton.bringToFront();
+
                     likebutton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             unlikebutton.setVisibility(View.VISIBLE);
                             likebutton.setVisibility(View.INVISIBLE);
+                            likebutton.bringToFront();
                         }
                     });
                     unlikebutton.setOnClickListener(new View.OnClickListener() {
@@ -71,8 +74,10 @@ public class CustomAdapter extends BaseAdapter {
                         public void onClick(View view) {
                             likebutton.setVisibility(View.VISIBLE);
                             unlikebutton.setVisibility(View.INVISIBLE);
+                            unlikebutton.bringToFront();
                         }
                     });
+
                 } catch (Exception ex) {
 
                 }
