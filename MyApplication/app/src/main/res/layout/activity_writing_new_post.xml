@@ -20,35 +20,40 @@
             android:paddingTop="@dimen/appbar_padding_top"
             android:theme="@style/AppTheme.AppBarOverlay">
 
-            <GridLayout
+            <ImageView
+                android:id="@+id/imageView5"
                 android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/postingtitle" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right">
+                android:layout_gravity="bottom"
+                android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/mainsearchButton"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_gravity="fill_vertical"
-                    android:layout_margin="5dp"
+                    android:id="@+id/postingback"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
                     android:layout_marginHorizontal="10dp"
-                    android:layout_weight="1"
                     android:background="#00000000"
                     android:cropToPadding="false"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/searchicon" />
+                    android:scaleType="fitStart"
+                    app:srcCompat="@drawable/postingbackicon" />
 
                 <ImageButton
-                    android:id="@+id/mainmenuButton"
-                    android:layout_width="40dp"
-                    android:layout_height="25dp"
-                    android:layout_gravity="fill_vertical"
+                    android:id="@+id/postingfinish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
                     android:layout_marginHorizontal="10dp"
-                    android:layout_weight="1"
                     android:background="#00000000"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/menuicon" />
-            </GridLayout>
+                    android:scaleType="fitEnd"
+                    app:srcCompat="@drawable/postingfinishicon" />
+            </LinearLayout>
 
         </android.support.design.widget.AppBarLayout>
 
@@ -60,36 +65,49 @@
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="150dp"
                 android:layout_margin="20dp"
                 android:layout_weight="1"
-                android:scaleType="fitXY"
+                android:scaleType="fitCenter"
                 app:srcCompat="@drawable/postpicture" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/postingsong"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:background="@drawable/layout"
+                android:hint="Which song do you want to recommend" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/postinglocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:background="@drawable/layout"
+                android:hint="where are you?" />
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/postingopinion"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:autoSizeMaxTextSize="200dp"
+                android:autoText="false"
+                android:background="@drawable/layout"
+                android:hint="write your opinion" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="82dp"
+                android:layout_height="50dp"
+                android:background="@color/colorPrimaryDark"
                 android:orientation="horizontal">
 
                 <ImageButton
@@ -98,6 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="#00000000"
+                    android:scaleType="centerInside"
                     app:srcCompat="@drawable/postingpictureicon" />
 
                 <ImageButton
@@ -106,6 +125,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="#00000000"
+                    android:scaleType="centerInside"
                     app:srcCompat="@drawable/postingyoutubeicon" />
 
                 <ImageButton
@@ -114,6 +134,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="#00000000"
+                    android:scaleType="centerInside"
                     app:srcCompat="@drawable/postingmusicicon" />
 
                 <ImageButton
@@ -122,6 +143,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="#00000000"
+                    android:scaleType="centerInside"
                     app:srcCompat="@drawable/postinglocationicon" />
             </LinearLayout>
 
