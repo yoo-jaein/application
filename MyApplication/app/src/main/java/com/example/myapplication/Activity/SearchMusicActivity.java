@@ -1,7 +1,6 @@
 package com.example.myapplication.Activity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,14 +20,14 @@ import com.example.myapplication.R;
 
 import java.util.ArrayList;
 
-public class SearchSongActivity extends AppCompatActivity {
+public class SearchMusicActivity extends AppCompatActivity {
 
     private APIController apiController;
     private Handler handler;
     private String[] completeList = null;
     private ArrayAdapter<String> adapter;
 
-    private SearchSongActivity searchSongActivity;
+    private SearchMusicActivity searchMusicActivity;
     private AutoCompleteTextView autoCompleteTextView;
 
     private ArrayList<Song> songList;
@@ -39,7 +38,7 @@ public class SearchSongActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_song);
 
-        searchSongActivity = this;
+        searchMusicActivity = this;
 
         autoCompleteTextView = (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView);
 
@@ -67,7 +66,7 @@ public class SearchSongActivity extends AppCompatActivity {
                             Log.d("test", "completeList[i] : " + completeList[i]);
                         }
                         adapter = new ArrayAdapter<String>
-                                (searchSongActivity, android.R.layout.simple_dropdown_item_1line, completeList);
+                                (searchMusicActivity, android.R.layout.simple_dropdown_item_1line, completeList);
                         adapter.setNotifyOnChange(true);
                         autoCompleteTextView.setAdapter(adapter);
                         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -77,12 +76,16 @@ public class SearchSongActivity extends AppCompatActivity {
                                 selectedSong = songList.get(i);
                                 Log.d("test", "selectedSong : " + selectedSong.toString());
 
+                                Intent intent = new Intent();
+                                intent.putExtra("SONG", selectedSong);
+                                setResult(RESULT_OK, intent);
+                                finish();
+                                //    play song in melon app code
                                 /*
-                                    play song in melon app code
-                                 */
                                 Intent intent = new Intent(Intent.ACTION_VIEW);
                                 intent.setData(Uri.parse("melonapp://play?" + "cid=" + selectedSong.getSongId() + "&ctype=1&menuid=" + selectedSong.getMenuId()));
                                 startActivity(intent);
+                                */
                             }
                         });
                         adapter.notifyDataSetChanged();
@@ -122,5 +125,13 @@ public class SearchSongActivity extends AppCompatActivity {
         };
 
         autoCompleteTextView.addTextChangedListener(textWatcher);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        setResult(RESULT_CANCELED, intent);
+        finish();
+        super.onBackPressed();
     }
 }

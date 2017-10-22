@@ -9,7 +9,7 @@
     tools:context="com.example.myapplication.Activity.MainActivity">
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/goToWritingButton"
         android:layout_width="53dp"
         android:layout_height="51dp"
         android:layout_gravity="center_vertical|center_horizontal"
