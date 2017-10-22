@@ -292,6 +292,7 @@ public class APIController {
                                 location.setContentTypeID(Integer.parseInt(xpp.getText()));
                             } else if (tag.equals("firstimage")) {
                                 xpp.next();
+                                location.setFirstimage(xpp.getText());
                             } else if (tag.equals("secondimage")) {
                                 xpp.next();
                             } else if (tag.equals("mapx")) {

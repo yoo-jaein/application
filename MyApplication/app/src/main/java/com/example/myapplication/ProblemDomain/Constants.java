@@ -20,6 +20,10 @@ public class Constants implements Serializable{
     public static final int RECEIVE_SUCCESSS = 1;
     public static final int RECEIVE_CODE_LIST = 2;
     public static final int RECEIVE_LOCATION_LIST = 3;
+    public static final int RECEIVE_BITMAP_LIST = 4;
+
+    public static final int SEARCH_MAP_MODE = 0;
+    public static final int VIEW_LOCATION_MODE = 1;
 
     public static final int GET_PICTURE_URI = 1;
     public static final int GET_LOCATION_URI = 2;

@@ -13,6 +13,8 @@ public class Location implements Serializable{
 	private int contentTypeID;
 	private String title;
 
+	private String firstimage;
+
 	private double mapX;
 	private double mapY;
 
@@ -22,6 +24,7 @@ public class Location implements Serializable{
 		smallLocation = "";
 		contentID = 0;
 		contentTypeID = 0;
+		String firstimage = null;
 		mapX=-1;
 		mapY=-1;
 		title = null;
@@ -74,12 +77,11 @@ public class Location implements Serializable{
 	public void setMapY(double mapY) {
 		this.mapY = mapY;
 	}
-
-	@Override
-	public String toString() {
-		return "Location [bigLocation=" + bigLocation + ", midLocation=" + midLocation + ", smallLocation="
-				+ smallLocation + ", contentID=" + contentID + ", contentTypeID=" + contentTypeID + ", title=" + title
-				+ "]";
+	public String getFirstimage() {
+		return firstimage;
 	}
 
+	public void setFirstimage(String firstimage) {
+		this.firstimage = firstimage;
+	}
 }
