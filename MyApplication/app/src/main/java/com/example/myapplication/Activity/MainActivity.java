@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.myapplication.BackPressCloseHandler;
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         op2.setVisibility(View.INVISIBLE);
         op3.setVisibility(View.INVISIBLE);
 
-        ImageButton optionButton=(ImageButton)findViewById(R.id.mainoptionButton);
+        final ImageButton optionButton=(ImageButton)findViewById(R.id.mainoptionButton);
         optionButton.bringToFront();
         optionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,12 +95,14 @@ public class MainActivity extends AppCompatActivity {
                     op2.setVisibility(View.INVISIBLE);
                     op3.setVisibility(View.INVISIBLE);
                 } else {
+                    LinearLayout optioncontainer=(LinearLayout)findViewById(R.id.optionContainer);
                     op1.setVisibility(View.VISIBLE);
                     op2.setVisibility(View.VISIBLE);
                     op3.setVisibility(View.VISIBLE);
                     op1.bringToFront();
                     op2.bringToFront();
                     op3.bringToFront();
+                    optioncontainer.bringToFront();
                     Log.d("test", ""+ option);
 
                 }

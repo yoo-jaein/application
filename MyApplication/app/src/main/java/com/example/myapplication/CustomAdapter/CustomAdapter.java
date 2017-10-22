@@ -1,7 +1,6 @@
 package com.example.myapplication.CustomAdapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +47,8 @@ public class CustomAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.fragment_posts, parent, false);
         }
         final TextView content=(TextView)convertView.findViewById(R.id.post_text);
+        final TextView location=(TextView)convertView.findViewById(R.id.post_location);
+        final TextView music=(TextView)convertView.findViewById(R.id.post_music);
 
         final ImageButton likebutton=(ImageButton)convertView.findViewById(R.id.likeButton);
         final ImageButton unlikebutton=(ImageButton)convertView.findViewById(R.id.unlikeButton);
@@ -56,7 +57,10 @@ public class CustomAdapter extends BaseAdapter {
         Thread mThread = new Thread() {
             public void run() {
                 try {
+                    location.setText("위치");
+                    music.setText("노래");
                     content.setText(s);
+
                     likebutton.setVisibility(View.INVISIBLE);
                     unlikebutton.setVisibility(View.VISIBLE);
                     unlikebutton.bringToFront();
