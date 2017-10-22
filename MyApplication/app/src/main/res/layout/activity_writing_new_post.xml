@@ -23,8 +23,9 @@
             <ImageView
                 android:id="@+id/imageView5"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:scaleType="fitCenter"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp"
+                android:scaleType="centerInside"
                 app:srcCompat="@drawable/postingtitle" />
 
             <LinearLayout
@@ -63,7 +64,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/postingpicture"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_margin="20dp"
@@ -72,7 +73,7 @@
                 app:srcCompat="@drawable/postpicture" />
 
             <TextView
-                android:id="@+id/postingsong"
+                android:id="@+id/postingsongText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -82,7 +83,7 @@
                 android:hint="Which song do you want to recommend" />
 
             <TextView
-                android:id="@+id/postinglocation"
+                android:id="@+id/postinglocationText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -91,16 +92,14 @@
                 android:background="@drawable/layout"
                 android:hint="where are you?" />
 
-            <TextView
-                android:id="@+id/postingopinion"
+            <EditText
+                android:id="@+id/postingopinionText"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:autoSizeMaxTextSize="200dp"
-                android:autoText="false"
                 android:background="@drawable/layout"
                 android:hint="write your opinion" />
 
@@ -111,7 +110,7 @@
                 android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/imageButton3"
+                    android:id="@+id/postingpictureButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -120,7 +119,7 @@
                     app:srcCompat="@drawable/postingpictureicon" />
 
                 <ImageButton
-                    android:id="@+id/imageButton6"
+                    android:id="@+id/postingyoutubeButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -129,7 +128,7 @@
                     app:srcCompat="@drawable/postingyoutubeicon" />
 
                 <ImageButton
-                    android:id="@+id/imageButton5"
+                    android:id="@+id/postingmusicButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -138,7 +137,7 @@
                     app:srcCompat="@drawable/postingmusicicon" />
 
                 <ImageButton
-                    android:id="@+id/imageButton4"
+                    android:id="@+id/postinglocationButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
