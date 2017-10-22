@@ -49,7 +49,7 @@
             android:theme="@style/Theme.AppCompat.Light"></activity>
         <activity android:name=".Activity.HelpActivity"></activity>
         <activity android:name=".Activity.SearchLocationActivity" />
-        <activity android:name=".Activity.SearchSongActivity"></activity>
+        <activity android:name=".Activity.SearchMusicActivity"></activity>
     </application>
 
 

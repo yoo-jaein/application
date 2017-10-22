@@ -37,9 +37,11 @@ public class MainActivity extends AppCompatActivity {
 
     boolean option =false;
 
-    ImageButton op1;
-    ImageButton op2;
-    ImageButton op3;
+    private ImageButton op1;
+    private ImageButton op2;
+    private ImageButton op3;
+
+    private FloatingActionButton goToWritingButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,9 +79,23 @@ public class MainActivity extends AppCompatActivity {
         op2=(ImageButton)findViewById(R.id.mainoptiontwo);
         op3=(ImageButton)findViewById(R.id.mainoptionthree);
 
+        goToWritingButton = (FloatingActionButton)findViewById(R.id.goToWritingButton);
+
         op1.setVisibility(View.INVISIBLE);
         op2.setVisibility(View.INVISIBLE);
         op3.setVisibility(View.INVISIBLE);
+
+        goToWritingButton.setVisibility(View.VISIBLE);
+
+        goToWritingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("test","goToWritingbutton onclick listener :");
+
+                Intent intent = new Intent(getApplicationContext(), WritingNewPostActivity.class);
+                startActivity(intent);
+            }
+        });
 
         ImageButton optionButton=(ImageButton)findViewById(R.id.mainoptionButton);
         optionButton.bringToFront();
