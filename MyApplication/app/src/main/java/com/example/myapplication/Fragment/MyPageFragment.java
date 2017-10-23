@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +75,7 @@ public class MyPageFragment extends Fragment {
         mylist.setAdapter(new CustomAdapter(arr));
 
         //stretch fill bar according to like count
-
+/*
         fillbar=(ImageView)view.findViewById(R.id.fill_like_bar);
         ViewPager.LayoutParams params = (ViewPager.LayoutParams) fillbar.getLayoutParams();
         unfillbar=(ImageView)view.findViewById(R.id.unfillbar);
@@ -84,10 +84,13 @@ public class MyPageFragment extends Fragment {
         params.width = (int) (params1.width * 0.3);
         fillbar.setLayoutParams(params);
 
+*/
         change_arr=(ImageButton)view.findViewById(R.id.mypagechangearr);
         change_arr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Log.d("test","Change arr bnt onclick listner start ");
                 if(arr_type==1) {
                     arr_type=2;
                     ArrayList<String> arr=new ArrayList<String>();
@@ -109,6 +112,7 @@ public class MyPageFragment extends Fragment {
                 }
             }
         });
+
 
         return view;
     }
