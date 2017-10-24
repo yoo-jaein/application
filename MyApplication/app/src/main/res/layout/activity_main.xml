@@ -8,15 +8,6 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.myapplication.Activity.MainActivity">
 
-    <ImageButton
-        android:id="@+id/mainoptionButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="bottom|left"
-        android:background="#00000000"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/mainoptionicon" />
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/goToWritingButton"
         android:layout_width="53dp"
@@ -31,33 +22,34 @@
         app:srcCompat="@drawable/gotowrite" />
 
     <LinearLayout
+        android:id="@+id/optionContainer"
         android:layout_width="wrap_content"
-        android:layout_height="465dp"
+        android:layout_height="460dp"
         android:layout_gravity="bottom"
         android:orientation="vertical">
 
         <ImageButton
             android:id="@+id/mainoptionone"
-            android:layout_width="67dp"
-            android:layout_height="62dp"
-            android:background="@color/colorAccent"
-            android:scaleType="centerCrop"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:background="#00000000"
+            android:scaleType="fitStart"
             app:srcCompat="@drawable/mainoptionone" />
 
         <ImageButton
             android:id="@+id/mainoptiontwo"
-            android:layout_width="67dp"
-            android:layout_height="62dp"
-            android:background="@color/colorAccent"
-            android:scaleType="centerCrop"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:background="#00000000"
+            android:scaleType="fitStart"
             app:srcCompat="@drawable/mainoptiontwo" />
 
         <ImageButton
             android:id="@+id/mainoptionthree"
-            android:layout_width="67dp"
-            android:layout_height="62dp"
-            android:background="@color/colorAccent"
-            android:scaleType="centerCrop"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:background="#00000000"
+            android:scaleType="fitStart"
             app:srcCompat="@drawable/mainoptionthree" />
     </LinearLayout>
 
@@ -102,11 +94,22 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="0dp"
             android:layout_weight="1">
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_margin="0dp">
+
+                <ImageButton
+                    android:id="@+id/mainoptionButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="bottom|left"
+                    android:layout_margin="0dp"
+                    android:background="#00000000"
+                    app:srcCompat="@drawable/mainoptionicon" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ public class TimeLineFragment extends Fragment {
     private Handler handler;
     private ClientController client = null;
 
+
+    SwipeRefreshLayout mSwipeRefreshLayout;
     ListView timeline;
 
 
@@ -48,6 +51,20 @@ public class TimeLineFragment extends Fragment {
         client.refresh();
 
         timeline=(ListView)view.findViewById(R.id.timeline);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                ArrayList<String> arr=new ArrayList<String>();
+                for (int i=10;i<20;i++) {
+                    arr.add("time line test " + i);
+                }
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+
         ArrayList<String> arr=new ArrayList<String>();
         for (int i=0;i<10;i++) {
             arr.add("time line test " + i);

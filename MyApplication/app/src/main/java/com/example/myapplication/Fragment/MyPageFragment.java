@@ -4,13 +4,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.myapplication.CustomAdapter.CustomAdapter;
+import com.example.myapplication.CustomAdapter.CustomAdapter2;
 import com.example.myapplication.PhysicalArchitecture.ClientController;
 import com.example.myapplication.ProblemDomain.Constants;
 import com.example.myapplication.R;
@@ -21,8 +25,16 @@ public class MyPageFragment extends Fragment {
 
     private Handler handler;
     private ClientController client = null;
+
+    ImageButton change_arr;
+
+    ImageView fillbar;
+    ImageView unfillbar;
+
     TextView nametext;
     ListView mylist;
+
+    int arr_type=1;
 
     public MyPageFragment() {
         // Required empty public constructor
@@ -61,6 +73,45 @@ public class MyPageFragment extends Fragment {
         for (int i=0;i<10;i++)
             arr.add("my page test "+i);
         mylist.setAdapter(new CustomAdapter(arr));
+
+        //stretch fill bar according to like count
+/*
+        fillbar=(ImageView)view.findViewById(R.id.fill_like_bar);
+        ViewPager.LayoutParams params = (ViewPager.LayoutParams) fillbar.getLayoutParams();
+        unfillbar=(ImageView)view.findViewById(R.id.unfillbar);
+        ViewPager.LayoutParams params1 = (ViewPager.LayoutParams) unfillbar.getLayoutParams();
+        // change num 0.3 to like count
+        params.width = (int) (params1.width * 0.3);
+        fillbar.setLayoutParams(params);
+
+*/
+        change_arr=(ImageButton)view.findViewById(R.id.mypagechangearr);
+        change_arr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Log.d("test","Change arr bnt onclick listner start ");
+                if(arr_type==1) {
+                    arr_type=2;
+                    ArrayList<String> arr=new ArrayList<String>();
+                    for (int i=0;i<10;i++)
+                        arr.add("my page test "+i);
+                    CustomAdapter2 adapter2=new CustomAdapter2(arr);
+                    mylist.setAdapter(adapter2);
+                    adapter2.notifyDataSetChanged();
+                    change_arr.setImageResource(R.drawable.profilearr1);
+                } else {
+                    arr_type=1;
+                    ArrayList<String> arr=new ArrayList<String>();
+                    for (int i=0;i<10;i++)
+                        arr.add("my page test "+i);
+                    CustomAdapter adapter=new CustomAdapter(arr);
+                    mylist.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    change_arr.setImageResource(R.drawable.profilearr2);
+                }
+            }
+        });
 
 
         return view;
