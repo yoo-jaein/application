@@ -11,7 +11,7 @@ public class Posts implements Serializable{
 	private int postsID;
 
 	private Location locationInfo;
-	private Song song;
+	private Music music;
 	private String comment;
 
 	private int userID;
@@ -25,7 +25,7 @@ public class Posts implements Serializable{
 	public Posts(){
 		this.postsID = 0;
 		this.locationInfo = new Location();
-		this.song = null;
+		this.music = null;
 		this.like = 0;
 		this.createTime = 0;
 		this.Fimage = null;
@@ -35,7 +35,7 @@ public class Posts implements Serializable{
 	public Posts(int index){
 		this.postsID = index;
 		this.locationInfo = new Location();
-		this.song = null;
+		this.music = null;
 		this.like = 0;
 		this.createTime = 0;
 		this.Fimage = null;
@@ -80,11 +80,11 @@ public class Posts implements Serializable{
 	public void setCreateTime(long createTime) {
 		this.createTime = createTime;
 	}
-	public void setSong(Song song){
-		this.song = song;
+	public void setMusic(Music music){
+		this.music = music;
 	}
-	public Song getSong(){
-		return song;
+	public Music getMusic(){
+		return music;
 	}
 	public String getFileName(){
 		return Integer.toString(postsID);
@@ -108,7 +108,7 @@ public class Posts implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Posts [postsID=" + postsID + ", locationInfo=" + locationInfo + ", song=" + song + ", comment=" + comment
+		return "Posts [postsID=" + postsID + ", locationInfo=" + locationInfo + ", music=" + music + ", comment=" + comment
 				+ ", userID=" + userID + ", like=" + like + ", createTime=" + createTime + ", Fimage=" + Fimage
 				+ ", Iimage=" + Arrays.toString(Iimage) + "]";
 	}

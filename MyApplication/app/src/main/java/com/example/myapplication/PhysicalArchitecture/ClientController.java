@@ -293,9 +293,17 @@ public class ClientController implements Serializable{
    /*
       get and set method
     */
-	public Handler getHandler() { return handler;}
+   public Handler getHandler() { return handler;}
 
-   public void setHandler(Handler handler) { this.handler = handler;}
+	public void setHandler(Handler handler) {
+		if(this.handler == null) {
+			this.handler = handler;
+		}
+	}
+
+	public void setHandlerNull(){
+		this.handler = null;
+	}
 
    public boolean isWaiting() {
 		return waiting;

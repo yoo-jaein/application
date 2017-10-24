@@ -2,49 +2,85 @@ package com.example.myapplication.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.myapplication.PhysicalArchitecture.ClientController;
 import com.example.myapplication.ProblemDomain.Constants;
 import com.example.myapplication.ProblemDomain.Location;
-import com.example.myapplication.ProblemDomain.Song;
+import com.example.myapplication.ProblemDomain.Music;
+import com.example.myapplication.ProblemDomain.Posts;
 import com.example.myapplication.R;
+
+import org.w3c.dom.Text;
 
 public class WritingNewPostActivity extends AppCompatActivity {
 
+    private Handler handler;
+
     private ClientController client;
 
-    private Song song;
+    private Music music;
     private Location location;
 
-    private ImageButton fin;
-    private ImageButton del;
+    private ImageButton finButton;
+    private ImageButton delButton;
 
     private ImageButton postingPictureButton;
     private ImageButton postingVideoButton;
     private ImageButton postingMusicButton;
     private ImageButton postingLocationButton;
 
+    private TextView postingMusicText;
+    private TextView postingLocationText;
+    private EditText postingOpinionText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writing_new_post);
 
-        fin=(ImageButton)findViewById(R.id.postingBack);
-        fin.setOnClickListener(new View.OnClickListener() {
+        postingMusicText = (TextView)findViewById(R.id.postingMusicText);
+        postingLocationText = (TextView)findViewById(R.id.postingLocationText);
+        postingOpinionText = (EditText)findViewById(R.id.postingOpinionText);
+
+        finButton=(ImageButton)findViewById(R.id.postingFinish);
+        finButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Posts posts = new Posts();
+                posts.setLocationInfo(location);
+                posts.setMusic(music);
+
+                handler = new Handler() {
+                    @Override
+                    public void handleMessage(Message msg) {
+                        if(msg.what== Constants.RECEIVE_SUCCESSS){
+                            client.setHandlerNull();
+                        }
+                        else if(msg.what==Constants.RECEIVE_FAILED){
+
+                        }
+                    }
+                };
+
+                /*
+                client.setHandler(handler);
+                client.post(posts);
+                */
+
                 finish();
             }
         });
 
-        del=(ImageButton)findViewById(R.id.postingFinish);
-        del.setOnClickListener(new View.OnClickListener() {
+        delButton=(ImageButton)findViewById(R.id.postingBack);
+        delButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -94,16 +130,17 @@ public class WritingNewPostActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if(requestCode == Constants.GET_SONG){
-                song = (Song)(data.getSerializableExtra("SONG"));
-
-                Log.d("test", song.toString());
+                music = (Music)(data.getSerializableExtra("SONG"));
+                postingMusicText.setText(music.getArtistName() + " - " + music.getMusicName());
+                Log.d("test", music.toString());
             }
             else if(requestCode == Constants.GET_LOCATION){
                 location = (Location) (data.getSerializableExtra("LOCATION"));
-
+                postingLocationText.setText(location.getTitle());
                 Log.d("test", location.toString());
             }
         }
     }
+
 
 }

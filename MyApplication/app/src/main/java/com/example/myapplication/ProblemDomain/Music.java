@@ -6,20 +6,20 @@ import java.io.Serializable;
  * Created by jm on 2017-10-03.
  */
 
-public class Song implements Serializable {
+public class Music implements Serializable {
     private static final long serialVersionUID = 100L;
 
-    private int songId;
-    private String songName;
+    private int musicId;
+    private String musicName;
     private int albumId;
     private String albumName;
     private int artistId;
     private String artistName;
     private int menuId;
 
-    public Song(){
-        this.songId = -1;
-        this.songName = null;
+    public Music(){
+        this.musicId = -1;
+        this.musicName = null;
         this.albumId = -1;
         this.albumName = null;
         this.artistId = -1;
@@ -27,9 +27,9 @@ public class Song implements Serializable {
         this.menuId = -1;
     }
 
-    public Song(int songId, String songName, int albumId, String albumName, int artistId, String artistName, int menuId) {
-        this.songId = songId;
-        this.songName = songName;
+    public Music(int musicId, String musicName, int albumId, String albumName, int artistId, String artistName, int menuId) {
+        this.musicId = musicId;
+        this.musicName = musicName;
         this.albumId = albumId;
         this.albumName = albumName;
         this.artistId = artistId;
@@ -37,24 +37,24 @@ public class Song implements Serializable {
         this.menuId = menuId;
     }
 
-    public int getSongId() {
-        return songId;
+    public int getMusicId() {
+        return musicId;
     }
 
-    public String getSongName() {
-        return songName;
+    public String getMusicName() {
+        return musicName;
     }
 
     public String getArtistName() {
         return artistName;
     }
 
-    public void setSongId(int songId) {
-        this.songId = songId;
+    public void setMusicId(int musicId) {
+        this.musicId = musicId;
     }
 
-    public void setSongName(String songName) {
-        this.songName = songName;
+    public void setMusicName(String musicName) {
+        this.musicName = musicName;
     }
 
     public int getAlbumId() {
@@ -95,9 +95,9 @@ public class Song implements Serializable {
 
     @Override
     public String toString() {
-        return "Song{" +
-                "songId=" + songId +
-                ", songName='" + songName + '\'' +
+        return "Music{" +
+                "musicId=" + musicId +
+                ", musicName='" + musicName + '\'' +
                 ", albumId=" + albumId +
                 ", albumName='" + albumName + '\'' +
                 ", artistId=" + artistId +

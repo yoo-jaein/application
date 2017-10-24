@@ -15,7 +15,7 @@ import android.widget.AutoCompleteTextView;
 
 import com.example.myapplication.PhysicalArchitecture.APIController;
 import com.example.myapplication.ProblemDomain.Constants;
-import com.example.myapplication.ProblemDomain.Song;
+import com.example.myapplication.ProblemDomain.Music;
 import com.example.myapplication.R;
 
 import java.util.ArrayList;
@@ -30,13 +30,13 @@ public class SearchMusicActivity extends AppCompatActivity {
     private SearchMusicActivity searchMusicActivity;
     private AutoCompleteTextView autoCompleteTextView;
 
-    private ArrayList<Song> songList;
-    private Song selectedSong;
+    private ArrayList<Music> musicList;
+    private Music selectedMusic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_song);
+        setContentView(R.layout.activity_search_music);
 
         searchMusicActivity = this;
 
@@ -47,21 +47,21 @@ public class SearchMusicActivity extends AppCompatActivity {
             public void handleMessage(Message msg){
                 if(msg.what== Constants.RECEIVE_SUCCESSS){
                     String temp;
-                    songList = ((ArrayList<Song>)(msg.obj));
+                    musicList = ((ArrayList<Music>)(msg.obj));
 
                     Log.d("test", "receive message from Melon API thread");
 
                     /*
                         only if search result exist, set string list adapter for auto complete text view
                      */
-                    if(songList.size() > 0) {
-                        completeList = new String[songList.size()];
+                    if(musicList.size() > 0) {
+                        completeList = new String[musicList.size()];
 
-                        for (int i = 0; i < songList.size(); i++) {
+                        for (int i = 0; i < musicList.size(); i++) {
                             temp = "";
-                            temp += songList.get(i).getArtistName();
+                            temp += musicList.get(i).getArtistName();
                             temp += " - ";
-                            temp += songList.get(i).getSongName();
+                            temp += musicList.get(i).getMusicName();
                             completeList[i] = temp;
                             Log.d("test", "completeList[i] : " + completeList[i]);
                         }
@@ -73,17 +73,17 @@ public class SearchMusicActivity extends AppCompatActivity {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                                selectedSong = songList.get(i);
-                                Log.d("test", "selectedSong : " + selectedSong.toString());
+                                selectedMusic = musicList.get(i);
+                                Log.d("test", "selectedMusic : " + selectedMusic.toString());
 
                                 Intent intent = new Intent();
-                                intent.putExtra("SONG", selectedSong);
+                                intent.putExtra("SONG", selectedMusic);
                                 setResult(RESULT_OK, intent);
                                 finish();
-                                //    play song in melon app code
+                                //    play music in melon app code
                                 /*
                                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                                intent.setData(Uri.parse("melonapp://play?" + "cid=" + selectedSong.getSongId() + "&ctype=1&menuid=" + selectedSong.getMenuId()));
+                                intent.setData(Uri.parse("melonapp://play?" + "cid=" + selectedMusic.getMusicId() + "&ctype=1&menuid=" + selectedMusic.getMenuId()));
                                 startActivity(intent);
                                 */
                             }
@@ -114,7 +114,7 @@ public class SearchMusicActivity extends AppCompatActivity {
                     Log.d("test", "test changed");
 
                     if(keyword.matches("^[가-힣]*$"));
-                        apiController.getSongList(keyword, handler);
+                        apiController.getMusicList(keyword, handler);
                 }
             }
 

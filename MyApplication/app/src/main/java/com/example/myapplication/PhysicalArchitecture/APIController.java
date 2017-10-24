@@ -1,14 +1,12 @@
 package com.example.myapplication.PhysicalArchitecture;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
 import com.example.myapplication.ProblemDomain.Constants;
 import com.example.myapplication.ProblemDomain.Location;
-import com.example.myapplication.ProblemDomain.Song;
+import com.example.myapplication.ProblemDomain.Music;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -47,7 +45,7 @@ public class APIController {
 
     private static final int SEARCH_ALBUM = 5;  // search album
     private static final int SEARCH_ARTIST = 6; // search artist
-    private static final int SEARCH_SONG = 7;   // search song
+    private static final int SEARCH_SONG = 7;   // search music
 
     private static APIController apiController = new APIController();
 
@@ -73,7 +71,7 @@ public class APIController {
             case SEARCH_ARTIST:
                 return "artists";
             case SEARCH_SONG:
-                return "songs";
+                return "musics";
             default:
                 return "";
         }
@@ -101,7 +99,7 @@ public class APIController {
         thread.start();
     }
 
-    public void getSongList(String keyword, Handler handler){
+    public void getMusicList(String keyword, Handler handler){
         this.handler = handler;
 
         melonAPIThread = new MelonAPIThread(SEARCH_SONG, keyword);
@@ -110,7 +108,7 @@ public class APIController {
     }
 
     class MelonAPIThread extends Thread {
-        private ArrayList<Song> songList;
+        private ArrayList<Music> musicList;
         private String keyword = "";
         private String call;
         private String queryURL;
@@ -123,7 +121,7 @@ public class APIController {
             queryURL = "" + MELON_SEARCH_INIT_URI + call + MELON_VERSION + "1" + MELON_PAGE + "1"
                     + MELON_COUNT + "10" + MELON_SEARCH_KEYWORD + keyword;
 
-            songList = new ArrayList<Song>();
+            musicList = new ArrayList<Music>();
 
             Log.d("test", "create query : " + queryURL);
         }
@@ -133,7 +131,7 @@ public class APIController {
             Log.d("URL", queryURL);
 
             try {
-                Song song = new Song();
+                Music music = new Music();
 
                 URL url = new URL(queryURL);
 
@@ -162,35 +160,35 @@ public class APIController {
                         case XmlPullParser.START_TAG:
                             tag = xpp.getName();
 
-                            if (tag.equals("songId")) {
+                            if (tag.equals("musicId")) {
                                 xpp.next();
-                                if (song.getSongId() != -1) {
-                                    songList.add(song);
-                                    song = new Song();
+                                if (music.getMusicId() != -1) {
+                                    musicList.add(music);
+                                    music = new Music();
                                 }
-                                song.setSongId(Integer.parseInt(xpp.getText()));
-                            } else if (tag.equals("songName")) {
+                                music.setMusicId(Integer.parseInt(xpp.getText()));
+                            } else if (tag.equals("musicName")) {
                                 xpp.next();
-                                song.setSongName(xpp.getText());
-                                Log.d("test", "songName : " + xpp.getText());
+                                music.setMusicName(xpp.getText());
+                                Log.d("test", "musicName : " + xpp.getText());
                             } else if (tag.equals("albumId")) {
                                 xpp.next();
-                                song.setAlbumId(Integer.parseInt(xpp.getText()));
+                                music.setAlbumId(Integer.parseInt(xpp.getText()));
                             } else if (tag.equals("albumName")) {
                                 xpp.next();
-                                song.setAlbumName(xpp.getText());
+                                music.setAlbumName(xpp.getText());
                             } else if (tag.equals("artistId")) {
                                 xpp.next();
-                                if (song.getArtistId() == -1)
-                                    song.setArtistId(Integer.parseInt(xpp.getText()));
+                                if (music.getArtistId() == -1)
+                                    music.setArtistId(Integer.parseInt(xpp.getText()));
                             } else if (tag.equals("artistName")) {
                                 xpp.next();
-                                if (song.getArtistName() == null)
-                                    song.setArtistName(xpp.getText());
+                                if (music.getArtistName() == null)
+                                    music.setArtistName(xpp.getText());
                             } else if (tag.equals("menuId")) {
                                 xpp.next();
-                                if (song.getMenuId() == -1)
-                                    song.setMenuId(Integer.parseInt(xpp.getText()));
+                                if (music.getMenuId() == -1)
+                                    music.setMenuId(Integer.parseInt(xpp.getText()));
                             }
 
                         case XmlPullParser.TEXT:
@@ -201,10 +199,10 @@ public class APIController {
                     }
                     eventType = xpp.next();
                 }
-                songList.add(song);
+                musicList.add(music);
                 Message message;
 
-                message = Message.obtain(handler, Constants.RECEIVE_LOCATION_LIST, songList);
+                message = Message.obtain(handler, Constants.RECEIVE_LOCATION_LIST, musicList);
                 message.what = Constants.RECEIVE_SUCCESSS;
 
                 // if get data fininsh, edit main thread UI

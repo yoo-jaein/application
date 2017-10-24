@@ -80,7 +80,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/layout"
-                android:hint="Which song do you want to recommend" />
+                android:hint="Which music do you want to recommend" />
 
             <TextView
                 android:id="@+id/postingLocationText"
