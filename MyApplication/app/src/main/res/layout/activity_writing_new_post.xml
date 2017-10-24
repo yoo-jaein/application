@@ -73,7 +73,7 @@
                 app:srcCompat="@drawable/postpicture" />
 
             <TextView
-                android:id="@+id/postingmusicText"
+                android:id="@+id/postingMusicText"
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

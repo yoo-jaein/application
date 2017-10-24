@@ -32,7 +32,7 @@ public class APIController {
     private static final String TOUR_MOBILE_APP = "&MobileApp=Application";
 
     private static final String MELON_SEARCH_INIT_URI = "http://apis.skplanetx.com/melon/";
-    private static final String MELON_API_KEY = "254504f1-4949-3f5b-95d9-4325510614f1";
+    private static final String MELON_API_KEY   = "254504f1-4949-3f5b-95d9-4325510614f1";
     private static final String MELON_VERSION = "?version=";
     private static final String MELON_PAGE = "&page=";
     private static final String MELON_COUNT = "&count=";
@@ -71,7 +71,7 @@ public class APIController {
             case SEARCH_ARTIST:
                 return "artists";
             case SEARCH_SONG:
-                return "musics";
+                return "songs";
             default:
                 return "";
         }
@@ -136,6 +136,10 @@ public class APIController {
                 URL url = new URL(queryURL);
 
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                if(urlConnection == null){
+                    Log.d("test" , "urlConnection is null");
+                }
                 urlConnection.setRequestMethod("GET");
                 urlConnection.setRequestProperty("Accept", "application/xml");
                 urlConnection.setRequestProperty("appKey", MELON_API_KEY);
@@ -160,14 +164,14 @@ public class APIController {
                         case XmlPullParser.START_TAG:
                             tag = xpp.getName();
 
-                            if (tag.equals("musicId")) {
+                            if (tag.equals("songId")) {
                                 xpp.next();
                                 if (music.getMusicId() != -1) {
                                     musicList.add(music);
                                     music = new Music();
                                 }
                                 music.setMusicId(Integer.parseInt(xpp.getText()));
-                            } else if (tag.equals("musicName")) {
+                            } else if (tag.equals("songName")) {
                                 xpp.next();
                                 music.setMusicName(xpp.getText());
                                 Log.d("test", "musicName : " + xpp.getText());
