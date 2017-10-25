@@ -84,4 +84,19 @@ public class Location implements Serializable{
 	public void setFirstimage(String firstimage) {
 		this.firstimage = firstimage;
 	}
+
+	@Override
+	public String toString() {
+		return "Location{" +
+				"bigLocation='" + bigLocation + '\'' +
+				", midLocation='" + midLocation + '\'' +
+				", smallLocation='" + smallLocation + '\'' +
+				", contentID=" + contentID +
+				", contentTypeID=" + contentTypeID +
+				", title='" + title + '\'' +
+				", firstimage='" + firstimage + '\'' +
+				", mapX=" + mapX +
+				", mapY=" + mapY +
+				'}';
+	}
 }
