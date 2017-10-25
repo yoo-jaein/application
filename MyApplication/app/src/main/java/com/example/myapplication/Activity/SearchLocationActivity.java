@@ -50,8 +50,8 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
     private ArrayList<TMapPoint> pointList = new ArrayList<TMapPoint>();
     private ArrayList<String> markerIdList = new ArrayList<String>();
     private ArrayList<Location> locationList = new ArrayList<Location>();
-    private ArrayList<Bitmap> bitmapList = new ArrayList<Bitmap>();
 
+    private HashMap<Integer, Bitmap> bitmapList = new HashMap<>();
     private HashMap<Integer, Bitmap> pinIconList = new HashMap<>();
 
     @Override
@@ -84,7 +84,7 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
                     getLocationImage();
                 } else if (msg.what == Constants.RECEIVE_BITMAP_LIST) {
                     d("test", "received bitmap list");
-                    bitmapList.addAll((ArrayList<Bitmap>) (msg.obj));
+                 //   bitmapList.addAll((ArrayList<Bitmap>) (msg.obj));
                     showMarkerPoint();
                 } else if (msg.what == Constants.RECEIVE_FAILED) {
 
@@ -153,9 +153,14 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
 
     }
 
+    /*
+        when user location change detected, update marker and related data
+     */
     private void updateMarker(double longtitude, double latitude) {
         pointList.clear();
         markerIdList.clear();
+        bitmapList.clear();
+        locationList.clear();
 
         apiController.getLocationList(longtitude, latitude, 1500, handler);
     }
@@ -183,9 +188,9 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
             item.setCalloutTitle(locationList.get(i).getTitle());
             item.setCalloutSubTitle(locationList.get(i).getTitle());
             item.setCanShowCallout(true);
-            item.setAutoCalloutVisible(true);
+            item.setAutoCalloutVisible(false);
 
-            if (bitmapList.get(i) == null)
+            if (locationList.get(i).getFirstimage()==null)
                 item.setCalloutRightButtonImage(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_launcher));
             else
                 item.setCalloutRightButtonImage(bitmapList.get(i));
@@ -252,27 +257,25 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
         return result;
     }
 
+    /*
+        get location image to hashMap by using URL
+     */
     private void getLocationImage(){
 
         Thread mThread = new Thread(){
             public void run() {
-                for(Location location : locationList) {
+                for(int i=0; i<locationList.size(); i++) {
                     try {
-                        if(location.getFirstimage() == null){
-                            bitmapList.add(null);
-                        }
-                        else {
-                            URL url = new URL(location.getFirstimage());
+                        URL url = new URL(locationList.get(i).getFirstimage());
 
-                            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                            conn.setDoInput(true);
-                            conn.connect();
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setDoInput(true);
+                        conn.connect();
 
-                            InputStream is = conn.getInputStream();
-                            Bitmap bitmap = BitmapFactory.decodeStream(is);
+                        InputStream is = conn.getInputStream();
+                        Bitmap bitmap = BitmapFactory.decodeStream(is);
 
-                            bitmapList.add(resizeBitmap(bitmap, 80));
-                        }
+                        bitmapList.put(i, resizeBitmap(bitmap, 80));
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
