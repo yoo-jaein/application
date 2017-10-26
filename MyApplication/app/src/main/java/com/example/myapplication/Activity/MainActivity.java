@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.myapplication.BackPressCloseHandler;
@@ -38,9 +39,6 @@ public class MainActivity extends AppCompatActivity {
 
     boolean option =false;
 
-    private ImageButton op1;
-    private ImageButton op2;
-    private ImageButton op3;
 
     private FloatingActionButton goToWritingButton;
 
@@ -66,27 +64,17 @@ public class MainActivity extends AppCompatActivity {
 
         /*client = ClientController.getClientControl();*/
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), WritingNewPostActivity.class);
-                startActivity(intent);
-                //finish();
+                ListView timeline=(ListView)findViewById(R.id.timeline);
+                timeline.smoothScrollToPosition(0);
+                //.smoothScrollToPosition( 0 );
             }
         });
 
-        op1=(ImageButton)findViewById(R.id.mainoptionone);
-        op2=(ImageButton)findViewById(R.id.mainoptiontwo);
-        op3=(ImageButton)findViewById(R.id.mainoptionthree);
-
         goToWritingButton = (FloatingActionButton)findViewById(R.id.goToWritingButton);
-
-        op1.setVisibility(View.INVISIBLE);
-        op2.setVisibility(View.INVISIBLE);
-        op3.setVisibility(View.INVISIBLE);
-
-        goToWritingButton.setVisibility(View.VISIBLE);
 
         goToWritingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,13 +86,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         ImageButton optionButton=(ImageButton)findViewById(R.id.mainoptionButton);
         optionButton.bringToFront();
+
         optionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("test","option button onclick listener :");
+                ImageButton op1;
+                ImageButton op2;
+                ImageButton op3;
 
+                op1=(ImageButton)view.findViewById(R.id.mainoptionone);
+                op2=(ImageButton)view.findViewById(R.id.mainoptiontwo);
+                op3=(ImageButton)view.findViewById(R.id.mainoptionthree);
+
+                Log.d("test","option button onclick listener :");
                 if(option) {
                     Log.d("test", ""+ option);
                     op1.setVisibility(View.INVISIBLE);
@@ -122,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("test", ""+ option);
 
                 }
-                option = !option;
             }
         });
 

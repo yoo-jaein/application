@@ -5,9 +5,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.example.myapplication.CustomAdapter.CustomAdapter;
@@ -22,6 +25,10 @@ public class TimeLineFragment extends Fragment {
     private Handler handler;
     private ClientController client = null;
 
+
+    ImageButton op1;
+    ImageButton op2;
+    ImageButton op3;
 
     SwipeRefreshLayout mSwipeRefreshLayout;
     ListView timeline;
@@ -52,6 +59,7 @@ public class TimeLineFragment extends Fragment {
 
         timeline=(ListView)view.findViewById(R.id.timeline);
 
+/*
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -63,6 +71,7 @@ public class TimeLineFragment extends Fragment {
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
+*/
 
 
         ArrayList<String> arr=new ArrayList<String>();
@@ -71,8 +80,34 @@ public class TimeLineFragment extends Fragment {
         }
         timeline.setAdapter(new CustomAdapter(arr));
 
+        op1=(ImageButton)view.findViewById(R.id.mainoptionone);
+        op2=(ImageButton)view.findViewById(R.id.mainoptiontwo);
+        op3=(ImageButton)view.findViewById(R.id.mainoptionthree);
+
+        op1.setVisibility(View.INVISIBLE);
+        op2.setVisibility(View.INVISIBLE);
+        op3.setVisibility(View.INVISIBLE);
 
         return view;
+    }
+    public void setoption(boolean option){
+        if(option) {
+            Log.d("test", ""+ option);
+            op1.setVisibility(View.INVISIBLE);
+            op2.setVisibility(View.INVISIBLE);
+            op3.setVisibility(View.INVISIBLE);
+        } else {
+            LinearLayout optioncontainer=(LinearLayout)getView().findViewById(R.id.optionContainer);
+            op1.setVisibility(View.VISIBLE);
+            op2.setVisibility(View.VISIBLE);
+            op3.setVisibility(View.VISIBLE);
+            op1.bringToFront();
+            op2.bringToFront();
+            op3.bringToFront();
+            optioncontainer.bringToFront();
+            Log.d("test", ""+ option);
+
+        }
     }
 
 }
