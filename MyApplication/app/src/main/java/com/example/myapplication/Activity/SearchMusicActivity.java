@@ -20,10 +20,14 @@ import com.example.myapplication.R;
 
 import java.util.ArrayList;
 
+/**
+ * @author jm
+ * 멜론 음악 검색 액티비티
+ */
 public class SearchMusicActivity extends AppCompatActivity {
 
     private APIController apiController;
-    private Handler handler;
+    private static Handler handler;
     private String[] completeList = null;
     private ArrayAdapter<String> adapter;
 
@@ -47,51 +51,54 @@ public class SearchMusicActivity extends AppCompatActivity {
             public void handleMessage(Message msg){
                 if(msg.what== Constants.RECEIVE_SUCCESSS){
                     String temp;
-                    musicList = ((ArrayList<Music>)(msg.obj));
 
-                    Log.d("test", "receive message from Melon API thread");
+                    musicList = ((ArrayList<Music>)(msg.obj));
 
                     /*
                         only if search result exist, set string list adapter for auto complete text view
                      */
+
+                    Log.d("test", "music list size : " + musicList.size());
+
                     if(musicList.size() > 0) {
                         completeList = new String[musicList.size()];
 
                         for (int i = 0; i < musicList.size(); i++) {
-                            temp = "";
-                            temp += musicList.get(i).getArtistName();
+                            temp = musicList.get(i).getArtistName();
                             temp += " - ";
                             temp += musicList.get(i).getMusicName();
                             completeList[i] = temp;
-                            Log.d("test", "completeList[i] : " + completeList[i]);
                         }
-                        adapter = new ArrayAdapter<String>
-                                (searchMusicActivity, android.R.layout.simple_dropdown_item_1line, completeList);
-                        adapter.setNotifyOnChange(true);
-                        autoCompleteTextView.setAdapter(adapter);
-                        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                                selectedMusic = musicList.get(i);
-                                Log.d("test", "selectedMusic : " + selectedMusic.toString());
-
-                                Intent intent = new Intent();
-                                intent.putExtra("SONG", selectedMusic);
-                                setResult(RESULT_OK, intent);
-                                finish();
-                                //    play music in melon app code
-                                /*
-                                Intent intent = new Intent(Intent.ACTION_VIEW);
-                                intent.setData(Uri.parse("melonapp://play?" + "cid=" + selectedMusic.getMusicId() + "&ctype=1&menuid=" + selectedMusic.getMenuId()));
-                                startActivity(intent);
-                                */
-                            }
-                        });
-                        adapter.notifyDataSetChanged();
                     }
-                }else if(msg.what== Constants.RECEIVE_FAILED){
+                    else{
+                        completeList = new String[1];
+                        completeList[0] = "검색 결과가 존재하지 않습니다.";
+                    }
+                    adapter = new ArrayAdapter<>
+                            (searchMusicActivity, android.R.layout.simple_dropdown_item_1line, completeList);
+                    adapter.setNotifyOnChange(true);
+                    autoCompleteTextView.setAdapter(adapter);
+                    autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+                            selectedMusic = musicList.get(i);
+
+                            Intent intent = new Intent();
+                            intent.putExtra("SONG", selectedMusic);
+                            setResult(RESULT_OK, intent);
+                            finish();
+                            //    play music in melon app code
+                            /*
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse("melonapp://play?" + "cid=" + selectedMusic.getMusicId() + "&ctype=1&menuid=" + selectedMusic.getMenuId()));
+                            startActivity(intent);
+                            */
+                        }
+                    });
+                    adapter.notifyDataSetChanged();
+                }else if(msg.what== Constants.RECEIVE_FAILED){
+                    // TODO when received err message
                 }
             }
         };
@@ -111,9 +118,8 @@ public class SearchMusicActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if(charSequence.toString().length() >= 2){
                     String keyword = charSequence.toString();
-                    Log.d("test", "test changed");
 
-                    if(keyword.matches("^[가-힣]*$"));
+                    if(keyword.matches("^[가-힣]*$"))
                         apiController.getMusicList(keyword, handler);
                 }
             }

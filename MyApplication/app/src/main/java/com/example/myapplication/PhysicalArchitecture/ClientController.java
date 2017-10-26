@@ -9,6 +9,10 @@ import com.example.myapplication.ProblemDomain.User;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * @author jm
+ * 서버-클라이언트 기능 구현 클래스
+ */
 public class ClientController implements Serializable{
 
 	private ArrayList<Posts> timeLine;

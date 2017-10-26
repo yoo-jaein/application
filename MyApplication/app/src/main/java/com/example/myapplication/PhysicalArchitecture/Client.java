@@ -15,6 +15,10 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 
+/**
+ * @author jm
+ * 서버-클라이언트 연결 클래스
+ */
 public class Client extends Thread implements Serializable
 {
 	Socket sock;
