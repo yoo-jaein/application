@@ -22,9 +22,9 @@ import static com.example.myapplication.ProblemDomain.Constants.CODE;
 import static com.example.myapplication.ProblemDomain.Constants.NAME;
 
 /**
- * Created by jm on 2017-10-03.
+ * @author jm
+ * 멜론, 관광정보 API 클래스.
  */
-
 public class APIController {
     private static final String TOUR_INIT_URI = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/";
     private static final String TOUR_SERVICE_KEY = "?ServiceKey=Q%2Bh3qGHK7KUnkP%2FiO5s%2BmFf59UnBlEmg4Bkuiuwi8aZxGnzRchGJqZK46x4%2Fh9BGemhiUekc37nT%2BwPGxJMFzA%3D%3D";
@@ -107,7 +107,7 @@ public class APIController {
         melonAPIThread.start();
     }
 
-    class MelonAPIThread extends Thread {
+    private class MelonAPIThread extends Thread {
         private ArrayList<Music> musicList;
         private String keyword = "";
         private String call;
@@ -121,7 +121,7 @@ public class APIController {
             queryURL = "" + MELON_SEARCH_INIT_URI + call + MELON_VERSION + "1" + MELON_PAGE + "1"
                     + MELON_COUNT + "10" + MELON_SEARCH_KEYWORD + keyword;
 
-            musicList = new ArrayList<Music>();
+            musicList = new ArrayList<>();
 
             Log.d("test", "create query : " + queryURL);
         }
@@ -198,12 +198,14 @@ public class APIController {
                         case XmlPullParser.TEXT:
                             break;
                         case XmlPullParser.END_TAG:
-                            tag = xpp.getName();
                             break;
                     }
                     eventType = xpp.next();
                 }
-                musicList.add(music);
+
+                if(music.getMusicId() != -1)
+                    musicList.add(music);
+
                 Message message;
 
                 message = Message.obtain(handler, Constants.RECEIVE_LOCATION_LIST, musicList);
@@ -219,7 +221,7 @@ public class APIController {
         }
     }
 
-    class TourAPIThread extends Thread {
+    private class TourAPIThread extends Thread {
         // save code and name String list
         private ArrayList<ArrayList<String>> list;
         private ArrayList<Location> locationList;
@@ -231,8 +233,8 @@ public class APIController {
             this.call = getQueryMode(callCode);
             this.query = query;
 
-            list = new ArrayList<ArrayList<String>>();
-            locationList = new ArrayList<Location>();
+            list = new ArrayList<>();
+            locationList = new ArrayList<>();
         }
 
         @Override

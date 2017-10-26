@@ -20,9 +20,12 @@ import com.example.myapplication.R;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class WritingNewPostActivity extends AppCompatActivity {
 
-    private Handler handler;
+    private static Handler handler;
 
     private ClientController client;
 
@@ -57,15 +60,26 @@ public class WritingNewPostActivity extends AppCompatActivity {
                 Posts posts = new Posts();
                 posts.setLocationInfo(location);
                 posts.setMusic(music);
+                posts.setComment(postingOpinionText.getText().toString());
+        //        posts.setUserID(client.getMe().getUserIndex());
+
+                long now = System.currentTimeMillis();
+                Date date = new Date(now);
+                SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+                posts.setCreateTime(sdfNow.format(date));
+
+                Log.d("test", posts.toString());
 
                 handler = new Handler() {
                     @Override
                     public void handleMessage(Message msg) {
                         if(msg.what== Constants.RECEIVE_SUCCESSS){
                             client.setHandlerNull();
+                            finish();
                         }
                         else if(msg.what==Constants.RECEIVE_FAILED){
-
+                            // TODO when received err message
                         }
                     }
                 };

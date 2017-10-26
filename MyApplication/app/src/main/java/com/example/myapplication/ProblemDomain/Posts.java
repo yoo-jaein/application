@@ -18,7 +18,7 @@ public class Posts implements Serializable{
 
 	private int like;
 
-	private long createTime;
+	private String createTime;
 	private File Fimage;
 	private byte[] Iimage;
 
@@ -27,7 +27,7 @@ public class Posts implements Serializable{
 		this.locationInfo = new Location();
 		this.music = null;
 		this.like = 0;
-		this.createTime = 0;
+		this.createTime = "";
 		this.Fimage = null;
 		this.Iimage = null;
 	}
@@ -37,7 +37,7 @@ public class Posts implements Serializable{
 		this.locationInfo = new Location();
 		this.music = null;
 		this.like = 0;
-		this.createTime = 0;
+		this.createTime = "";
 		this.Fimage = null;
 		this.Iimage = null;
 	}
@@ -74,10 +74,10 @@ public class Posts implements Serializable{
 	public void setLike(int like) {
 		this.like = like;
 	}
-	public long getCreateTime() {
+	public String getCreateTime() {
 		return createTime;
 	}
-	public void setCreateTime(long createTime) {
+	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
 	}
 	public void setMusic(Music music){
