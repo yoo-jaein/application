@@ -36,7 +36,7 @@
             android:layout_alignTop="@+id/unlikeButton"
             android:background="#00000000"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/fullhearticon" />
+            app:srcCompat="@drawable/fullhearticon_copy" />
 
         <ImageButton
             android:id="@+id/unlikeButton"
@@ -46,7 +46,7 @@
             android:layout_alignParentEnd="true"
             android:background="#00000000"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/emptyhearticon" />
+            app:srcCompat="@drawable/emptyhearticon_copy" />
     </RelativeLayout>
 
     <LinearLayout
