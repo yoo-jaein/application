@@ -36,6 +36,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="23dp" />
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -52,6 +56,11 @@
                         android:maxLines="1"
                         android:text=""
                         android:textColorLink="#ffffffff" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="23dp"
+                        android:layout_weight="1" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -77,6 +86,10 @@
 
                 </android.support.design.widget.TextInputLayout>
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="23dp" />
+
                 <Button
                     android:id="@+id/email_sign_in_button"
                     style="?android:textAppearanceSmall"
@@ -101,9 +114,17 @@
         android:layout_weight="0"
         android:orientation="vertical">
 
-        <Space
+        <ImageButton
+            android:id="@+id/lostpwButton"
             android:layout_width="match_parent"
-            android:layout_height="23dp" />
+            android:layout_height="13dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginBottom="11dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="#00000000"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/loginlostpwbutton" />
 
         <ImageButton
             android:id="@+id/joinButton"
@@ -113,22 +134,10 @@
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="11dp"
             android:background="#00000000"
             android:scaleType="centerInside"
             app:srcCompat="@drawable/loginnewbutton" />
-
-        <ImageButton
-            android:id="@+id/lostpwButton"
-            android:layout_width="match_parent"
-            android:layout_height="13dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:background="#00000000"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/loginlostpwbutton" />
 
         <ImageButton
             android:id="@+id/facebookloginButton"
