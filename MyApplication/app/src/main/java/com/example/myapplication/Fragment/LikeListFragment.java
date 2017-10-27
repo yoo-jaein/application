@@ -19,8 +19,8 @@ import java.util.ArrayList;
 public class LikeListFragment extends Fragment {
 
     private ClientController client = null;
-    private Handler handler;
-    ListView likelist;
+    private static Handler handler;
+    private ListView likelist;
 
     public LikeListFragment() {
         // Required empty public constructor
@@ -36,7 +36,6 @@ public class LikeListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_like_list, container, false);
 
-
         if(client == null)
             client = ClientController.getClientControl();
 
@@ -44,21 +43,19 @@ public class LikeListFragment extends Fragment {
             @Override
             public void handleMessage(Message msg){
                 if(msg.what== Constants.RECEIVE_SUCCESSS){
-                    ArrayList<String> arr=new ArrayList<String>();
+                    client.setHandlerNull();
+                    ArrayList<String> arr=new ArrayList<>();
                     for (int i=0;i<client.getMyLikeList().size();i++)
                         arr.add("like list test "+i);
                     likelist.setAdapter(new CustomAdapter(arr));
                 }else if(msg.what==Constants.RECEIVE_FAILED){
-
+                    // TODO when receive err message
                 }
             }
         };
 
         client.setHandler(handler);
-
-
         client.myLike();
-
 
         return  view;
     }

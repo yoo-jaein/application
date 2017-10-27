@@ -26,7 +26,7 @@ public class ClientController implements Serializable{
 	private String message = "";
 
 	/*
-       checking request complete
+       checking request complete.
      */
 	private boolean waiting = false;
 
@@ -51,9 +51,9 @@ public class ClientController implements Serializable{
 	private static ClientController cControl = new ClientController();
 
 	public ClientController() {
-		timeLine = new ArrayList<Posts>();
-		myPostsList = new ArrayList<Posts>();
-		myLikeList  = new ArrayList<Posts>();
+		timeLine = new ArrayList<>();
+		myPostsList = new ArrayList<>();
+		myLikeList  = new ArrayList<>();
 
 		me = null;
 
@@ -68,27 +68,27 @@ public class ClientController implements Serializable{
       received data control
     */
 
-	public void setTimeLine(PostsList postsList) { timeLine = postsList.getAll();}
+	void setTimeLine(PostsList postsList) { timeLine = postsList.getAll();}
 
-	public void addTimeLine(PostsList postsList) {   timeLine.addAll(postsList.getAll());   }
+	 void addTimeLine(PostsList postsList) {   timeLine.addAll(postsList.getAll());   }
 
-	public void setMyPostsList(PostsList postsList) {   myPostsList = postsList.getAll();   }
+	 void setMyPostsList(PostsList postsList) {   myPostsList = postsList.getAll();   }
 
-	public void addMyPostsList(PostsList postsList) {   myPostsList.addAll(postsList.getAll());   }
+	 void addMyPostsList(PostsList postsList) {   myPostsList.addAll(postsList.getAll());   }
 
-	public void setMyLikeList(PostsList postsList) {   myLikeList = postsList.getAll();   }
+	 void setMyLikeList(PostsList postsList) {   myLikeList = postsList.getAll();   }
 
-	public void addMyLikeList(PostsList postsList) {   myLikeList.addAll(postsList.getAll());   }
+	 void addMyLikeList(PostsList postsList) {   myLikeList.addAll(postsList.getAll());   }
 
-	public void setMe(User user) {
+	 void setMe(User user) {
 		me = user;
 	}
 
 
 	public void resetAll() {
-		timeLine = new ArrayList<Posts>();
-		myPostsList = new ArrayList<Posts>();
-		myLikeList  = new ArrayList<Posts>();
+		timeLine.clear();
+		myPostsList.clear();
+		myLikeList.clear();
 
 		me = null;
 	}
@@ -309,31 +309,31 @@ public class ClientController implements Serializable{
 		this.handler = null;
 	}
 
-   public boolean isWaiting() {
+    boolean isWaiting() {
 		return waiting;
 	}
 
-	public void setWaiting(boolean waiting) {
+	 void setWaiting(boolean waiting) {
 		this.waiting = waiting;
 	}
 
-	public boolean isLogin() {
+	 boolean isLogin() {
 		return login;
 	}
 
-	public boolean isRegister() {
+	 boolean isRegister() {
 		return register;
 	}
 
-	public boolean isRefresh() {
+	 boolean isRefresh() {
 		return refresh;
 	}
 
-	public boolean isMorePosts() {
+	 boolean isMorePosts() {
 		return morePosts;
 	}
 
-	public boolean isMyLike() {
+	 boolean isMyLike() {
 		return myLike;
 	}
 
@@ -341,93 +341,93 @@ public class ClientController implements Serializable{
 		return myPosts;
 	}
 
-	public boolean isMoreMyLike() {
+	 boolean isMoreMyLike() {
 		return moreMyLike;
 	}
 
-	public boolean isPost() {
+	 boolean isPost() {
 		return post;
 	}
 
-	public boolean isDelete() {
+	 boolean isDelete() {
 		return delete;
 	}
 
-	public boolean isLike() {
+	 boolean isLike() {
 		return like;
 	}
 
-	public boolean isDislike() {
+	 boolean isDislike() {
 		return dislike;
 	}
 
-	public boolean isUpdateUser() {
+	 boolean isUpdateUser() {
 		return updateUser;
 	}
 
-	public void setStartTime(long time) { this.startTime = time; }
+	 void setStartTime(long time) { this.startTime = time; }
 
-	public long getStartTime() {
+	 long getStartTime() {
 		return startTime;
 	}
 
-	public void setLogin(boolean login) {
+	 void setLogin(boolean login) {
 		this.login = login;
 	}
 
-	public void setRegister(boolean register) {
+	 void setRegister(boolean register) {
 		this.register = register;
 	}
 
-	public void setRefresh(boolean refresh) {
+	 void setRefresh(boolean refresh) {
 		this.refresh = refresh;
 	}
 
-	public void setMorePosts(boolean morePosts) {
+	 void setMorePosts(boolean morePosts) {
 		this.morePosts = morePosts;
 	}
 
-	public void setMyLike(boolean myLike) {
+	 void setMyLike(boolean myLike) {
 		this.myLike = myLike;
 	}
 
-	public void setMoreMyLike(boolean moreLike) {
+	 void setMoreMyLike(boolean moreLike) {
 		this.moreMyLike = moreLike;
 	}
 
-	public void setPost(boolean post) {
+	 void setPost(boolean post) {
 		this.post = post;
 	}
 
-	public void setDelete(boolean delete) {
+	 void setDelete(boolean delete) {
 		this.delete = delete;
 	}
 
-	public void setLike(boolean like) {
+	 void setLike(boolean like) {
 		this.like = like;
 	}
 
-	public void setDislike(boolean dislike) {
+	 void setDislike(boolean dislike) {
 		this.dislike = dislike;
 	}
 
-	public void setUpdateUser(boolean updateUser) {
+	 void setUpdateUser(boolean updateUser) {
 		this.updateUser = updateUser;
 	}
 
-	public boolean isMyPosts() {
+	 boolean isMyPosts() {
 		return myPosts;
 	}
 
-	public void setMyPosts(boolean myPosts) {
+	 void setMyPosts(boolean myPosts) {
 		this.myPosts = myPosts;
 	}
 
-	public boolean isMoreMyPosts() {
+	 boolean isMoreMyPosts() {
 		return moreMyPosts;
 	}
 
-	public void setMoreMyPosts(boolean moreMyPosts) {
+	 void setMoreMyPosts(boolean moreMyPosts) {
 		this.moreMyPosts = moreMyPosts;
 	}
 

@@ -46,9 +46,9 @@ public class TimeLineFragment extends Fragment {
             @Override
             public void handleMessage(Message msg){
                 if(msg.what== Constants.RECEIVE_SUCCESSS){
-
+                    client.setHandlerNull();
                 }else if(msg.what==Constants.RECEIVE_FAILED){
-
+                    // TODO when receive err message
                 }
             }
         };
@@ -74,7 +74,7 @@ public class TimeLineFragment extends Fragment {
 */
 
 
-        ArrayList<String> arr=new ArrayList<String>();
+        ArrayList<String> arr=new ArrayList<>();
         for (int i=0;i<10;i++) {
             arr.add("time line test " + i);
         }

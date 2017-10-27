@@ -19,9 +19,9 @@ import java.net.SocketAddress;
  * @author jm
  * 서버-클라이언트 연결 클래스
  */
-public class Client extends Thread implements Serializable
+class Client extends Thread implements Serializable
 {
-	Socket sock;
+	private Socket sock;
 	private clientWrite clientW;
 	private clientRead clientR;
 	private ClientController cControl;
@@ -59,7 +59,7 @@ public class Client extends Thread implements Serializable
 			return new Client();
 	}
 
-	public void sendToServer(Object obj)
+	 void sendToServer(Object obj)
 	{
 		if(obj instanceof String){
 			if(clientW != null) {
@@ -92,7 +92,7 @@ class clientRead extends Thread implements Serializable
 	private Socket socket;
 	private ClientController cControl;
 
-	protected clientRead(Socket socket,ClientController cControl)
+	 clientRead(Socket socket,ClientController cControl)
 	{
 		this.socket=socket;
 		this.cControl=cControl;
@@ -126,11 +126,11 @@ class clientRead extends Thread implements Serializable
 
 					Log.d("CLIENT", "waiting is true");
 
-					/*
 					if(cControl.getStartTime() - System.currentTimeMillis() > 5000){
+						Log.d("CLIENT", "time over!!!!");
 						cControl.setWaiting(false);
+						cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_FAILED);
 					}
-					*/
 
 					temp = clientInputStream.readObject();
 
@@ -342,12 +342,12 @@ class clientWrite extends Thread implements Serializable
 		}
 	}
 
-	protected void sendToServer(String msg)
+	 void sendToServer(String msg)
 	{
 		console=msg;
 		sendToReadyString=true;
 	}
-	protected   void sendToServerPosts(Posts posts)
+	   void sendToServerPosts(Posts posts)
 	{
 		postsConsole=posts;
 		sendToReadyPosts=true;

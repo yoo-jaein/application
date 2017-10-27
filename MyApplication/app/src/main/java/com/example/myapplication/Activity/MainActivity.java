@@ -35,10 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private BackPressCloseHandler backPressCloseHandler;
     private ViewPager mViewPager;
 
-    private ClientController client;
-
     boolean option =false;
-
 
     private FloatingActionButton goToWritingButton;
 
@@ -201,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        protected SectionsPagerAdapter(FragmentManager fm) {
+         SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 

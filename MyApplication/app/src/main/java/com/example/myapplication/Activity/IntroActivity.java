@@ -30,8 +30,8 @@ public class IntroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_intro);
         init();
 
-/*        client = ClientController.getClientControl();
-        client.client.start();*/
+        client = ClientController.getClientControl();
+        client.client.start();
 
         handler.postDelayed(runnable, 1500);
     }

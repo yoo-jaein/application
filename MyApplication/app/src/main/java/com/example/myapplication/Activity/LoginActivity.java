@@ -13,11 +13,14 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,6 +32,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.myapplication.PhysicalArchitecture.ClientController;
+import com.example.myapplication.ProblemDomain.Constants;
 import com.example.myapplication.R;
 
 import java.util.ArrayList;
@@ -41,7 +45,8 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    ClientController client;
+    private ClientController client;
+    private static Handler handler;
 
     private static final int REQUEST_READ_CONTACTS = 0;
 
@@ -61,6 +66,25 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        client = ClientController.getClientControl();
+
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if(msg.what== Constants.RECEIVE_SUCCESSS){
+                    client.setHandlerNull();
+
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else if(msg.what==Constants.RECEIVE_FAILED){
+                    // TODO when received err message
+                }
+            }
+        };
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -84,10 +108,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                // TODO check email and password
               //  attemptLogin();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
+                Log.d("test" , mEmailView.getText().toString() + " / " +  mPasswordView.getText().toString());
+                client.login(mEmailView.getText().toString(), mPasswordView.getText().toString());
             }
         });
 

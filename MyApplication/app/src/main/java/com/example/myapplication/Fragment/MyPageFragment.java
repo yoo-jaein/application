@@ -17,24 +17,26 @@ import com.example.myapplication.CustomAdapter.CustomAdapter;
 import com.example.myapplication.CustomAdapter.CustomAdapter2;
 import com.example.myapplication.PhysicalArchitecture.ClientController;
 import com.example.myapplication.ProblemDomain.Constants;
+import com.example.myapplication.ProblemDomain.Posts;
 import com.example.myapplication.R;
 
 import java.util.ArrayList;
 
 public class MyPageFragment extends Fragment {
 
-    private Handler handler;
+    private static Handler handler;
     private ClientController client = null;
+    private ArrayList<Posts> myPostsList;
 
-    ImageButton change_arr;
+    private ImageButton change_arr;
 
-    ImageView fillbar;
-    ImageView unfillbar;
+    private ImageView fillbar;
+    private ImageView unfillbar;
 
-    TextView nametext;
-    ListView mylist;
+    private TextView nametext;
+    private ListView mylist;
 
-    int arr_type=1;
+    private int arr_type=1;
 
     public MyPageFragment() {
         // Required empty public constructor
@@ -50,9 +52,10 @@ public class MyPageFragment extends Fragment {
             @Override
             public void handleMessage(Message msg){
                 if(msg.what== Constants.RECEIVE_SUCCESSS){
-
+                    client.setHandlerNull();
+                    myPostsList = client.getMyPostsList();
                 }else if(msg.what==Constants.RECEIVE_FAILED){
-
+                    // TODO when receive err message
                 }
             }
         };
@@ -69,7 +72,7 @@ public class MyPageFragment extends Fragment {
         nametext.setText("young ju");
 
         mylist=(ListView)view.findViewById(R.id.mylist);
-        ArrayList<String> arr=new ArrayList<String>();
+        ArrayList<String> arr=new ArrayList<>();
         for (int i=0;i<10;i++)
             arr.add("my page test "+i);
         mylist.setAdapter(new CustomAdapter(arr));
@@ -93,7 +96,7 @@ public class MyPageFragment extends Fragment {
                 Log.d("test","Change arr bnt onclick listner start ");
                 if(arr_type==1) {
                     arr_type=2;
-                    ArrayList<String> arr=new ArrayList<String>();
+                    ArrayList<String> arr=new ArrayList<>();
                     for (int i=0;i<10;i++)
                         arr.add("my page test "+i);
                     CustomAdapter2 adapter2=new CustomAdapter2(arr);
@@ -102,7 +105,7 @@ public class MyPageFragment extends Fragment {
                     change_arr.setImageResource(R.drawable.profilearr1);
                 } else {
                     arr_type=1;
-                    ArrayList<String> arr=new ArrayList<String>();
+                    ArrayList<String> arr=new ArrayList<>();
                     for (int i=0;i<10;i++)
                         arr.add("my page test "+i);
                     CustomAdapter adapter=new CustomAdapter(arr);

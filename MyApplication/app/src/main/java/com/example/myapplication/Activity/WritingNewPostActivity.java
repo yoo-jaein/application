@@ -49,6 +49,19 @@ public class WritingNewPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writing_new_post);
 
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if(msg.what== Constants.RECEIVE_SUCCESSS){
+                    client.setHandlerNull();
+                    finish();
+                }
+                else if(msg.what==Constants.RECEIVE_FAILED){
+                    // TODO when received err message
+                }
+            }
+        };
+
         postingMusicText = (TextView)findViewById(R.id.postingMusicText);
         postingLocationText = (TextView)findViewById(R.id.postingLocationText);
         postingOpinionText = (EditText)findViewById(R.id.postingOpinionText);
@@ -61,7 +74,7 @@ public class WritingNewPostActivity extends AppCompatActivity {
                 posts.setLocationInfo(location);
                 posts.setMusic(music);
                 posts.setComment(postingOpinionText.getText().toString());
-        //        posts.setUserID(client.getMe().getUserIndex());
+                posts.setUserID(client.getMe().getUserIndex());
 
                 long now = System.currentTimeMillis();
                 Date date = new Date(now);
@@ -69,27 +82,8 @@ public class WritingNewPostActivity extends AppCompatActivity {
 
                 posts.setCreateTime(sdfNow.format(date));
 
-                Log.d("test", posts.toString());
-
-                handler = new Handler() {
-                    @Override
-                    public void handleMessage(Message msg) {
-                        if(msg.what== Constants.RECEIVE_SUCCESSS){
-                            client.setHandlerNull();
-                            finish();
-                        }
-                        else if(msg.what==Constants.RECEIVE_FAILED){
-                            // TODO when received err message
-                        }
-                    }
-                };
-
-                /*
                 client.setHandler(handler);
                 client.post(posts);
-                */
-
-                finish();
             }
         });
 
