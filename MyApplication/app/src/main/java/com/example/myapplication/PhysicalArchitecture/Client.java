@@ -1,5 +1,6 @@
 package com.example.myapplication.PhysicalArchitecture;
 
+import android.system.ErrnoException;
 import android.util.Log;
 
 import com.example.myapplication.Foundation.PostsList;
@@ -19,7 +20,7 @@ import java.net.SocketAddress;
  * @author jm
  * 서버-클라이언트 연결 클래스
  */
-class Client extends Thread implements Serializable
+public class Client extends Thread implements Serializable
 {
 	private Socket sock;
 	private clientWrite clientW;

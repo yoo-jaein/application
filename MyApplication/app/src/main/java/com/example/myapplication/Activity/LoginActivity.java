@@ -46,7 +46,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
     private ClientController client;
-    private static Handler handler;
+    private Handler handler;
 
     private static final int REQUEST_READ_CONTACTS = 0;
 
@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
-        /*client = ClientController.getClientControl();*/
+        client = ClientController.getClientControl();
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -111,6 +111,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 // TODO check email and password
               //  attemptLogin();
                 Log.d("test" , mEmailView.getText().toString() + " / " +  mPasswordView.getText().toString());
+                client.setHandler(handler);
                 client.login(mEmailView.getText().toString(), mPasswordView.getText().toString());
             }
         });
