@@ -14,8 +14,6 @@ import com.example.myapplication.PhysicalArchitecture.ClientController;
 import com.example.myapplication.ProblemDomain.Constants;
 import com.example.myapplication.R;
 
-import java.util.ArrayList;
-
 public class LikeListFragment extends Fragment {
 
     private ClientController client = null;
@@ -44,10 +42,7 @@ public class LikeListFragment extends Fragment {
             public void handleMessage(Message msg){
                 if(msg.what== Constants.RECEIVE_SUCCESSS){
                     client.setHandlerNull();
-                    ArrayList<String> arr=new ArrayList<>();
-                    for (int i=0;i<client.getMyLikeList().size();i++)
-                        arr.add("like list test "+i);
-                    likelist.setAdapter(new CustomAdapter(arr));
+                    likelist.setAdapter(new CustomAdapter(client.getMyLikeList()));
                 }else if(msg.what==Constants.RECEIVE_FAILED){
                     // TODO when receive err message
                 }
