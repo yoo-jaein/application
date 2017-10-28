@@ -10,13 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.example.myapplication.CustomAdapter.CustomAdapter;
 import com.example.myapplication.PhysicalArchitecture.ClientController;
 import com.example.myapplication.ProblemDomain.Constants;
+import com.example.myapplication.ProblemDomain.Posts;
 import com.example.myapplication.R;
+
+import java.util.ArrayList;
 
 public class TimeLineFragment extends Fragment {
 
@@ -72,36 +75,25 @@ public class TimeLineFragment extends Fragment {
 */
 
 
-        timeline.setAdapter(new CustomAdapter(client.getTimeLine()));
-
-        op1=(ImageButton)view.findViewById(R.id.mainoptionone);
-        op2=(ImageButton)view.findViewById(R.id.mainoptiontwo);
-        op3=(ImageButton)view.findViewById(R.id.mainoptionthree);
-
-        op1.setVisibility(View.INVISIBLE);
-        op2.setVisibility(View.INVISIBLE);
-        op3.setVisibility(View.INVISIBLE);
+        Thread mThread = new Thread() {
+            public void run() {
+                try {
+                    ArrayList<Posts> postsArrayList=null;
+                    Log.d("test","TimeLineFragment: thread start");
+                    while(postsArrayList!=null) postsArrayList=client.getTimeLine();
+                    Log.d("test","TimeLineFragment: client.getTimeLine =" +postsArrayList);
+                    ListAdapter adapter=new CustomAdapter(postsArrayList);
+                    timeline.setAdapter(adapter);
+                } catch (Exception e) {
+                }
+            }
+        };
+        mThread.start();
+        try {
+            mThread.join();
+        } catch (InterruptedException e) {}
 
         return view;
-    }
-    public void setoption(boolean option){
-        if(option) {
-            Log.d("test", ""+ option);
-            op1.setVisibility(View.INVISIBLE);
-            op2.setVisibility(View.INVISIBLE);
-            op3.setVisibility(View.INVISIBLE);
-        } else {
-            LinearLayout optioncontainer=(LinearLayout)getView().findViewById(R.id.optionContainer);
-            op1.setVisibility(View.VISIBLE);
-            op2.setVisibility(View.VISIBLE);
-            op3.setVisibility(View.VISIBLE);
-            op1.bringToFront();
-            op2.bringToFront();
-            op3.bringToFront();
-            optioncontainer.bringToFront();
-            Log.d("test", ""+ option);
-
-        }
     }
 
 }

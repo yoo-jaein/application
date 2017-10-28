@@ -26,7 +26,6 @@ import com.example.myapplication.BackPressCloseHandler;
 import com.example.myapplication.Fragment.LikeListFragment;
 import com.example.myapplication.Fragment.MyPageFragment;
 import com.example.myapplication.Fragment.TimeLineFragment;
-import com.example.myapplication.PhysicalArchitecture.ClientController;
 import com.example.myapplication.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     boolean option =false;
 
+    private LinearLayout optionContainer;
     private FloatingActionButton goToWritingButton;
 
     @Override
@@ -84,41 +84,43 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        ImageButton optionButton=(ImageButton)findViewById(R.id.mainoptionButton);
-        optionButton.bringToFront();
+        optionContainer=(LinearLayout)findViewById(R.id.optionContainer);
+        optionContainer.setVisibility(View.GONE);
 
+        final ImageButton optionButton=(ImageButton)findViewById(R.id.mainoptionButton);
+        optionButton.bringToFront();
         optionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ImageButton op1;
-                ImageButton op2;
-                ImageButton op3;
-
-                op1=(ImageButton)view.findViewById(R.id.mainoptionone);
-                op2=(ImageButton)view.findViewById(R.id.mainoptiontwo);
-                op3=(ImageButton)view.findViewById(R.id.mainoptionthree);
-
-                Log.d("test","option button onclick listener :");
-                if(option) {
-                    Log.d("test", ""+ option);
-                    op1.setVisibility(View.INVISIBLE);
-                    op2.setVisibility(View.INVISIBLE);
-                    op3.setVisibility(View.INVISIBLE);
-                } else {
-                    LinearLayout optioncontainer=(LinearLayout)findViewById(R.id.optionContainer);
-                    op1.setVisibility(View.VISIBLE);
-                    op2.setVisibility(View.VISIBLE);
-                    op3.setVisibility(View.VISIBLE);
-                    op1.bringToFront();
-                    op2.bringToFront();
-                    op3.bringToFront();
-                    optioncontainer.bringToFront();
-                    Log.d("test", ""+ option);
-
-                }
+                Log.d("test","MainActivity : optionButton OnClickListner");
+                optionContainer.setVisibility(View.VISIBLE);
             }
         });
 
+        ImageButton op1=(ImageButton)findViewById(R.id.mainoptionone);
+        ImageButton op2=(ImageButton)findViewById(R.id.mainoptiontwo);
+        ImageButton op3=(ImageButton)findViewById(R.id.mainoptionthree);
+
+        op1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                optionContainer.setVisibility(View.GONE);
+            }
+        });
+
+        op2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                optionContainer.setVisibility(View.GONE);
+            }
+        });
+
+        op3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                optionContainer.setVisibility(View.GONE);
+            }
+        });
 
     }
 

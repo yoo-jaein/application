@@ -32,6 +32,7 @@ public class CustomAdapter extends BaseAdapter {
 
 
     public CustomAdapter(ArrayList<Posts> contentslist){
+        Log.d("test","CustomAdapter : start CustomAdapter");
         this.contentslist=contentslist;
     }
     @Override
@@ -61,6 +62,7 @@ public class CustomAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         final Context context = parent.getContext();
 
+        Log.d("test","CustomAdapter: getView + position:"+position);
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.fragment_posts, parent, false);
@@ -81,10 +83,7 @@ public class CustomAdapter extends BaseAdapter {
         Thread mThread = new Thread() {
             public void run() {
                 try {
-                    location.setText(posts.getLocationInfo().getTitle()+"에서");
-                    music.setText(posts.getMusic().getArtistName()+" - "+posts.getMusic().getMusicName());
-                    content.setText(posts.getComment().toString());
-                    time.setText(posts.getCreateTime().toString());
+                    Log.d("test","CustomAdapter: Thread run start");
 
                     likebutton.setVisibility(View.INVISIBLE);
                     unlikebutton.setVisibility(View.VISIBLE);
@@ -106,6 +105,11 @@ public class CustomAdapter extends BaseAdapter {
                             unlikebutton.bringToFront();
                         }
                     });
+
+                    location.setText(posts.getLocationInfo().getTitle()+"에서");
+                    music.setText(posts.getMusic().getArtistName()+" - "+posts.getMusic().getMusicName());
+                    content.setText(posts.getComment().toString());
+                    time.setText(posts.getCreateTime().toString());
 
                     Log.d("test","CustomAdapter : postimage setting start :"+posts.getImage());
                     postimage.setImageDrawable(ByteToDrawable(posts.getImage()));
