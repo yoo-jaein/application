@@ -18,8 +18,6 @@ import com.example.myapplication.PhysicalArchitecture.ClientController;
 import com.example.myapplication.ProblemDomain.Constants;
 import com.example.myapplication.R;
 
-import java.util.ArrayList;
-
 public class TimeLineFragment extends Fragment {
 
     private Handler handler;
@@ -74,11 +72,7 @@ public class TimeLineFragment extends Fragment {
 */
 
 
-        ArrayList<String> arr=new ArrayList<>();
-        for (int i=0;i<10;i++) {
-            arr.add("time line test " + i);
-        }
-        timeline.setAdapter(new CustomAdapter(arr));
+        timeline.setAdapter(new CustomAdapter(client.getTimeLine()));
 
         op1=(ImageButton)view.findViewById(R.id.mainoptionone);
         op2=(ImageButton)view.findViewById(R.id.mainoptiontwo);

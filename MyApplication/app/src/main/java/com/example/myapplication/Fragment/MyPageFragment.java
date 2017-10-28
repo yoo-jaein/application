@@ -72,10 +72,7 @@ public class MyPageFragment extends Fragment {
         nametext.setText("young ju");
 
         mylist=(ListView)view.findViewById(R.id.mylist);
-        ArrayList<String> arr=new ArrayList<>();
-        for (int i=0;i<10;i++)
-            arr.add("my page test "+i);
-        mylist.setAdapter(new CustomAdapter(arr));
+        mylist.setAdapter(new CustomAdapter(client.getMyPostsList()));
 
         //stretch fill bar according to like count
 /*
@@ -105,10 +102,7 @@ public class MyPageFragment extends Fragment {
                     change_arr.setImageResource(R.drawable.profilearr1);
                 } else {
                     arr_type=1;
-                    ArrayList<String> arr=new ArrayList<>();
-                    for (int i=0;i<10;i++)
-                        arr.add("my page test "+i);
-                    CustomAdapter adapter=new CustomAdapter(arr);
+                    CustomAdapter adapter=new CustomAdapter(client.getMyPostsList());
                     mylist.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                     change_arr.setImageResource(R.drawable.profilearr2);

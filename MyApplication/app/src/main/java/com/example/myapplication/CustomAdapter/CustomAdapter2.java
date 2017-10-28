@@ -1,6 +1,10 @@
 package com.example.myapplication.CustomAdapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.example.myapplication.ProblemDomain.Posts;
 import com.example.myapplication.R;
 
 import java.util.ArrayList;
@@ -16,25 +21,13 @@ import java.util.ArrayList;
  * Created by YoungJu on 2017-10-22.
  */
 class pictureContianer {
-    String s1;
-    String s2;
-    String s3;
+    Posts s1;
+    Posts s2;
+    Posts s3;
 
-    public pictureContianer(String s1, String s2, String s3) {
+    public pictureContianer(Posts s1, Posts s2,Posts s3) {
         this.s1 = s1;
         this.s2 = s2;
-        this.s3 = s3;
-    }
-
-    public void setS1(String s1) {
-        this.s1 = s1;
-    }
-
-    public void setS2(String s2) {
-        this.s2 = s2;
-    }
-
-    public void setS3(String s3) {
         this.s3 = s3;
     }
 }
@@ -43,7 +36,7 @@ public class CustomAdapter2 extends BaseAdapter {
 
     ArrayList<pictureContianer> contentslist = new ArrayList<pictureContianer>();
 
-    public CustomAdapter2(ArrayList<String> contentslist) {
+    public CustomAdapter2(ArrayList<Posts> contentslist) {
         int cnt = contentslist.size();
         for (int i = 0; i < cnt-2; ) {
             if (i % 3 == 0 ) {
@@ -81,6 +74,16 @@ public class CustomAdapter2 extends BaseAdapter {
         return position;
     }
 
+
+    Drawable ByteToDrawable(byte[] b) {
+        Drawable image;
+        Bitmap bitmap= BitmapFactory.decodeByteArray(b, 0, b.length);
+        Log.d("test","bitmap");
+        image = new BitmapDrawable(bitmap);
+        return image;
+    }
+
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final Context context = parent.getContext();
@@ -98,9 +101,9 @@ public class CustomAdapter2 extends BaseAdapter {
         Thread mThread = new Thread() {
             public void run() {
                 try {
-                    image1.setImageResource(R.drawable.profiletest_1);
-                    image2.setImageResource(R.drawable.profiletest_2);
-                    image3.setImageResource(R.drawable.profiletest_3);
+                    image1.setImageDrawable(ByteToDrawable(s.s1.getImage()));
+                    image2.setImageDrawable(ByteToDrawable(s.s2.getImage()));
+                    image3.setImageDrawable(ByteToDrawable(s.s3.getImage()));
                 } catch (Exception ex) {
                 }
             }
