@@ -37,8 +37,11 @@ public class CustomAdapter extends BaseAdapter {
     }
     @Override
     public int getCount() {
-        return contentslist.size();
-    }
+        try {
+            return contentslist.size();
+        } catch (Exception e) {}
+        return 0;
+     }
 
     @Override
     public Object getItem(int position) {

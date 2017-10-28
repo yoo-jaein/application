@@ -77,15 +77,20 @@ public class TimeLineFragment extends Fragment {
 
         Thread mThread = new Thread() {
             public void run() {
+                ArrayList<Posts> postsArrayList=null;
                 try {
-                    ArrayList<Posts> postsArrayList=null;
                     Log.d("test","TimeLineFragment: thread start");
-                    while(postsArrayList!=null) postsArrayList=client.getTimeLine();
+                    int cnt=0;
+                    while(postsArrayList!=null) {
+                        postsArrayList=client.getTimeLine();
+                        Log.d("test",""+cnt++);
+                    }
                     Log.d("test","TimeLineFragment: client.getTimeLine =" +postsArrayList);
-                    ListAdapter adapter=new CustomAdapter(postsArrayList);
-                    timeline.setAdapter(adapter);
                 } catch (Exception e) {
                 }
+                ListAdapter adapter=new CustomAdapter(postsArrayList);
+                timeline.setAdapter(adapter);
+
             }
         };
         mThread.start();
