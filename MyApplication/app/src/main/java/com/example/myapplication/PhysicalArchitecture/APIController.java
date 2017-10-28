@@ -288,7 +288,7 @@ public class APIController {
                                 xpp.next();
                             } else if (tag.equals("addr2")) {
                                 xpp.next();
-                                location.setAddr2(xpp.getText());
+                                location.setAddr(xpp.getText());
                             } else if (tag.equals("contentid")) {
                                 xpp.next();
                                 location.setContentID(Integer.parseInt(xpp.getText()));
