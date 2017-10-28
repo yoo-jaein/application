@@ -258,6 +258,7 @@ public class APIController {
                 xpp.setInput(new InputStreamReader(is, "UTF-8"));
 
                 String tag;
+                String sub = "";
 
                 xpp.next();
                 int eventType = xpp.getEventType();
@@ -282,13 +283,18 @@ public class APIController {
                                 nameCodeList = true;
                             } else if (tag.equals("addr1")) {
                                 if (location.getTitle() != null) {
+                                    location.setSubTitle(sub);
+                                    sub = "";
                                     locationList.add(location);
                                     location = new Location();
                                 }
                                 xpp.next();
+                                sub += xpp.getText();
+                                sub += " ";
                             } else if (tag.equals("addr2")) {
                                 xpp.next();
-                                location.setAddr(xpp.getText());
+                                sub += xpp.getText();
+                                sub += " ";
                             } else if (tag.equals("contentid")) {
                                 xpp.next();
                                 location.setContentID(Integer.parseInt(xpp.getText()));
@@ -308,6 +314,8 @@ public class APIController {
                                 location.setMapY(Double.parseDouble(xpp.getText()));
                             } else if (tag.equals("tel")) {
                                 xpp.next();
+                                sub += "\n";
+                                sub += xpp.getText();
                             } else if (tag.equals("title")) {
                                 xpp.next();
                                 location.setTitle(xpp.getText());

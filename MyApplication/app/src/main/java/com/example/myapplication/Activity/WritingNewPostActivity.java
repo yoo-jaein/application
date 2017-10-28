@@ -49,6 +49,8 @@ public class WritingNewPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writing_new_post);
 
+        client = ClientController.getClientControl();
+
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -131,7 +133,7 @@ public class WritingNewPostActivity extends AppCompatActivity {
                 startActivityForResult(intent, Constants.GET_LOCATION);
             }
         });
-        /*client = ClientController.getClientControl();*/
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

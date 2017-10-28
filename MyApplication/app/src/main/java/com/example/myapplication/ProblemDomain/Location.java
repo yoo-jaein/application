@@ -12,8 +12,7 @@ public class Location implements Serializable{
 	private int contentID;
 	private int contentTypeID;
 	private String title;
-	private String addr;
-
+	private String subTitle;
 	private String firstimage;
 
 	private double mapX;
@@ -26,7 +25,7 @@ public class Location implements Serializable{
 		contentID = 0;
 		contentTypeID = 0;
 		String firstimage = null;
-		String addr2 = null;
+		String subTitle = null;
 		mapX=-1;
 		mapY=-1;
 		title = null;
@@ -87,12 +86,12 @@ public class Location implements Serializable{
 		this.firstimage = firstimage;
 	}
 
-	public String getAddr() {
-		return addr;
+	public String getSubTitle() {
+		return subTitle;
 	}
 
-	public void setAddr(String addr) {
-		this.addr = addr;
+	public void setSubTitle(String subTitle) {
+		this.subTitle = subTitle;
 	}
 
 	@Override
@@ -104,7 +103,7 @@ public class Location implements Serializable{
 				", contentID=" + contentID +
 				", contentTypeID=" + contentTypeID +
 				", title='" + title + '\'' +
-				", addr='" + addr + '\'' +
+				", addr='" + subTitle + '\'' +
 				", firstimage='" + firstimage + '\'' +
 				", mapX=" + mapX +
 				", mapY=" + mapY +
