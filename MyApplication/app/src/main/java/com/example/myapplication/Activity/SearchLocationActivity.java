@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,6 +23,7 @@ import com.example.myapplication.ProblemDomain.Location;
 import com.example.myapplication.R;
 import com.skp.Tmap.TMapGpsManager;
 import com.skp.Tmap.TMapMarkerItem;
+import com.skp.Tmap.TMapPOIItem;
 import com.skp.Tmap.TMapPoint;
 import com.skp.Tmap.TMapView;
 
@@ -38,7 +40,7 @@ import java.util.ArrayList;
  *   1) writingNewPostActivity   : intent.putExtra("MODE", SEARCH_LOCATION_MODE)
  *   2) timeLine                 : intent.putExtra("MODE", VIEW_LOCATION_MODE), intent.putExtra("LOCATION", location)
  */
-public class SearchLocationActivity extends AppCompatActivity implements TMapGpsManager.onLocationChangedCallback {
+public class SearchLocationActivity extends AppCompatActivity implements TMapGpsManager.onLocationChangedCallback, TMapView.OnClickListenerCallback {
 
     private Context mContext = null;
     private boolean m_bTrackingMode = true;
@@ -57,8 +59,9 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
     private ArrayList<String> markerIdList = new ArrayList<>();
     private ArrayList<Location> locationList = new ArrayList<>();
 
-    private SparseArray<Bitmap> bitmapList = new SparseArray<>();
+    private Bitmap locationImage = null;
     private SparseArray<Bitmap> pinIconList = new SparseArray<>();
+    private Bitmap rightButtonImage = null;
 
     @Override
     public void onLocationChange(android.location.Location location) {
@@ -66,6 +69,41 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
             tMapView.setLocationPoint(location.getLongitude(), location.getLatitude());
             updateMarker(location.getLongitude(), location.getLatitude());
         }
+    }
+
+    @Override
+    public boolean onPressEvent(ArrayList<TMapMarkerItem> arrayList, ArrayList<TMapPOIItem> arrayList1, TMapPoint tMapPoint, PointF pointF) {
+
+        return false;
+    }
+
+    @Override
+    public boolean onPressUpEvent(ArrayList<TMapMarkerItem> arrayList, ArrayList<TMapPOIItem> arrayList1, TMapPoint tMapPoint, PointF pointF) {
+        TMapMarkerItem item;
+        int index;
+
+        Log.d("test", "클릭된 마커 갯수 : " + arrayList.size());
+
+        for(int i=0; i<arrayList.size(); i++) {
+            item = arrayList.get(i);
+            Log.d("test", "클릭된 마커 정보 : " + arrayList.get(i).getName());
+
+            index = Integer.parseInt(arrayList.get(i).getID());
+            getLocationImage(index);
+
+            item.setCalloutTitle(locationList.get(index).getTitle());
+            item.setCalloutSubTitle(locationList.get(index).getAddr());
+
+            item.setCanShowCallout(true);
+            item.setAutoCalloutVisible(true);
+
+            item.setCalloutLeftImage(locationImage);
+            item.setAutoCalloutVisible(true);
+
+            tMapView.removeMarkerItem(item.getID());
+            tMapView.addMarkerItem(item.getID(), item);
+        }
+        return false;
     }
 
     @Override
@@ -81,17 +119,13 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
             public void handleMessage(Message msg) {
                 if (msg.what == Constants.RECEIVE_SUCCESSS) {
                     locationList.addAll((ArrayList<Location>) (msg.obj));
-
-                    for (Location location : locationList)
-                    /*
-                        if receive result, set marker on Tmap
-                     */
-                    getLocationImage();
-                } else if (msg.what == Constants.RECEIVE_BITMAP_LIST) {
-                 //   bitmapList.addAll((ArrayList<Bitmap>) (msg.obj));
                     showMarkerPoint();
                 } else if (msg.what == Constants.RECEIVE_FAILED) {
                     //TODO when received err message
+                } else {
+                    //   bitmapList.addAll((ArrayList<Bitmap>) (msg.obj));
+                    int markerID = msg.what;
+                    markerItemList.get(markerID).setCalloutLeftImage(locationImage);
                 }
             }
         };
@@ -123,7 +157,7 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
         tMapView.setSKPMapApiKey(APIKey);
 
         // current sight direction
-        tMapView.setCompassMode(true);
+        //tMapView.setCompassMode(true);
         // mark current location
         tMapView.setIconVisibility(true);
 
@@ -132,6 +166,7 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
 
         tMapView.setMapType(TMapView.MAPTYPE_STANDARD);
         tMapView.setLanguage(TMapView.LANGUAGE_KOREAN);
+        tMapView.setOnClickListenerCallBack(this);
 
         tMapGpsManager = new TMapGpsManager(SearchLocationActivity.this);
         tMapGpsManager.setMinTime(1000);
@@ -151,7 +186,6 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
         tMapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonClickCallback() {
             @Override
             public void onCalloutRightButton(TMapMarkerItem tMapMarkerItem) {
-
                 Location selectedLocation = locationList.get(Integer.parseInt(tMapMarkerItem.getID()));
                 Intent intent = new Intent();
                 intent.putExtra("LOCATION", selectedLocation);
@@ -169,10 +203,9 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
         } else if (mode == Constants.VIEW_LOCATION_MODE) {
             Location location = (Location) (getIntent().getSerializableExtra("LOCATION"));
             tMapView.setLocationPoint(location.getMapY(), location.getMapX());
-
+            locationList.clear();
             locationList.add(location);
-
-            getLocationImage();
+            showMarkerPoint();
         } else {
             Log.d("ERR", "invalid intent value");
             finish();
@@ -183,7 +216,7 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
         when user location change detected, update marker and related data
      */
     private void updateMarker(double longtitude, double latitude) {
-        bitmapList.clear();
+        locationImage = null;
         locationList.clear();
 
         apiController.getLocationList(longtitude, latitude, 1500, handler);
@@ -234,18 +267,13 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
             item.setVisible(item.VISIBLE);
             item.setIcon(pinIconImage);
             item.setPosition((float)0.5, (float)1.0);
-
-            item.setCalloutTitle(locationList.get(i).getTitle());
-            item.setCalloutSubTitle(locationList.get(i).getTitle());
-            item.setCanShowCallout(true);
-            item.setAutoCalloutVisible(false);
-
+            /*
             if (locationList.get(i).getFirstimage()==null)
                 item.setCalloutLeftImage(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_launcher));
             else
                 item.setCalloutLeftImage(bitmapList.get(i));
-
-            item.setCalloutRightButtonImage(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_launcher));
+            */
+            item.setCalloutRightButtonImage(rightButtonImage);
 
             String strID = Integer.toString(mMarkerID++);
 
@@ -261,32 +289,40 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
     private void initPinIcon(){
 
         Bitmap bitmap;
+        rightButtonImage = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_launcher);
 
         for (int code : Constants.CONTENTES_TYPE_CODE) {
             if (code == Constants.CONTENTES_TYPE_CODE[1]) {
                 bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_tourlistattraction);
-                pinIconList.append(code, resizeBitmap(bitmap, 50));
+                pinIconList.append(code, resizeBitmap(bitmap, 200));
             } else if (code == Constants.CONTENTES_TYPE_CODE[2]) {
-                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_culturalfacility);
-                pinIconList.append(code, resizeBitmap(bitmap, 50));
+                //bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_culturalfacility);
+                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_tourlistattraction);
+                pinIconList.append(code, resizeBitmap(bitmap, 200));
             } else if (code == Constants.CONTENTES_TYPE_CODE[3]) {
-                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_event_performance_festival);
-                pinIconList.append(code, resizeBitmap(bitmap, 50));
+                //bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_event_performance_festival);
+                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_tourlistattraction);
+                pinIconList.append(code, resizeBitmap(bitmap, 200));
             } else if (code == Constants.CONTENTES_TYPE_CODE[4]) {
-                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_travelcourse);
-                pinIconList.append(code, resizeBitmap(bitmap, 50));
+                //bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_travelcourse);
+                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_tourlistattraction);
+                pinIconList.append(code, resizeBitmap(bitmap, 200));
             } else if (code == Constants.CONTENTES_TYPE_CODE[5]) {
-                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_leisure);
-                pinIconList.append(code, resizeBitmap(bitmap, 50));
+                //bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_leisure);
+                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_tourlistattraction);
+                pinIconList.append(code, resizeBitmap(bitmap, 200));
             } else if (code == Constants.CONTENTES_TYPE_CODE[6]) {
-                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_lodging);
-                pinIconList.append(code, resizeBitmap(bitmap, 50));
+                //bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_lodging);
+                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_tourlistattraction);
+                pinIconList.append(code, resizeBitmap(bitmap, 200));
             } else if (code == Constants.CONTENTES_TYPE_CODE[7]) {
-                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_shopping);
-                pinIconList.append(code, resizeBitmap(bitmap, 50));
+                //bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_shopping);
+                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_tourlistattraction);
+                pinIconList.append(code, resizeBitmap(bitmap, 200));
             } else if (code == Constants.CONTENTES_TYPE_CODE[8]) {
-                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_restaurant);
-                pinIconList.append(code, resizeBitmap(bitmap, 50));
+                //bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_restaurant);
+                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_tourlistattraction);
+                pinIconList.append(code, resizeBitmap(bitmap, 200));
             }
         }
     }
@@ -313,27 +349,31 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
     /*
         get location image to hashMap by using URL
      */
-    private void getLocationImage(){
+    private void getLocationImage(int index){
+        final int i = index;
 
         Thread mThread = new Thread(){
             public void run() {
-                for(int i=0; i<locationList.size(); i++) {
-                    if(locationList.get(i).getFirstimage() != null) {
-                        try {
-                            URL url = new URL(locationList.get(i).getFirstimage());
+                Location location = locationList.get(i);
+                if(location.getFirstimage() != null) {
+                    try {
+                        URL url = new URL(location.getFirstimage());
 
-                            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                            conn.setDoInput(true);
-                            conn.connect();
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setDoInput(true);
+                        conn.connect();
 
-                            InputStream is = conn.getInputStream();
-                            Bitmap bitmap = BitmapFactory.decodeStream(is);
+                        InputStream is = conn.getInputStream();
+                        Bitmap bitmap = BitmapFactory.decodeStream(is);
 
-                            bitmapList.append(i, resizeBitmap(bitmap, 80));
+                        locationImage = resizeBitmap(bitmap, 400);
 
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
+                    } catch (IOException ex) {
+                        locationImage = null;
+                        handler.sendEmptyMessage(Constants.RECEIVE_FAILED);
+                        ex.printStackTrace();
+                    } finally {
+                        handler.sendEmptyMessage(i);
                     }
                 }
             }

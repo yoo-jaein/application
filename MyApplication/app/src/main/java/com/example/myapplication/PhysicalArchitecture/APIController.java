@@ -288,13 +288,14 @@ public class APIController {
                                 xpp.next();
                             } else if (tag.equals("addr2")) {
                                 xpp.next();
+                                location.setAddr2(xpp.getText());
                             } else if (tag.equals("contentid")) {
                                 xpp.next();
                                 location.setContentID(Integer.parseInt(xpp.getText()));
                             } else if (tag.equals("contenttypeid")) {
                                 xpp.next();
                                 location.setContentTypeID(Integer.parseInt(xpp.getText()));
-                            } else if (tag.equals("firstimage")) {
+                            } else if (tag.equals("firstimage2")) {
                                 xpp.next();
                                 location.setFirstimage(xpp.getText());
                             } else if (tag.equals("secondimage")) {

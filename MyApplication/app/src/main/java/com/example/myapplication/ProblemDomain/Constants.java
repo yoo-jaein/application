@@ -16,15 +16,14 @@ public class Constants{
     public static final int CODE = 1;
 
     // handler request code
-    public static final int RECEIVE_FAILED = -1;
-    public static final int RECEIVE_SUCCESSS = 1;
-    public static final int RECEIVE_CODE_LIST = 2;
-    public static final int RECEIVE_LOCATION_LIST = 3;
-    public static final int RECEIVE_BITMAP_LIST = 4;
+    public static final int RECEIVE_FAILED = -2;
+    public static final int RECEIVE_SUCCESSS = -1;
+    public static final int RECEIVE_CODE_LIST = 0;
+    public static final int RECEIVE_LOCATION_LIST = 1;
 
-    public static final int SEARCH_MAP_MODE = 0;
-    public static final int VIEW_LOCATION_MODE = 1;
+    public static final int SEARCH_MAP_MODE = 3;
+    public static final int VIEW_LOCATION_MODE = 4;
 
-    public static final int GET_SONG = 0;
-    public static final int GET_LOCATION = 1;
+    public static final int GET_SONG = 5;
+    public static final int GET_LOCATION = 6;
 }

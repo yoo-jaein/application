@@ -143,29 +143,20 @@ class clientRead extends Thread implements Serializable
 						if(cControl.isLogin()){
 							Log.d("CLIENT", "login");
 							cControl.setLogin(false);
-
-							if(((String)temp).compareTo("#fin")==0){
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
-							}
-							else if(((String)temp).compareTo("#err")==0) {
+							if(((String)temp).compareTo("#err")==0) {
 								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_FAILED);
 							}
 						}
 						else if(cControl.isRegister()){
 							Log.d("CLIENT", "register");
 							cControl.setRegister(false);
-
-							if(((String)temp).compareTo("#fin")==0){
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
-							}
-							else if(((String)temp).compareTo("#err")==0) {
+							if(((String)temp).compareTo("#err")==0) {
 								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_FAILED);
 							}
 						}
 						else if(cControl.isPost()){
 							Log.d("CLIENT", "post");
 							cControl.setPost(false);
-
 							if(((String)temp).compareTo("#fin")==0){
 								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 							}
@@ -176,29 +167,28 @@ class clientRead extends Thread implements Serializable
 						else if(cControl.isDelete()){
 							Log.d("CLIENT", "delete");
 							cControl.setDelete(false);
-
-							if(((String)temp).compareTo("#fin")==0){
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
-							}
-							else if(((String)temp).compareTo("#err")==0) {
+							if(((String)temp).compareTo("#err")==0) {
 								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_FAILED);
 							}
 						}
 						else if(cControl.isLike()){
 							Log.d("CLIENT", "like");
 							cControl.setLike(false);
-
-							if(((String)temp).compareTo("#fin")==0){
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
-							}
-							else if(((String)temp).compareTo("#err")==0) {
+							if(((String)temp).compareTo("#err")==0) {
 								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_FAILED);
 							}
 						}
 						else if(cControl.isDislike()){
 							Log.d("CLIENT", "disLike");
 							cControl.setLike(false);
-
+							if(((String)temp).compareTo("#fin")==0){
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
+							}
+							else if(((String)temp).compareTo("#err")==0) {
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_FAILED);
+							}
+						}else if(cControl.isUpdateUser()){
+							Log.d("CLIENT", "updateUser");
 							if(((String)temp).compareTo("#fin")==0){
 								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 							}
