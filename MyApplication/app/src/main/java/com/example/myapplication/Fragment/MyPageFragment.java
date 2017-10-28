@@ -93,10 +93,7 @@ public class MyPageFragment extends Fragment {
                 Log.d("test","Change arr bnt onclick listner start ");
                 if(arr_type==1) {
                     arr_type=2;
-                    ArrayList<String> arr=new ArrayList<>();
-                    for (int i=0;i<10;i++)
-                        arr.add("my page test "+i);
-                    CustomAdapter2 adapter2=new CustomAdapter2(arr);
+                    CustomAdapter2 adapter2=new CustomAdapter2(client.getMyPostsList());
                     mylist.setAdapter(adapter2);
                     adapter2.notifyDataSetChanged();
                     change_arr.setImageResource(R.drawable.profilearr1);
