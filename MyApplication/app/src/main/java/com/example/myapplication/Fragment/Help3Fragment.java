@@ -76,7 +76,7 @@ public class Help3Fragment extends Fragment {
         @Override
         public void run() {
             image1.startAnimation(animFadeout);
-            handler.postDelayed(runnable1,2000);
+            handler.postDelayed(runnable1,500);
         }
     };
 
@@ -94,13 +94,10 @@ public class Help3Fragment extends Fragment {
 
         setAnimListenr();
 
-        image1.setVisibility(View.VISIBLE);
         image2.setVisibility(View.INVISIBLE);
 
-        handler.postDelayed(runnable2,1000);
+        handler.postDelayed(runnable2,500);
 
         return view;
     }
-
-
 }

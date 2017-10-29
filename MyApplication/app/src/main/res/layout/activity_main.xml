@@ -8,18 +8,64 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.myapplication.Activity.MainActivity">
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/goToWritingButton"
+        android:layout_width="53dp"
+        android:layout_height="51dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="@dimen/fab_margin"
+        android:scaleType="fitStart"
+        app:backgroundTint="#ff5579B0"
+        app:layout_anchor="@+id/container"
+        app:layout_anchorGravity="bottom|right"
+        app:rippleColor="#00000000"
+        app:srcCompat="@drawable/gotowrite" />
+
+    <LinearLayout
+        android:id="@+id/optionContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="460dp"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/mainoptionone"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:background="#00000000"
+            android:scaleType="fitStart"
+            app:srcCompat="@drawable/mainoptionone" />
+
+        <ImageButton
+            android:id="@+id/mainoptiontwo"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:background="#00000000"
+            android:scaleType="fitStart"
+            app:srcCompat="@drawable/mainoptiontwo" />
+
+        <ImageButton
+            android:id="@+id/mainoptionthree"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:background="#00000000"
+            android:scaleType="fitStart"
+            app:srcCompat="@drawable/mainoptionthree" />
+    </LinearLayout>
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="102dp"
         android:background="@drawable/barimage"
-        android:paddingTop="@dimen/appbar_padding_top"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <GridLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right">
+            android:layout_gravity="right"
+            android:layout_marginBottom="9dp"
+            android:layout_marginTop="9dp">
 
             <ImageButton
                 android:id="@+id/mainsearchButton"
@@ -49,8 +95,8 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@android:color/transparent">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -59,17 +105,17 @@
 
                 <ImageButton
                     android:id="@+id/mainoptionButton"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="bottom|left"
                     android:layout_margin="0dp"
-                    android:background="#00ffffff"
+                    android:background="#00000000"
                     app:srcCompat="@drawable/mainoptionicon" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#11ffffff"
+                    android:background="@android:color/transparent"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -104,81 +150,21 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="51dp"
+        android:layout_height="51dp"
+        android:layout_margin="@dimen/fab_margin"
+        android:scaleType="fitCenter"
+        app:backgroundTint="?android:attr/colorButtonNormal"
+        app:layout_anchor="@+id/container"
+        app:layout_anchorGravity="bottom|left"
+        app:srcCompat="@drawable/gototop" />
+
     <android.support.v4.view.ViewPager
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/goToWritingButton"
-        android:layout_width="53dp"
-        android:layout_height="51dp"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_margin="@dimen/fab_margin"
-        android:scaleType="fitStart"
-        app:backgroundTint="#ff5579B0"
-        app:layout_anchor="@+id/container"
-        app:layout_anchorGravity="bottom|right"
-        app:rippleColor="#00000000"
-        app:srcCompat="@drawable/gotowrite" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="51dp"
-        android:layout_height="51dp"
-        android:layout_gravity="center_vertical|right"
-        android:layout_margin="@dimen/fab_margin"
-        android:scaleType="centerCrop"
-        app:backgroundTint="#ffffffff"
-        app:layout_anchor="@+id/linearLayout"
-        app:layout_anchorGravity="bottom|left"
-        app:srcCompat="@drawable/gototop" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/optionContainer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="top"
-            android:background="#30000000"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <ImageButton
-                android:id="@+id/mainoptionone"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_marginLeft="30dp"
-                android:background="#00000000"
-                android:foregroundGravity="top"
-                android:scaleType="fitStart"
-                app:srcCompat="@drawable/mainoptionone" />
-
-            <ImageButton
-                android:id="@+id/mainoptiontwo"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_marginLeft="30dp"
-                android:background="#00000000"
-                android:scaleType="fitStart"
-                app:srcCompat="@drawable/mainoptiontwo" />
-
-            <ImageButton
-                android:id="@+id/mainoptionthree"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_marginLeft="30dp"
-                android:background="#00000000"
-                android:scaleType="fitStart"
-                app:srcCompat="@drawable/mainoptionthree" />
-        </LinearLayout>
-
-    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

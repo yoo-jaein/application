@@ -58,7 +58,7 @@ public class IntroActivity extends AppCompatActivity {
 
         handler.postDelayed(runnable1,4000);
         handler.postDelayed(runnable2,8000);
-        handler.postDelayed(runnable, 12000);
+        handler.postDelayed(runnable, 14000);
 
         vp = (ViewPager)findViewById(R.id.vp);
         vp.setAdapter(new pagerAdapter(getSupportFragmentManager()));

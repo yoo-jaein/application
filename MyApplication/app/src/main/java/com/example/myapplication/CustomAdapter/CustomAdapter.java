@@ -1,10 +1,14 @@
 package com.example.myapplication.CustomAdapter;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.text.Html;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.myapplication.PhysicalArchitecture.ClientController;
+import com.example.myapplication.ProblemDomain.Music;
 import com.example.myapplication.ProblemDomain.Posts;
 import com.example.myapplication.R;
 
@@ -76,10 +81,8 @@ public class CustomAdapter extends BaseAdapter {
         final TextView time=(TextView)convertView.findViewById(R.id.post_time);
 
         final ImageView postimage=(ImageView)convertView.findViewById(R.id.post_image);
-
         final ImageButton likebutton=(ImageButton)convertView.findViewById(R.id.likeButton);
         final ImageButton unlikebutton=(ImageButton)convertView.findViewById(R.id.unlikeButton);
-
 
         final Posts posts = contentslist.get(position);
 
@@ -111,6 +114,15 @@ public class CustomAdapter extends BaseAdapter {
 
                     location.setText(posts.getLocationInfo().getTitle()+"에서");
                     music.setText(posts.getMusic().getArtistName()+" - "+posts.getMusic().getMusicName());
+                    music.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Music selectedMusic = posts.getMusic();
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse("melonapp://play?" + "cid=" + selectedMusic.getMusicId() + "&ctype=1&menuid=" + selectedMusic.getMenuId()));
+                            context.startActivity(intent);
+                        }
+                    });
                     content.setText(posts.getComment().toString());
                     time.setText(posts.getCreateTime().toString());
 
