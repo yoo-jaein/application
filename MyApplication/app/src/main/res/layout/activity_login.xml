@@ -12,37 +12,38 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="189dp"
+        android:layout_width="wrap_content"
+        android:layout_height="188dp"
         android:background="#6882B0"
-        app:srcCompat="@drawable/loginbackground_top" />
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/loginbackground_top1" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="-10dp"
         android:background="#A7BAD0"
-        android:orientation="vertical"
-        android:weightSum="1">
+        android:orientation="vertical">
 
         <ScrollView
             android:id="@+id/login_form"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="5">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/email_login_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="23dp" />
+                android:orientation="vertical"
+                android:weightSum="1">
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="11dp"
+                    android:layout_weight="0.94">
 
                     <AutoCompleteTextView
                         android:id="@+id/email"
@@ -51,22 +52,19 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:background="#9fffffff"
+                        android:fontFamily="sans-serif-condensed"
                         android:hint="@string/prompt_email"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
-                        android:text=""
-                        android:textColorLink="#ffffffff" />
-
-                    <Space
-                        android:layout_width="match_parent"
-                        android:layout_height="23dp"
-                        android:layout_weight="1" />
+                        android:textSize="20sp" />
 
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp">
 
                     <EditText
                         android:id="@+id/password"
@@ -75,6 +73,7 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:background="#9fffffff"
+                        android:fontFamily="sans-serif-condensed"
                         android:hint="@string/prompt_password"
                         android:imeActionId="@+id/login"
                         android:imeActionLabel="@string/action_sign_in_short"
@@ -82,26 +81,35 @@
                         android:inputType="textPassword"
                         android:maxLines="1"
                         android:text=""
-                        android:textColorLink="#ffffffff" />
+                        android:textSize="20sp" />
 
                 </android.support.design.widget.TextInputLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="23dp" />
+                    android:layout_height="16dp" />
 
-                <Button
-                    android:id="@+id/email_sign_in_button"
-                    style="?android:textAppearanceSmall"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/drawemptybox"
-                    android:text="@string/action_sign_in"
-                    android:textStyle="bold" />
+                    android:layout_marginRight="16dp">
+
+                    <Button
+                        android:id="@+id/email_sign_in_button"
+                        style="?android:textAppearanceSmall"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/drawemptybox"
+                        android:fontFamily="serif"
+                        android:text="@string/action_sign_in"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+                </FrameLayout>
 
             </LinearLayout>
         </ScrollView>
@@ -111,8 +119,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="33dp"
         android:layout_weight="0"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="1">
 
         <ImageButton
             android:id="@+id/lostpwButton"
@@ -148,13 +158,6 @@
             android:scaleType="centerInside"
             app:srcCompat="@drawable/loginfacebookbutton" />
 
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="Team.uzsas"
-            android:textColor="#00ffffff" />
     </LinearLayout>
 
 </LinearLayout>

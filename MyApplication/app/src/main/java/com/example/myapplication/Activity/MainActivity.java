@@ -3,6 +3,7 @@ package com.example.myapplication.Activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -28,6 +29,8 @@ import com.example.myapplication.Fragment.TimeLineFragment;
 import com.example.myapplication.PhysicalArchitecture.ClientController;
 import com.example.myapplication.R;
 
+import static com.example.myapplication.R.id.scrollView;
+
 public class MainActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -48,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        CheckAppFirstExecute();
+        CheckAppFirstExecute(); //is first run ?
 /*
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         backPressCloseHandler = new BackPressCloseHandler(this);
+        getWindow().setStatusBarColor(Color.parseColor("#516FA5"));
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -70,9 +74,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), WritingNewPostActivity.class);
-                startActivity(intent);
-                //finish();
+
             }
         });
 

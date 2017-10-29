@@ -1,6 +1,7 @@
 package com.example.myapplication.Activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -48,6 +49,8 @@ public class WritingNewPostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writing_new_post);
+
+        getWindow().setStatusBarColor(Color.parseColor("#516FA5"));
 
         postingMusicText = (TextView)findViewById(R.id.postingMusicText);
         postingLocationText = (TextView)findViewById(R.id.postingLocationText);
