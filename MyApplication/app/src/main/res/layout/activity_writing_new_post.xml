@@ -72,7 +72,7 @@
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/postpicture" />
 
-            <TextView
+            <EditText
                 android:id="@+id/postingMusicText"
 
                 android:layout_width="match_parent"
@@ -80,18 +80,18 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/layout"
-                android:hint="Which music do you want to recommend" />
+                android:fontFamily="sans-serif-condensed"
+                android:hint="음악" />
 
-            <TextView
+            <EditText
                 android:id="@+id/postingLocationText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/layout"
-                android:hint="where are you?" />
+                android:fontFamily="sans-serif-condensed"
+                android:hint="장소" />
 
             <EditText
                 android:id="@+id/postingOpinionText"
@@ -101,8 +101,9 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/layout"
-                android:hint="write your opinion" />
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="top"
+                android:hint="설명쓰기" />
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -92,6 +93,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         client = ClientController.getClientControl();
 
         mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView.setTypeface(Typeface.DEFAULT);
+
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {

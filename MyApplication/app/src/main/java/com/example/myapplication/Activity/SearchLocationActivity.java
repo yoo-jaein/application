@@ -92,7 +92,7 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
             getLocationImage(index);
 
             item.setCalloutTitle(locationList.get(index).getTitle());
-            item.setCalloutSubTitle(locationList.get(index).getAddr());
+            item.setCalloutSubTitle(locationList.get(index).getSubTitle());
 
             item.setCanShowCallout(true);
             item.setAutoCalloutVisible(true);
