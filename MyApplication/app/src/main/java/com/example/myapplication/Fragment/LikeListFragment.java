@@ -42,7 +42,7 @@ public class LikeListFragment extends Fragment {
             public void handleMessage(Message msg){
                 if(msg.what== Constants.RECEIVE_SUCCESSS){
                     client.setHandlerNull();
-                    likelist.setAdapter(new CustomAdapter(client.getMyLikeList()));
+                    likelist.setAdapter(new CustomAdapter(client.getMyLikeList(),client.getMe()));
                 }else if(msg.what==Constants.RECEIVE_FAILED){
                     // TODO when receive err message
                 }

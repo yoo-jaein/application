@@ -56,7 +56,7 @@ public class TimeLineFragment extends Fragment {
                         Log.d("test", "TimeLineFragment: client.getTimeLine =" + postsArrayList);
                     } catch (Exception e) {
                     }
-                    ListAdapter adapter = new CustomAdapter(postsArrayList);
+                    ListAdapter adapter = new CustomAdapter(postsArrayList,client.getMe());
                     timeline.setAdapter(adapter);
                 } else if (msg.what == Constants.RECEIVE_FAILED) {
                     // TODO when receive err message
@@ -89,7 +89,7 @@ public class TimeLineFragment extends Fragment {
             Log.d("test", "TimeLineFragment: client.getTimeLine =" + postsArrayList);
         } catch (Exception e) {
         }
-        ListAdapter adapter = new CustomAdapter(postsArrayList);
+        ListAdapter adapter = new CustomAdapter(postsArrayList,client.getMe());
         timeline.setAdapter(adapter);
 
         return view;

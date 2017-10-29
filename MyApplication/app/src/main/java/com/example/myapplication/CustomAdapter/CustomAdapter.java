@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.example.myapplication.PhysicalArchitecture.ClientController;
 import com.example.myapplication.ProblemDomain.Music;
 import com.example.myapplication.ProblemDomain.Posts;
+import com.example.myapplication.ProblemDomain.User;
 import com.example.myapplication.R;
 
 import java.util.ArrayList;
@@ -29,22 +30,25 @@ import java.util.ArrayList;
 
 public class CustomAdapter extends BaseAdapter {
 
-    ArrayList<Posts> contentslist=new ArrayList<Posts>();
-
+    ArrayList<Posts> contentslist = new ArrayList<Posts>();
+    ArrayList<Object> user;
     private ClientController client = null;
+    int cnt = 0;
 
-
-    public CustomAdapter(ArrayList<Posts> contentslist){
-        Log.d("test","CustomAdapter : start CustomAdapter");
-        this.contentslist=contentslist;
+    public CustomAdapter(ArrayList<Posts> contentslist, User user) {
+        Log.d("test", "CustomAdapter : start CustomAdapter");
+        this.contentslist = contentslist;
+        this.user = user.getLikeList();
     }
+
     @Override
     public int getCount() {
         try {
             return contentslist.size();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
         return 0;
-     }
+    }
 
     @Override
     public Object getItem(int position) {
@@ -56,10 +60,26 @@ public class CustomAdapter extends BaseAdapter {
         return position;
     }
 
+    Bitmap resizeBitmap(Bitmap bitmap, int resizeHeight){
+
+        double aspectRatio = (double) bitmap.getHeight() / (double) bitmap.getWidth();
+        int targetWidth = (int) (resizeHeight * aspectRatio);
+        Bitmap result = Bitmap.createScaledBitmap(bitmap, targetWidth, resizeHeight, false);
+
+        if (result != bitmap) {
+            bitmap.recycle();
+        }
+        return result;
+    }
     Drawable ByteToDrawable(byte[] b) {
         Drawable image;
-        Bitmap bitmap=BitmapFactory.decodeByteArray(b, 0, b.length);
-        Log.d("test","bitmap");
+        Log.d("test", "CustomAdapter:ByteToDrawable start");
+        Bitmap src=BitmapFactory.decodeByteArray(b, 0, b.length);
+        Log.d("test", "CustomAdapter:ByteToDrawable settingOption");
+        Bitmap bitmap = resizeBitmap(src,1000);
+
+//        Bitmap bitmap=BitmapFactory.decodeByteArray(b, 0, b.length);
+        Log.d("test", "CustomAdapter:ByteToDrawable settingBitmap");
         image = new BitmapDrawable(bitmap);
         return image;
     }
@@ -68,31 +88,38 @@ public class CustomAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         final Context context = parent.getContext();
 
-        Log.d("test","CustomAdapter: getView + position:"+position);
+        Log.d("test", "CustomAdapter: getView + position:" + position);
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.fragment_posts, parent, false);
         }
-        final TextView content=(TextView)convertView.findViewById(R.id.post_text);
-        final TextView location=(TextView)convertView.findViewById(R.id.post_location);
-        final TextView music=(TextView)convertView.findViewById(R.id.post_music);
-        final TextView time=(TextView)convertView.findViewById(R.id.post_time);
+        final TextView content = (TextView) convertView.findViewById(R.id.post_text);
+        final TextView location = (TextView) convertView.findViewById(R.id.post_location);
+        final TextView music = (TextView) convertView.findViewById(R.id.post_music);
+        final TextView time = (TextView) convertView.findViewById(R.id.post_time);
 
-        final ImageView postimage=(ImageView)convertView.findViewById(R.id.post_image);
-        final ImageButton likebutton=(ImageButton)convertView.findViewById(R.id.likeButton);
-        final ImageButton unlikebutton=(ImageButton)convertView.findViewById(R.id.unlikeButton);
+        final ImageView postimage = (ImageView) convertView.findViewById(R.id.post_image);
+        final ImageButton likebutton = (ImageButton) convertView.findViewById(R.id.likeButton);
+        final ImageButton unlikebutton = (ImageButton) convertView.findViewById(R.id.unlikeButton);
 
         final Posts posts = contentslist.get(position);
+        final int num = cnt++;
 
         Thread mThread = new Thread() {
             public void run() {
                 try {
-                    Log.d("test","CustomAdapter: Thread run start");
+                    Log.d("test", "CustomAdapter: " + cnt + "Thread run start");
+                    Log.d("test", "CustomAdapter: " + cnt + "post: " + posts.getPostsIndex() + " postname:" + posts.getMusic().getMusicName());
 
-                    likebutton.setVisibility(View.INVISIBLE);
-                    unlikebutton.setVisibility(View.VISIBLE);
-                    unlikebutton.bringToFront();
-
+                    if (user.contains((Object) posts.getPostsIndex())) {
+                        likebutton.setVisibility(View.VISIBLE);
+                        unlikebutton.setVisibility(View.INVISIBLE);
+                        likebutton.bringToFront();
+                    } else {
+                        likebutton.setVisibility(View.INVISIBLE);
+                        unlikebutton.setVisibility(View.VISIBLE);
+                        unlikebutton.bringToFront();
+                    }
                     likebutton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -110,8 +137,8 @@ public class CustomAdapter extends BaseAdapter {
                         }
                     });
 
-                    location.setText(posts.getLocationInfo().getTitle()+"에서");
-                    music.setText(posts.getMusic().getArtistName()+" - "+posts.getMusic().getMusicName());
+                    location.setText(posts.getLocationInfo().getTitle() + "에서");
+                    music.setText(posts.getMusic().getArtistName() + " - " + posts.getMusic().getMusicName());
                     music.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -124,11 +151,12 @@ public class CustomAdapter extends BaseAdapter {
                     content.setText(posts.getComment().toString());
                     time.setText(posts.getCreateTime().toString());
 
-                    byte[] image=posts.getImage();
-                    Log.d("test","CustomAdapter : postimage setting start :"+image);
-                    if(image==null) postimage.setImageResource(R.drawable.drawemptybox);
+                    byte[] image = posts.getImage();
+                    Log.d("test", "CustomAdapter : " + cnt + " postimage setting start :" + image);
+                    if (image == null) postimage.setImageResource(R.drawable.drawemptybox);
                     else postimage.setImageDrawable(ByteToDrawable(image));
-                    Log.d("test","CustomAdapter : postimage setting success");
+                    Log.d("test", "CustomAdapter : " + cnt + " postimage setting success");
+                    Log.d("test", "CustomAdapter : " + cnt + " getView end===========================================================");
 
                 } catch (Exception ex) {
 
