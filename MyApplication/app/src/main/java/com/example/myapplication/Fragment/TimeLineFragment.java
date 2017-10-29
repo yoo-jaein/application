@@ -55,11 +55,9 @@ public class TimeLineFragment extends Fragment {
         };
 
         client.setHandler(handler);
-
         client.refresh();
 
         timeline=(ListView)view.findViewById(R.id.timeline);
-
 /*
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -90,7 +88,6 @@ public class TimeLineFragment extends Fragment {
                 }
                 ListAdapter adapter=new CustomAdapter(postsArrayList);
                 timeline.setAdapter(adapter);
-
             }
         };
         mThread.start();

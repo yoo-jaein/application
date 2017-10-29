@@ -72,11 +72,14 @@ public class WritingNewPostActivity extends AppCompatActivity {
         finButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("test", "click post finish");
                 Posts posts = new Posts();
                 posts.setLocationInfo(location);
                 posts.setMusic(music);
                 posts.setComment(postingOpinionText.getText().toString());
                 posts.setUserID(client.getMe().getUserIndex());
+
+                Log.d("test", "user index : " + client.getMe().getUserIndex());
 
                 long now = System.currentTimeMillis();
                 Date date = new Date(now);

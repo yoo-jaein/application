@@ -54,6 +54,7 @@ public class MyPageFragment extends Fragment {
                 if(msg.what== Constants.RECEIVE_SUCCESSS){
                     client.setHandlerNull();
                     myPostsList = client.getMyPostsList();
+                    mylist.setAdapter(new CustomAdapter(myPostsList));
                 }else if(msg.what==Constants.RECEIVE_FAILED){
                     // TODO when receive err message
                 }
@@ -61,6 +62,7 @@ public class MyPageFragment extends Fragment {
         };
 
         client.setHandler(handler);
+        client.myPosts();
     }
 
     @Override
