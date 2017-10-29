@@ -1,109 +1,104 @@
 package com.example.myapplication.Fragment;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.example.myapplication.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Help1Fragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Help1Fragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class Help1Fragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    Animation animFadein;
+    Animation animFadeout;
 
-    private OnFragmentInteractionListener mListener;
+    ImageView image1;
+    ImageView image2;
+
+    private Handler handler;
 
     public Help1Fragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Help1Fragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Help1Fragment newInstance(String param1, String param2) {
-        Help1Fragment fragment = new Help1Fragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    }
+
+
+    Runnable runnable1 = new Runnable() {
+        @Override
+        public void run() {
+            image2.startAnimation(animFadein);
         }
+    };
+
+    void setAnimListenr() {
+
+        animFadeout = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
+        animFadeout.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                Log.d("test","animFadeout : Start");
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Log.d("test","animFadeout : End");
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        animFadein = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        animFadein.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                Log.d("test","animFadein : Start");
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (animation == animFadein) {
+                    Log.d("test","animFadein : End");
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_help1, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_help1, container, false);
+
+        Log.d("test","Help Fragment 1 : OnCreateView");
+        image1=(ImageView)view.findViewById(R.id.guide1Image1);
+        image2=(ImageView)view.findViewById(R.id.guide1Image2);
+        handler = new Handler();
+
+        setAnimListenr();
+
+        image1.setVisibility(View.VISIBLE);
+        image2.setVisibility(View.INVISIBLE);
+
+        image1.startAnimation(animFadeout);
+        handler.postDelayed(runnable1,1500);
+
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }
