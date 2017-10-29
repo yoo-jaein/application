@@ -1,10 +1,12 @@
 package com.example.myapplication.CustomAdapter;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,7 +78,6 @@ public class CustomAdapter extends BaseAdapter {
         final TextView time=(TextView)convertView.findViewById(R.id.post_time);
 
         final ImageView postimage=(ImageView)convertView.findViewById(R.id.post_image);
-
         final ImageButton likebutton=(ImageButton)convertView.findViewById(R.id.likeButton);
         final ImageButton unlikebutton=(ImageButton)convertView.findViewById(R.id.unlikeButton);
 
@@ -110,9 +111,12 @@ public class CustomAdapter extends BaseAdapter {
                     });
 
                     location.setText(posts.getLocationInfo().getTitle()+"에서");
-                    music.setText(posts.getMusic().getArtistName()+" - "+posts.getMusic().getMusicName());
-                    content.setText(posts.getComment().toString());
+                  //  music.setText(posts.getMusic().getArtistName()+" - "+posts.getMusic().getMusicName());
+                    content.setText("# " + posts.getComment().toString());
                     time.setText(posts.getCreateTime().toString());
+
+                    music.setText(Html.fromHtml("<u>" + posts.getMusic().getArtistName()+" - "+posts.getMusic().getMusicName() + "</u>"));
+                    location.setText(Html.fromHtml("<u>" + posts.getLocationInfo().getTitle() + "에서" + "</u>"));
 
                     Log.d("test","CustomAdapter : postimage setting start :"+posts.getImage());
                     postimage.setImageDrawable(ByteToDrawable(posts.getImage()));
@@ -132,5 +136,6 @@ public class CustomAdapter extends BaseAdapter {
         }
         return convertView;
     }
+
 }
 

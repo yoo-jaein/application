@@ -26,4 +26,5 @@ public class Constants{
 
     public static final int GET_SONG = 5;
     public static final int GET_LOCATION = 6;
+    public static final int GET_PICTURE_URI = 7;
 }

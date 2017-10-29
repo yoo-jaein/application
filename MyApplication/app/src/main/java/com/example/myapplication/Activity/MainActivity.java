@@ -3,6 +3,7 @@ package com.example.myapplication.Activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);*/
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
+        getWindow().setStatusBarColor(Color.parseColor("#516FA5"));
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         backPressCloseHandler = new BackPressCloseHandler(this);
 
