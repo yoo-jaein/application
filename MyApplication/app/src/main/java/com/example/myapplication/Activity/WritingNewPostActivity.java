@@ -1,6 +1,5 @@
 package com.example.myapplication.Activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;

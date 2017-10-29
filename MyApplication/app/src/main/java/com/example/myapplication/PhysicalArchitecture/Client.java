@@ -62,21 +62,22 @@ public class Client extends Thread implements Serializable
 
 	 void sendToServer(Object obj)
 	{
+		Log.d("CLIENT", "in sendToServer func");
+
 		if(obj instanceof String){
-			if(clientW != null) {
-				clientW.sendToServer((String) obj);
-				Log.d("CLIENT", "send message : " + obj);
-			}
-			else
-				Log.d("CLIENT", "clientW : NULL");
+			clientW.sendToServer((String) obj);
+			Log.d("CLIENT", "send message : " + obj);
 		}
 		else if(obj instanceof Posts) {
-			if(clientW != null) {
-				clientW.sendToServerPosts((Posts) obj);
-				Log.d("CLIENT", "[clientW:sendToServer:Posts] send message : " + obj.toString());
-			}
-			else
-				Log.d("CLIENT", "[clientW:sendToServer:Posts] NULL");
+			clientW.sendToServerPosts((Posts) obj);
+			Log.d("CLIENT", "[clientW:sendToServer:Posts] send message : " + obj.toString());
+		}
+		else if(obj instanceof User) {
+			clientW.sendToServerUser((User) obj);
+			Log.d("CLIENT", "[clientW:sendToServer:User] send message : " + obj.toString());
+		}
+		else{
+			Log.d("CLIENT", "[clientW:sendToServer:ERR]" + "invalid object");
 		}
 	}
 
@@ -120,14 +121,8 @@ class clientRead extends Thread implements Serializable
 					client reads data from socket and handles the func
 				 */
 				while(cControl.isWaiting()) {
-
 					// time over --- break roop
-					if(System.currentTimeMillis() - cControl.getStartTime() > 5000)
-						cControl.setWaiting(false);
-
-					Log.d("CLIENT", "waiting is true");
-
-					if(cControl.getStartTime() - System.currentTimeMillis() > 5000){
+					if(System.currentTimeMillis() - cControl.getStartTime() > 5000){
 						Log.d("CLIENT", "time over!!!!");
 						cControl.setWaiting(false);
 						cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_FAILED);
@@ -286,17 +281,21 @@ class clientRead extends Thread implements Serializable
 class clientWrite extends Thread implements Serializable
 {
 	private Socket socket;
+
 	private String console;
 	private Posts postsConsole;
+	private User userConsole;
 
 	private boolean sendToReadyString;
 	private boolean sendToReadyPosts;
+	private boolean sendToReadyUser;
 
 	protected clientWrite(Socket socket)
 	{
 		this.socket=socket;
 		sendToReadyString=false;
 		sendToReadyPosts=false;
+		sendToReadyUser=false;
 	}
 
 	@Override
@@ -324,6 +323,10 @@ class clientWrite extends Thread implements Serializable
 					out.writeObject(postsConsole);
 					sendToReadyPosts = false;
 				}
+				while (sendToReadyUser) {
+					out.writeObject(postsConsole);
+					sendToReadyUser = false;
+				}
 			}
 		}
 		catch (IOException e)
@@ -333,14 +336,18 @@ class clientWrite extends Thread implements Serializable
 		}
 	}
 
-	 void sendToServer(String msg)
+	void sendToServer(String msg)
 	{
 		console=msg;
 		sendToReadyString=true;
 	}
-	   void sendToServerPosts(Posts posts)
+   	void sendToServerPosts(Posts posts)
 	{
 		postsConsole=posts;
 		sendToReadyPosts=true;
+	}
+	void sendToServerUser(User user){
+		userConsole=user;
+		sendToReadyUser=true;
 	}
 }

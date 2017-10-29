@@ -50,7 +50,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private Handler handler;
 
     private static final int REQUEST_READ_CONTACTS = 0;
-
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
@@ -75,7 +74,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             public void handleMessage(Message msg) {
                 if(msg.what== Constants.RECEIVE_SUCCESSS){
                     client.setHandlerNull();
-
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -94,7 +92,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setTypeface(Typeface.DEFAULT);
-
+        /*
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -106,13 +104,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
         });
+        */
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 // TODO check email and password
-              //  attemptLogin();
+                //  attemptLogin();
                 Log.d("test" , mEmailView.getText().toString() + " / " +  mPasswordView.getText().toString());
                 client.setHandler(handler);
                 client.login(mEmailView.getText().toString(), mPasswordView.getText().toString());

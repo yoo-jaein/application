@@ -56,7 +56,6 @@ public class HelpActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
 
