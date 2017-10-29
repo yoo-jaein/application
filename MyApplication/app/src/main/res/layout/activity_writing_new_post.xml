@@ -70,7 +70,7 @@
                 android:layout_margin="20dp"
                 android:layout_weight="1"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/postpicture" />
+                app:srcCompat="@drawable/defaultpicture" />
 
             <EditText
                 android:id="@+id/postingMusicText"

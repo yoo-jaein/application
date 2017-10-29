@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
     private LinearLayout optionContainer;
     private FloatingActionButton goToWritingButton;
+
+    private ImageButton mSettingButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         ImageButton op2=(ImageButton)findViewById(R.id.mainoptiontwo);
         ImageButton op3=(ImageButton)findViewById(R.id.mainoptionthree);
 
+
         op1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,6 +125,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mSettingButton=(ImageButton)findViewById(R.id.mainmenuButton);
+        mSettingButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view){
+                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -151,26 +162,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
         return !isFirst;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main2, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-            startActivity(intent);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     public static class PlaceholderFragment extends Fragment {

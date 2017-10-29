@@ -1,13 +1,19 @@
 package com.example.myapplication.Fragment;
 
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -20,7 +26,13 @@ import com.example.myapplication.ProblemDomain.Constants;
 import com.example.myapplication.ProblemDomain.Posts;
 import com.example.myapplication.R;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import static android.R.attr.bitmap;
+import static com.example.myapplication.ProblemDomain.Constants.GET_PICTURE_URI;
 
 public class MyPageFragment extends Fragment {
 
@@ -29,6 +41,7 @@ public class MyPageFragment extends Fragment {
     private ArrayList<Posts> myPostsList;
 
     private ImageButton change_arr;
+    private Button editbutton;
 
     private ImageView fillbar;
     private ImageView unfillbar;
@@ -37,6 +50,8 @@ public class MyPageFragment extends Fragment {
     private ListView mylist;
 
     private int arr_type=1;
+
+    private  View view;
 
     public MyPageFragment() {
         // Required empty public constructor
@@ -68,7 +83,7 @@ public class MyPageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_my_page, container, false);
+        view= inflater.inflate(R.layout.fragment_my_page, container, false);
 
         nametext=(TextView)view.findViewById(R.id.user_name);
         nametext.setText("young ju");
@@ -87,6 +102,18 @@ public class MyPageFragment extends Fragment {
         fillbar.setLayoutParams(params);
 
 */
+
+        editbutton = (Button)view.findViewById(R.id.profilebutton);
+        editbutton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+                intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                startActivityForResult(intent, GET_PICTURE_URI);
+            }
+        });
+
         change_arr=(ImageButton)view.findViewById(R.id.mypagechangearr);
         change_arr.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,4 +140,32 @@ public class MyPageFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.GET_PICTURE_URI) {
+            try {
+                ContentResolver resolver = getActivity().getContentResolver();
+                Uri selPhotoUri = data.getData();
+                Bitmap selPhoto = MediaStore.Images.Media.getBitmap(resolver, selPhotoUri);
+
+                byte[] image = bitmapToByteArray(selPhoto);
+           //     posts.setIImage(image);
+
+                ImageView imageView = (ImageView) view.findViewById(R.id.user_image);
+                imageView.setImageBitmap(selPhoto);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+        public byte[] bitmapToByteArray( Bitmap bitmap ) {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream() ;
+            bitmap.compress( Bitmap.CompressFormat.JPEG, 100, stream) ;
+            byte[] byteArray = stream.toByteArray() ;
+            return byteArray ;
+        }
 }
