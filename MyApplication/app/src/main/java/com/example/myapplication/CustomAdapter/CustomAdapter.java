@@ -1,13 +1,11 @@
 package com.example.myapplication.CustomAdapter;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.text.Html;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -126,8 +124,10 @@ public class CustomAdapter extends BaseAdapter {
                     content.setText(posts.getComment().toString());
                     time.setText(posts.getCreateTime().toString());
 
-                    Log.d("test","CustomAdapter : postimage setting start :"+posts.getImage());
-                    postimage.setImageDrawable(ByteToDrawable(posts.getImage()));
+                    byte[] image=posts.getImage();
+                    Log.d("test","CustomAdapter : postimage setting start :"+image);
+                    if(image==null) postimage.setImageResource(R.drawable.drawemptybox);
+                    else postimage.setImageDrawable(ByteToDrawable(image));
                     Log.d("test","CustomAdapter : postimage setting success");
 
                 } catch (Exception ex) {
