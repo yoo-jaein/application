@@ -23,7 +23,7 @@
                 android:layout_height="100dp"
                 android:layout_margin="10dp"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/profilepicdft" />
+                app:srcCompat="@drawable/defaultprofile" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -72,8 +72,8 @@
                         <TextView
                             android:id="@+id/textView3"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="8"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
                             android:gravity="bottom|center_horizontal"
                             android:text="게시물"
                             android:textSize="20dp" />
@@ -82,10 +82,12 @@
                             android:id="@+id/textView4"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_marginTop="8dp"
                             android:layout_weight="3"
                             android:gravity="center_vertical|center_horizontal"
                             android:text="30"
-                            android:textSize="20dp" />
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -105,6 +107,7 @@
                         android:id="@+id/unfillbar"
                         android:layout_width="250dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="12dp"
                         app:srcCompat="@drawable/unfilledlikebar" />
                 </RelativeLayout>
 
@@ -112,8 +115,13 @@
                     android:id="@+id/profilebutton"
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginTop="5dp"
                     android:layout_weight="1"
-                    android:text="프로필 수정" />
+                    android:background="@drawable/layout"
+                    android:text="Edit"
+                    android:textSize="8sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 

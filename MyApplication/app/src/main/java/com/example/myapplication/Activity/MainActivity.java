@@ -22,6 +22,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements Animation.Animati
     boolean option = false;
 
     private FloatingActionButton goToWritingButton;
+
+    private ImageButton mSettingButton;
 
     private ImageButton optionButton;
     private ImageButton timeOrderButton;
@@ -218,6 +221,13 @@ public class MainActivity extends AppCompatActivity implements Animation.Animati
     @Override
     public void onAnimationRepeat(Animation animation) {
 
+        mSettingButton=(ImageButton)findViewById(R.id.mainmenuButton);
+        mSettingButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view){
+                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -248,26 +258,6 @@ public class MainActivity extends AppCompatActivity implements Animation.Animati
             startActivity(intent);
         }
         return !isFirst;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main2, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-            startActivity(intent);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     public static class PlaceholderFragment extends Fragment {
