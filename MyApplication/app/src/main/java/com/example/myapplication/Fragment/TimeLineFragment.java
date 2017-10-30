@@ -26,14 +26,12 @@ public class TimeLineFragment extends Fragment {
     private Handler handler;
     private ClientController client = null;
 
-
     ImageButton op1;
     ImageButton op2;
     ImageButton op3;
 
     SwipeRefreshLayout mSwipeRefreshLayout;
     ListView timeline;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -98,4 +96,7 @@ public class TimeLineFragment extends Fragment {
         return view;
     }
 
+    public Handler getHandler(){
+        return handler;
+    }
 }

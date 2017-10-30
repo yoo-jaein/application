@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class MyPageFragment extends Fragment {
 
-    private static Handler handler;
+    private Handler handler;
     private ClientController client = null;
     private ArrayList<Posts> myPostsList;
 
@@ -112,5 +112,4 @@ public class MyPageFragment extends Fragment {
 
         return view;
     }
-
 }

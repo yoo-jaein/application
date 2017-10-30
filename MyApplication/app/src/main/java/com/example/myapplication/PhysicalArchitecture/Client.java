@@ -1,6 +1,5 @@
 package com.example.myapplication.PhysicalArchitecture;
 
-import android.system.ErrnoException;
 import android.util.Log;
 
 import com.example.myapplication.Foundation.PostsList;
