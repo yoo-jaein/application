@@ -121,15 +121,6 @@
                     app:srcCompat="@drawable/postingpictureicon" />
 
                 <ImageButton
-                    android:id="@+id/postingVideoButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="#00000000"
-                    android:scaleType="centerInside"
-                    app:srcCompat="@drawable/postingyoutubeicon" />
-
-                <ImageButton
                     android:id="@+id/postingMusicButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -36,17 +36,27 @@ public class TimeLineFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view;
-        view =inflater.inflate(R.layout.fragment_time_line, container, false);
+        view = inflater.inflate(R.layout.fragment_time_line, container, false);
 
-        if(client == null)
+        if (client == null)
             client = ClientController.getClientControl();
 
-        handler = new Handler(){
+        handler = new Handler() {
             @Override
-            public void handleMessage(Message msg){
-                if(msg.what== Constants.RECEIVE_SUCCESSS){
+            public void handleMessage(Message msg) {
+                if (msg.what == Constants.RECEIVE_SUCCESSS) {
                     client.setHandlerNull();
-                }else if(msg.what==Constants.RECEIVE_FAILED){
+                    ArrayList<Posts> postsArrayList = null;
+                    try {
+                        Log.d("test", "TimeLineFragment: thread start");
+                        int cnt = 0;
+                        postsArrayList = client.getTimeLine();
+                        Log.d("test", "TimeLineFragment: client.getTimeLine =" + postsArrayList);
+                    } catch (Exception e) {
+                    }
+                    ListAdapter adapter = new CustomAdapter(postsArrayList,client.getMe());
+                    timeline.setAdapter(adapter);
+                } else if (msg.what == Constants.RECEIVE_FAILED) {
                     // TODO when receive err message
                 }
             }
@@ -55,7 +65,7 @@ public class TimeLineFragment extends Fragment {
         client.setHandler(handler);
         client.refresh();
 
-        timeline=(ListView)view.findViewById(R.id.timeline);
+        timeline = (ListView) view.findViewById(R.id.timeline);
 /*
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -69,29 +79,16 @@ public class TimeLineFragment extends Fragment {
             }
         });
 */
-
-
-        Thread mThread = new Thread() {
-            public void run() {
-                ArrayList<Posts> postsArrayList=null;
-                try {
-                    Log.d("test","TimeLineFragment: thread start");
-                    int cnt=0;
-                    while(postsArrayList!=null) {
-                        postsArrayList=client.getTimeLine();
-                        Log.d("test",""+cnt++);
-                    }
-                    Log.d("test","TimeLineFragment: client.getTimeLine =" +postsArrayList);
-                } catch (Exception e) {
-                }
-                ListAdapter adapter=new CustomAdapter(postsArrayList);
-                timeline.setAdapter(adapter);
-            }
-        };
-        mThread.start();
+        ArrayList<Posts> postsArrayList = null;
         try {
-            mThread.join();
-        } catch (InterruptedException e) {}
+            Log.d("test", "TimeLineFragment: start");
+            int cnt = 0;
+            postsArrayList = client.getTimeLine();
+            Log.d("test", "TimeLineFragment: client.getTimeLine =" + postsArrayList);
+        } catch (Exception e) {
+        }
+        ListAdapter adapter = new CustomAdapter(postsArrayList,client.getMe());
+        timeline.setAdapter(adapter);
 
         return view;
     }

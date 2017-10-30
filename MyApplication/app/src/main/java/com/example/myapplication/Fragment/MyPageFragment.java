@@ -54,7 +54,7 @@ public class MyPageFragment extends Fragment {
                 if(msg.what== Constants.RECEIVE_SUCCESSS){
                     client.setHandlerNull();
                     myPostsList = client.getMyPostsList();
-                    mylist.setAdapter(new CustomAdapter(myPostsList));
+                    mylist.setAdapter(new CustomAdapter(myPostsList,client.getMe()));
                 }else if(msg.what==Constants.RECEIVE_FAILED){
                     // TODO when receive err message
                 }
@@ -74,7 +74,7 @@ public class MyPageFragment extends Fragment {
         nametext.setText("young ju");
 
         mylist=(ListView)view.findViewById(R.id.mylist);
-        mylist.setAdapter(new CustomAdapter(client.getMyPostsList()));
+        mylist.setAdapter(new CustomAdapter(client.getMyPostsList(),client.getMe()));
 
         //stretch fill bar according to like count
 /*
@@ -101,7 +101,7 @@ public class MyPageFragment extends Fragment {
                     change_arr.setImageResource(R.drawable.profilearr1);
                 } else {
                     arr_type=1;
-                    CustomAdapter adapter=new CustomAdapter(client.getMyPostsList());
+                    CustomAdapter adapter=new CustomAdapter(client.getMyPostsList(),client.getMe());
                     mylist.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                     change_arr.setImageResource(R.drawable.profilearr2);
