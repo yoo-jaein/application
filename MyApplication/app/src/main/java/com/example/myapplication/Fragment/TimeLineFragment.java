@@ -62,8 +62,8 @@ public class TimeLineFragment extends Fragment {
             }
         };
 
-        client.setHandler(handler);
-        client.refresh();
+//        client.setHandler(handler);
+//        client.refresh();
 
         timeline = (ListView) view.findViewById(R.id.timeline);
 /*
@@ -79,6 +79,8 @@ public class TimeLineFragment extends Fragment {
             }
         });
 */
+/*
+// TODO client test
         ArrayList<Posts> postsArrayList = null;
         try {
             Log.d("test", "TimeLineFragment: start");
@@ -89,9 +91,11 @@ public class TimeLineFragment extends Fragment {
         }
         ListAdapter adapter = new CustomAdapter(postsArrayList,client.getMe());
         timeline.setAdapter(adapter);
-
+*/
         return view;
     }
+
+
 
     public Handler getHandler(){
         return handler;

@@ -48,9 +48,9 @@ public class LikeListFragment extends Fragment {
                 }
             }
         };
-
-        client.setHandler(handler);
-        client.myLike();
+// TODO client test
+//        client.setHandler(handler);
+//        client.myLike();
 
         return  view;
     }

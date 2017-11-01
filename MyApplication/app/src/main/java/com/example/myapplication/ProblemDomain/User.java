@@ -69,7 +69,7 @@ public class User implements Serializable {
 	}
 
 	public void delLikeList(int postsIndex) {
-		likeList.remove(postsIndex);
+		likeList.remove(((Object)postsIndex));
 	}
 
 	public void addLikeList(int postIndex) {

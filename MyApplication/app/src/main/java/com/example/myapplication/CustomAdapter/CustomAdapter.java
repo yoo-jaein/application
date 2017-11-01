@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +18,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.myapplication.Activity.MainActivity;
 import com.example.myapplication.PhysicalArchitecture.ClientController;
+import com.example.myapplication.PhysicalArchitecture.ImageController;
+import com.example.myapplication.ProblemDomain.Constants;
 import com.example.myapplication.ProblemDomain.Music;
 import com.example.myapplication.ProblemDomain.Posts;
 import com.example.myapplication.ProblemDomain.User;
@@ -30,15 +35,19 @@ import java.util.ArrayList;
 
 public class CustomAdapter extends BaseAdapter {
 
-    ArrayList<Posts> contentslist = new ArrayList<Posts>();
-    ArrayList<Object> user;
+    private ArrayList<Posts> contentslist = new ArrayList<Posts>();
+    private ArrayList<Object> user;
     private ClientController client = null;
-    int cnt = 0;
+    private int cnt = 0;
+
+    private Handler handler;
 
     public CustomAdapter(ArrayList<Posts> contentslist, User user) {
         Log.d("test", "CustomAdapter : start CustomAdapter");
         this.contentslist = contentslist;
         this.user = user.getLikeList();
+
+        client = ClientController.getClientControl();
     }
 
     @Override
@@ -60,23 +69,12 @@ public class CustomAdapter extends BaseAdapter {
         return position;
     }
 
-    Bitmap resizeBitmap(Bitmap bitmap, int resizeHeight){
-
-        double aspectRatio = (double) bitmap.getHeight() / (double) bitmap.getWidth();
-        int targetWidth = (int) (resizeHeight * aspectRatio);
-        Bitmap result = Bitmap.createScaledBitmap(bitmap, targetWidth, resizeHeight, false);
-
-        if (result != bitmap) {
-            bitmap.recycle();
-        }
-        return result;
-    }
     Drawable ByteToDrawable(byte[] b) {
         Drawable image;
         Log.d("test", "CustomAdapter:ByteToDrawable start");
-        Bitmap src=BitmapFactory.decodeByteArray(b, 0, b.length);
+        Bitmap src = BitmapFactory.decodeByteArray(b, 0, b.length);
         Log.d("test", "CustomAdapter:ByteToDrawable settingOption");
-        Bitmap bitmap = resizeBitmap(src,1000);
+        Bitmap bitmap = ImageController.resizeBitmap(src,1000);
 
 //        Bitmap bitmap=BitmapFactory.decodeByteArray(b, 0, b.length);
         Log.d("test", "CustomAdapter:ByteToDrawable settingBitmap");
@@ -101,8 +99,25 @@ public class CustomAdapter extends BaseAdapter {
         final ImageView postimage = (ImageView) convertView.findViewById(R.id.post_image);
         final ImageButton likebutton = (ImageButton) convertView.findViewById(R.id.likeButton);
         final ImageButton unlikebutton = (ImageButton) convertView.findViewById(R.id.unlikeButton);
-
         final Posts posts = contentslist.get(position);
+
+        final Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if(msg.what== Constants.RECEIVE_SUCCESSS){
+
+                }
+                else if(msg.what==Constants.RECEIVE_FAILED){
+                    // TODO when received err message
+                }
+                else if(msg.what == Constants.RECEIVE_LIKE){
+                    client.getMe().addLikeList(posts.getPostsIndex());
+                }
+                else if(msg.what == Constants.RECEIVE_DISLIKE) {
+                    client.getMe().delLikeList(posts.getPostsIndex());
+                }
+            }
+        };
         final int num = cnt++;
 
         Thread mThread = new Thread() {
@@ -120,12 +135,16 @@ public class CustomAdapter extends BaseAdapter {
                         unlikebutton.setVisibility(View.VISIBLE);
                         unlikebutton.bringToFront();
                     }
+
                     likebutton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             unlikebutton.setVisibility(View.VISIBLE);
                             likebutton.setVisibility(View.INVISIBLE);
                             likebutton.bringToFront();
+
+                            client.setHandler(handler);
+                            client.like(posts.getPostsIndex());
                         }
                     });
                     unlikebutton.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +153,9 @@ public class CustomAdapter extends BaseAdapter {
                             likebutton.setVisibility(View.VISIBLE);
                             unlikebutton.setVisibility(View.INVISIBLE);
                             unlikebutton.bringToFront();
+
+                            client.setHandler(handler);
+                            client.dislike(posts.getPostsIndex());
                         }
                     });
 
@@ -171,6 +193,10 @@ public class CustomAdapter extends BaseAdapter {
 
         }
         return convertView;
+    }
+
+    private void likeOn(){
+
     }
 }
 
