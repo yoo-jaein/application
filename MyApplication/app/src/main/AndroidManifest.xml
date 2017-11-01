@@ -48,20 +48,18 @@
             android:name=".Activity.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/Theme.AppCompat.Light" />
-        <activity android:name=".Activity.HelpActivity">
-        </activity>
-        <activity android:name=".Activity.SearchLocationActivity">
-        </activity>
-        <activity android:name=".Activity.SearchMusicActivity">
-        </activity>
-        <activity android:name=".Activity.SignUpActivity">
-        </activity>
+        <activity android:name=".Activity.HelpActivity"></activity>
+        <activity android:name=".Activity.SearchLocationActivity"></activity>
+        <activity android:name=".Activity.SearchMusicActivity"></activity>
+        <activity android:name=".Activity.SignUpActivity"></activity>
         <activity
             android:name=".Activity.ForgotPwActivity"
-            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog"
-            >
-        </activity>
-    </application>
+            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog"></activity>
 
+        <service
+            android:name=".Service.GPSInfo"
+            android:enabled="true"
+            android:exported="true"></service>
+    </application>
 
 </manifest>

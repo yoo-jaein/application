@@ -3,7 +3,10 @@ package com.example.myapplication.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
+import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,26 +17,50 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.myapplication.PhysicalArchitecture.ClientController;
+import com.example.myapplication.ProblemDomain.Constants;
 import com.example.myapplication.R;
 
 import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    EditText emailtext;
-    EditText pwtext;
-    EditText confirmpwtext;
+    private EditText emailtext;
+    private EditText pwtext;
+    private EditText confirmpwtext;
 
-    ImageButton signupbutton;
-    ImageView signupgraybutton;
+    private ImageButton signupbutton;
+    private ImageView signupgraybutton;
 
-    ImageView confirmcheck;
-    ImageView confirmcheckgray;
+    private ImageView confirmcheck;
+    private ImageView confirmcheckgray;
+
+    private ClientController client;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        client = ClientController.getClientControl();
+
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if(msg.what== Constants.RECEIVE_SUCCESSS){
+
+                    client.setHandlerNull();
+
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else if(msg.what==Constants.RECEIVE_ERROR){
+                    // TODO when received err message 회원가입 실패 시
+                }
+            }
+        };
 
         signupbutton = (ImageButton) findViewById(R.id.signupbutton);
         signupgraybutton = (ImageView) findViewById(R.id.signupbutton_gray);
@@ -154,9 +181,9 @@ public class SignUpActivity extends AppCompatActivity {
                     pwtext.requestFocus();
                     return;
                 }
+                client.setHandler(handler);
+                client.register(emailstring, pwstring);
 
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
             }
         });
 

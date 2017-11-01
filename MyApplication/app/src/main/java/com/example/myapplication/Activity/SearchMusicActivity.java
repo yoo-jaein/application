@@ -97,7 +97,7 @@ public class SearchMusicActivity extends AppCompatActivity {
                         }
                     });
                     adapter.notifyDataSetChanged();
-                }else if(msg.what== Constants.RECEIVE_FAILED){
+                }else if(msg.what== Constants.RECEIVE_ERROR){
                     // TODO when received err message
                 }
             }

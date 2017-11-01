@@ -66,8 +66,10 @@ public class MyPageFragment extends Fragment {
         handler = new Handler(){
             @Override
             public void handleMessage(Message msg){
+
+                client.setHandlerNull();
+
                 if(msg.what== Constants.RECEIVE_SUCCESSS){
-                    client.setHandlerNull();
                     myPostsList = client.getMyPostsList();
                     mylist.setAdapter(new CustomAdapter(myPostsList,client.getMe()));
                 }else if(msg.what==Constants.RECEIVE_FAILED){
@@ -76,14 +78,15 @@ public class MyPageFragment extends Fragment {
             }
         };
 
-        client.setHandler(handler);
-        client.myPosts();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view= inflater.inflate(R.layout.fragment_my_page, container, false);
+
+        client.setHandler(handler);
+        client.myPosts();
 
         nametext=(TextView)view.findViewById(R.id.user_name);
         nametext.setText("young ju");

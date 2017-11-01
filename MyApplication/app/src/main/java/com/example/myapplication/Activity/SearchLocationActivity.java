@@ -121,7 +121,7 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
                 if (msg.what == Constants.RECEIVE_SUCCESSS) {
                     locationList.addAll((ArrayList<Location>) (msg.obj));
                     showMarkerPoint();
-                } else if (msg.what == Constants.RECEIVE_FAILED) {
+                } else if (msg.what == Constants.RECEIVE_ERROR) {
                     //TODO when received err message
                 } else {
                     //   bitmapList.addAll((ArrayList<Bitmap>) (msg.obj));
@@ -359,7 +359,7 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
 
                     } catch (IOException ex) {
                         locationImage = null;
-                        handler.sendEmptyMessage(Constants.RECEIVE_FAILED);
+                        handler.sendEmptyMessage(Constants.RECEIVE_ERROR);
                         ex.printStackTrace();
                     } finally {
                         handler.sendEmptyMessage(i);

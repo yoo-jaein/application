@@ -1,27 +1,39 @@
 package com.example.myapplication.PhysicalArchitecture;
 
+import android.content.Context;
+import android.location.LocationManager;
 import android.os.Handler;
+import android.os.Message;
 
 import com.example.myapplication.Foundation.PostsList;
+import com.example.myapplication.ProblemDomain.Constants;
 import com.example.myapplication.ProblemDomain.Posts;
 import com.example.myapplication.ProblemDomain.User;
+import com.example.myapplication.Service.GPSInfo;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * @author jm
  * 서버-클라이언트 기능 구현 클래스
  */
-public class ClientController implements Serializable{
+public class ClientController{
 
 	private ArrayList<Posts> timeLine;
 	private ArrayList<Posts> myPostsList;
 	private ArrayList<Posts> myLikeList;
+	private ArrayList<Posts> moreList;
+
+	private ArrayList<Integer> locationContentIdList;
+
 	private User me = null;
+
+	private int timeLineOrder = Constants.TIME;
 
 	// for change mainthread UI
 	private Handler handler = null;
+	private Handler distanceOrderHandler = null;
+	private GPSInfo gpsInfo = null;
 
 	private String message = "";
 
@@ -32,6 +44,7 @@ public class ClientController implements Serializable{
 
 	private boolean login = false;
 	private boolean register = false;
+	private boolean findPass = false;
 	private boolean refresh = false;
 	private boolean morePosts = false;
 	private boolean myPosts = false;
@@ -47,6 +60,8 @@ public class ClientController implements Serializable{
 
 	private long startTime = 0;
 
+	private int level = 1;
+
 	public Client client;
 	private static ClientController cControl = new ClientController();
 
@@ -54,10 +69,29 @@ public class ClientController implements Serializable{
 		timeLine = new ArrayList<>();
 		myPostsList = new ArrayList<>();
 		myLikeList  = new ArrayList<>();
+		moreList = new ArrayList<>();
+
+		locationContentIdList = new ArrayList<>();
 
 		me = null;
 
 		client = new Client();
+
+		distanceOrderHandler = new Handler(){
+			@Override
+			public void handleMessage(Message msg) {
+				if(msg.what == Constants.RECEIVE_SUCCESSS){
+					locationContentIdList = (ArrayList<Integer>)(msg.obj);
+					level = 0;
+				}
+				else if(msg.what == Constants.RECEIVE_FAILED){
+					// TODO when received falled
+					if(gpsInfo!= null){
+						gpsInfo.getLocation(level++);
+					}
+				}
+			}
+		};
 	}
 
 	public static ClientController getClientControl(){
@@ -80,10 +114,27 @@ public class ClientController implements Serializable{
 
 	 void addMyLikeList(PostsList postsList) {   myLikeList.addAll(postsList.getAll());   }
 
+	void setMoreList(PostsList postsList){ moreList = postsList.getAll(); }
+
 	 void setMe(User user) {
 		me = user;
 	}
 
+	public void setGpsInfo(GPSInfo gpsInfo){
+		this.gpsInfo = gpsInfo;
+	}
+
+	public Handler getDistanceOrderHandler() {
+		return distanceOrderHandler;
+	}
+
+	public void setDistanceOrderHandler(Handler distanceOrderHandler) {
+		this.distanceOrderHandler = distanceOrderHandler;
+	}
+
+	public void setTimeLineOrder(int order){
+		timeLineOrder = order;
+	}
 
 	public void resetAll() {
 		timeLine.clear();
@@ -133,6 +184,22 @@ public class ClientController implements Serializable{
 		}
 	}
 
+	public void findPass(String id){
+		if(!waiting) {
+			startTime = System.currentTimeMillis();
+
+			waiting = true;
+			findPass = true;
+
+			message = "#findPass%";
+			message += id;
+
+			client.sendToServer(message);
+
+			message = "";
+		}
+	}
+
 	public void refresh(){
 		if(!waiting) {
 			startTime = System.currentTimeMillis();
@@ -140,7 +207,18 @@ public class ClientController implements Serializable{
 			waiting = true;
 			refresh = true;
 
-			message = "#refresh";
+			message = "#refresh%";
+
+			switch(timeLineOrder){
+				case Constants.TIME: message += "time";
+					break;
+				case Constants.DISTANCE: message += "distance";
+					for(int locationContentId : locationContentIdList)
+						message += "%" + locationContentId;
+					break;
+				case Constants.LIKE: message += "like";
+					break;
+			}
 
 			client.sendToServer(message);
 
@@ -155,7 +233,13 @@ public class ClientController implements Serializable{
 			waiting = true;
 			morePosts = true;
 
-			message = "#morePosts";
+			message = "#morePosts%";
+
+			switch(timeLineOrder){
+				case Constants.TIME: message += "time"; break;
+				case Constants.DISTANCE: message += "distance"; break;
+				case Constants.LIKE: message += "like"; break;
+			}
 
 			client.sendToServer(message);
 
@@ -325,7 +409,11 @@ public class ClientController implements Serializable{
 		return register;
 	}
 
-	 boolean isRefresh() {
+	public boolean isFindPass() {
+		return findPass;
+	}
+
+	boolean isRefresh() {
 		return refresh;
 	}
 
@@ -379,6 +467,9 @@ public class ClientController implements Serializable{
 		this.register = register;
 	}
 
+	public void setFindPass(boolean findPass) {
+		this.findPass = findPass;
+	}
 	 void setRefresh(boolean refresh) {
 		this.refresh = refresh;
 	}
@@ -456,6 +547,8 @@ public class ClientController implements Serializable{
 	public ArrayList<Posts> getMyLikeList() {
 		return myLikeList;
 	}
+
+	public ArrayList<Posts> getMoreList(){ return moreList; }
 
 	/*
        socket connection method

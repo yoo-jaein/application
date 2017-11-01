@@ -3,10 +3,13 @@ package com.example.myapplication.Activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -17,17 +20,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
-import android.widget.FrameLayout;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -36,7 +30,10 @@ import com.example.myapplication.BackPressCloseHandler;
 import com.example.myapplication.Fragment.LikeListFragment;
 import com.example.myapplication.Fragment.MyPageFragment;
 import com.example.myapplication.Fragment.TimeLineFragment;
+import com.example.myapplication.PhysicalArchitecture.ClientController;
+import com.example.myapplication.ProblemDomain.Constants;
 import com.example.myapplication.R;
+import com.example.myapplication.Service.GPSInfo;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -55,8 +52,8 @@ public class MainActivity extends AppCompatActivity{
     private ImageButton distanceOrderButton;
     private ImageButton likeOrderButton;
 
-    private FrameLayout frameLayout;
-
+    private GPSInfo gpsInfo;
+    private ClientController client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +63,21 @@ public class MainActivity extends AppCompatActivity{
 /*
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
+
+        client = ClientController.getClientControl();
+
+        gpsInfo = new GPSInfo(MainActivity.this);
+        // GPS 사용유무 가져오기
+        if (gpsInfo.isGetLocation()) {
+
+            double latitude = gpsInfo.getLatitude();
+            double longitude = gpsInfo.getLongitude();
+
+        } else {
+            // GPS 를 사용할수 없으므로
+            gpsInfo.showSettingsAlert();
+        }
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -106,6 +118,9 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 Log.d("test", "timeorder button click");
+                client.setTimeLineOrder(Constants.TIME);
+                client.setHandler(((TimeLineFragment)(mSectionsPagerAdapter.getItem(0))).getHandler());
+                client.refresh();
             }
         });
 
@@ -116,6 +131,9 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 Log.d("test", "distanceorder button click");
+                client.setTimeLineOrder(Constants.DISTANCE);
+                client.setHandler(((TimeLineFragment)(mSectionsPagerAdapter.getItem(0))).getHandler());
+                client.refresh();
             }
         });
         likeOrderButton = (ImageButton)findViewById(R.id.likeOrderButton);
@@ -125,6 +143,9 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 Log.d("test", "likeorder button click");
+                client.setTimeLineOrder(Constants.LIKE);
+                client.setHandler(((TimeLineFragment)(mSectionsPagerAdapter.getItem(0))).getHandler());
+                client.refresh();
             }
         });
 
@@ -133,11 +154,9 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 if(!option) {
-                    Log.d("test", "show option");
                     showOptionAnim();
                 }
                 else{
-                    Log.d("test", "hide option");
                     hideOptionAnim();
                 }
             }
