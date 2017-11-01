@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -31,7 +32,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static android.R.attr.bitmap;
 import static com.example.myapplication.ProblemDomain.Constants.GET_PICTURE_URI;
 
 public class MyPageFragment extends Fragment {
@@ -91,17 +91,22 @@ public class MyPageFragment extends Fragment {
         mylist=(ListView)view.findViewById(R.id.mylist);
         mylist.setAdapter(new CustomAdapter(client.getMyPostsList(),client.getMe()));
 
-        //stretch fill bar according to like count
-/*
+/////////////////////stretch fill bar according to like count
         fillbar=(ImageView)view.findViewById(R.id.fill_like_bar);
-        ViewPager.LayoutParams params = (ViewPager.LayoutParams) fillbar.getLayoutParams();
         unfillbar=(ImageView)view.findViewById(R.id.unfillbar);
-        ViewPager.LayoutParams params1 = (ViewPager.LayoutParams) unfillbar.getLayoutParams();
-        // change num 0.3 to like count
-        params.width = (int) (params1.width * 0.3);
-        fillbar.setLayoutParams(params);
+        int w=fillbar.getWidth();
+        int h=fillbar.getHeight();
 
-*/
+        int count=0;
+
+        for(Posts posts:client.getMyLikeList())
+            count+=posts.getLike();
+        
+        if(count<250) w=w*(count/250);
+        unfillbar.setLayoutParams(new FrameLayout.LayoutParams(w,h));
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
 
         editbutton = (Button)view.findViewById(R.id.profilebutton);
         editbutton.setOnClickListener(new View.OnClickListener() {

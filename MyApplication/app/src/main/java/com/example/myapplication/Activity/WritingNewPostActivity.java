@@ -174,7 +174,6 @@ public class WritingNewPostActivity extends AppCompatActivity {
         }
     }
 
-
     public byte[] bitmapToByteArray( Bitmap bitmap ) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream() ;
         bitmap.compress( Bitmap.CompressFormat.JPEG, 100, stream) ;
