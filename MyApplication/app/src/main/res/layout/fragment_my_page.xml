@@ -103,7 +103,7 @@
 
                     <ImageView
                         android:id="@+id/unfillbar"
-                        android:layout_width="250dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/unfilledlikebar" />
                 </RelativeLayout>

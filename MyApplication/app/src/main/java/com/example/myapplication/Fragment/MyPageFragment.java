@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -76,17 +77,17 @@ public class MyPageFragment extends Fragment {
         mylist=(ListView)view.findViewById(R.id.mylist);
         mylist.setAdapter(new CustomAdapter(client.getMyPostsList(),client.getMe()));
 
-        //stretch fill bar according to like count
-/*
+/////////////////////stretch fill bar according to like count
         fillbar=(ImageView)view.findViewById(R.id.fill_like_bar);
-        ViewPager.LayoutParams params = (ViewPager.LayoutParams) fillbar.getLayoutParams();
         unfillbar=(ImageView)view.findViewById(R.id.unfillbar);
-        ViewPager.LayoutParams params1 = (ViewPager.LayoutParams) unfillbar.getLayoutParams();
-        // change num 0.3 to like count
-        params.width = (int) (params1.width * 0.3);
-        fillbar.setLayoutParams(params);
+        int w=fillbar.getWidth();
+        int h=fillbar.getHeight();
 
-*/
+        unfillbar.setLayoutParams(new FrameLayout.LayoutParams(w,h));
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
         change_arr=(ImageButton)view.findViewById(R.id.mypagechangearr);
         change_arr.setOnClickListener(new View.OnClickListener() {
             @Override
