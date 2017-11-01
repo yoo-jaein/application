@@ -17,7 +17,7 @@ import com.example.myapplication.R;
 public class LikeListFragment extends Fragment {
 
     private ClientController client = null;
-    private static Handler handler;
+    private Handler handler;
     private ListView likelist;
 
     public LikeListFragment() {
@@ -54,5 +54,4 @@ public class LikeListFragment extends Fragment {
 
         return  view;
     }
-
 }

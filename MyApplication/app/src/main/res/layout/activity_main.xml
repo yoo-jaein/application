@@ -8,114 +8,58 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.myapplication.Activity.MainActivity">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/goToWritingButton"
-        android:layout_width="53dp"
-        android:layout_height="51dp"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_margin="@dimen/fab_margin"
-        android:scaleType="fitStart"
-        app:backgroundTint="#ff5579B0"
-        app:layout_anchor="@+id/container"
-        app:layout_anchorGravity="bottom|right"
-        app:rippleColor="#00000000"
-        app:srcCompat="@drawable/gotowrite" />
-
-    <LinearLayout
-        android:id="@+id/optionContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="460dp"
-        android:layout_gravity="bottom"
-        android:orientation="vertical">
-
-        <ImageButton
-            android:id="@+id/mainoptionone"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:background="#00000000"
-            android:scaleType="fitStart"
-            app:srcCompat="@drawable/mainoptionone" />
-
-        <ImageButton
-            android:id="@+id/mainoptiontwo"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:background="#00000000"
-            android:scaleType="fitStart"
-            app:srcCompat="@drawable/mainoptiontwo" />
-
-        <ImageButton
-            android:id="@+id/mainoptionthree"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:background="#00000000"
-            android:scaleType="fitStart"
-            app:srcCompat="@drawable/mainoptionthree" />
-    </LinearLayout>
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="102dp"
-        android:background="@drawable/barimage"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <GridLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginBottom="9dp"
-            android:layout_marginTop="9dp">
-
-            <ImageButton
-                android:id="@+id/mainsearchButton"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="fill_vertical"
-                android:layout_margin="5dp"
-                android:layout_marginHorizontal="10dp"
-                android:layout_weight="1"
-                android:background="#00000000"
-                android:cropToPadding="false"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/searchicon" />
-
-            <ImageButton
-                android:id="@+id/mainmenuButton"
-                android:layout_width="40dp"
-                android:layout_height="25dp"
-                android:layout_gravity="fill_vertical"
-                android:layout_marginHorizontal="10dp"
-                android:layout_weight="1"
-                android:background="#00000000"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/menuicon" />
-        </GridLayout>
-
-        <FrameLayout
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/transparent">
+            android:orientation="vertical">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="0dp">
+        </LinearLayout>
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@drawable/barimage"
+            android:paddingTop="@dimen/appbar_padding_top"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right">
 
                 <ImageButton
-                    android:id="@+id/mainoptionButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="bottom|left"
-                    android:layout_margin="0dp"
+                    android:id="@+id/mainmenuButton"
+                    android:layout_width="40dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="fill_vertical"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_weight="1"
                     android:background="#00000000"
-                    app:srcCompat="@drawable/mainoptionicon" />
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/menuicon" />
+            </GridLayout>
+
+            <FrameLayout
+                android:id="@+id/optionFrame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="0dp"
+                android:layout_weight="1">
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
+                    android:background="#11ffffff"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -139,32 +83,89 @@
                         android:layout_weight="1"
                         app:srcCompat="@drawable/mainthirdicon" />
                 </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp">
+
+                    <ImageButton
+                        android:id="@+id/mainoptionButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="bottom|left"
+                        android:layout_margin="0dp"
+                        android:background="#00ffffff"
+                        app:srcCompat="@drawable/mainoptionicon" />
+
+                </FrameLayout>
+
             </FrameLayout>
 
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+        </android.support.design.widget.AppBarLayout>
 
-        </FrameLayout>
 
-    </android.support.design.widget.AppBarLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="51dp"
-        android:layout_height="51dp"
-        android:layout_margin="@dimen/fab_margin"
-        android:scaleType="fitCenter"
-        app:backgroundTint="?android:attr/colorButtonNormal"
-        app:layout_anchor="@+id/container"
-        app:layout_anchorGravity="bottom|left"
-        app:srcCompat="@drawable/gototop" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </FrameLayout>
 
+    <ImageButton
+        android:id="@+id/timeOrderButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="top"
+        android:layout_margin="0dp"
+        android:background="#00ffffff"
+        android:visibility="visible"
+        app:srcCompat="@drawable/timeordericon" />
+
+    <ImageButton
+        android:id="@+id/distanceOrderButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="top"
+        android:layout_margin="0dp"
+        android:background="#00ffffff"
+        android:visibility="visible"
+        app:srcCompat="@drawable/distanceordericon" />
+
+    <ImageButton
+        android:id="@+id/likeOrderButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="top"
+        android:layout_margin="0dp"
+        android:background="#00ffffff"
+        android:visibility="visible"
+        app:srcCompat="@drawable/likeordericon" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/goToWritingButton"
+            android:layout_width="53dp"
+            android:layout_height="51dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_margin="@dimen/fab_margin"
+            android:scaleType="fitStart"
+            app:backgroundTint="#ff5579B0"
+            app:layout_anchor="@+id/container"
+            app:layout_anchorGravity="bottom|right"
+            app:rippleColor="#00000000"
+            app:srcCompat="@drawable/gotowrite" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="51dp"
+            android:layout_height="51dp"
+            android:layout_gravity="center_vertical|right"
+            android:layout_margin="@dimen/fab_margin"
+            android:scaleType="centerCrop"
+            app:backgroundTint="#ffffffff"
+            app:layout_anchor="@+id/linearLayout"
+            app:layout_anchorGravity="bottom|left"
+            app:srcCompat="@drawable/gototop" />
 </android.support.design.widget.CoordinatorLayout>

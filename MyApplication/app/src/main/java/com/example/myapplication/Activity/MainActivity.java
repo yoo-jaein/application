@@ -3,7 +3,7 @@ package com.example.myapplication.Activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -18,8 +18,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
+import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,16 +33,25 @@ import com.example.myapplication.Fragment.MyPageFragment;
 import com.example.myapplication.Fragment.TimeLineFragment;
 import com.example.myapplication.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Animation.AnimationListener, View.OnClickListener {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private BackPressCloseHandler backPressCloseHandler;
     private ViewPager mViewPager;
 
-    boolean option =false;
+    boolean option = false;
 
-    private LinearLayout optionContainer;
     private FloatingActionButton goToWritingButton;
+
+    private ImageButton mSettingButton;
+
+    private ImageButton optionButton;
+    private ImageButton timeOrderButton;
+    private ImageButton distanceOrderButton;
+    private ImageButton likeOrderButton;
+
+    private FrameLayout frameLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);*/
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        getWindow().setStatusBarColor(Color.parseColor("#516FA5"));
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         backPressCloseHandler = new BackPressCloseHandler(this);
 
@@ -67,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 ListView timeline=(ListView)findViewById(R.id.timeline);
                 timeline.smoothScrollToPosition(0);
-                //.smoothScrollToPosition( 0 );
             }
         });
 
@@ -83,44 +94,140 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        optionContainer=(LinearLayout)findViewById(R.id.optionContainer);
-        optionContainer.setVisibility(View.GONE);
+        timeOrderButton = (ImageButton)findViewById(R.id.timeOrderButton);
+        timeOrderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        final ImageButton optionButton=(ImageButton)findViewById(R.id.mainoptionButton);
-        optionButton.bringToFront();
+            }
+        });
+
+        distanceOrderButton = (ImageButton)findViewById(R.id.distanceOrderButton);
+        distanceOrderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        likeOrderButton = (ImageButton)findViewById(R.id.likeOrderButton);
+        likeOrderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        optionButton=(ImageButton)findViewById(R.id.mainoptionButton);
         optionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("test","MainActivity : optionButton OnClickListner");
-                optionContainer.setVisibility(View.VISIBLE);
+
+                if(!option) {
+                    showOptionAnim();
+                }
+                else{
+                    hideOptionAnim();
+                }
             }
         });
+    }
 
-        ImageButton op1=(ImageButton)findViewById(R.id.mainoptionone);
-        ImageButton op2=(ImageButton)findViewById(R.id.mainoptiontwo);
-        ImageButton op3=(ImageButton)findViewById(R.id.mainoptionthree);
+    @Override
+    public void onClick(View view) {
+        if(option){
+            hideOptionAnim();
+        }
+    }
 
-        op1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                optionContainer.setVisibility(View.GONE);
+    public void showOptionAnim(){
+        option = true;
+
+        timeOrderButton.setVisibility(View.VISIBLE);
+        distanceOrderButton.setVisibility(View.VISIBLE);
+        likeOrderButton.setVisibility(View.VISIBLE);
+
+        TranslateAnimation animTime = new TranslateAnimation(optionButton.getX(), optionButton.getX(), optionButton.getY(), optionButton.getY() + 200);
+        animTime.setFillAfter(true);
+        animTime.setDuration(1000);
+
+        TranslateAnimation animDistance = new TranslateAnimation(optionButton.getX(), optionButton.getX(), optionButton.getY(), optionButton.getY() + 400);
+        animDistance.setFillAfter(true);
+        animDistance.setDuration(1000);
+
+        TranslateAnimation animLike = new TranslateAnimation(optionButton.getX(), optionButton.getX(), optionButton.getY(), optionButton.getY() + 600);
+        animLike.setFillAfter(true);
+        animLike.setDuration(1000);
+
+        long time = AnimationUtils.currentAnimationTimeMillis();
+
+        timeOrderButton.invalidate();
+        distanceOrderButton.invalidate();
+        likeOrderButton.invalidate();
+
+        animTime.setStartTime(time);
+        animDistance.setStartTime(time);
+        animLike.setStartTime(time);
+
+        timeOrderButton.setAnimation(animTime);
+        distanceOrderButton.setAnimation(animDistance);
+        likeOrderButton.setAnimation(animLike);
+    }
+
+    public void hideOptionAnim(){
+        option = false;
+
+        TranslateAnimation animTime = new TranslateAnimation(optionButton.getX(), optionButton.getX(), timeOrderButton.getY(), optionButton.getY());
+        animTime.setFillAfter(true);
+        animTime.setDuration(1000);
+
+        TranslateAnimation animDistance = new TranslateAnimation(optionButton.getX(), optionButton.getX(), distanceOrderButton.getY(), optionButton.getY());
+        animDistance.setFillAfter(true);
+        animDistance.setDuration(1000);
+
+        TranslateAnimation animLike = new TranslateAnimation(optionButton.getX(), optionButton.getX(), likeOrderButton.getY(), optionButton.getY());
+        animLike.setFillAfter(true);
+        animLike.setDuration(1000);
+
+        long time = AnimationUtils.currentAnimationTimeMillis();
+
+        timeOrderButton.invalidate();
+        distanceOrderButton.invalidate();
+        likeOrderButton.invalidate();
+
+        animTime.setStartTime(time);
+        animDistance.setStartTime(time);
+        animLike.setStartTime(time);
+
+        timeOrderButton.setAnimation(animTime);
+        distanceOrderButton.setAnimation(animDistance);
+        likeOrderButton.setAnimation(animLike);
+
+        timeOrderButton.setVisibility(View.GONE);
+        distanceOrderButton.setVisibility(View.GONE);
+        likeOrderButton.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onAnimationStart(Animation animation) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animation animation) {
+
+    }
+
+    @Override
+    public void onAnimationRepeat(Animation animation) {
+
+        mSettingButton=(ImageButton)findViewById(R.id.mainmenuButton);
+        mSettingButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view){
+                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
             }
         });
-
-        op2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                optionContainer.setVisibility(View.GONE);
-            }
-        });
-
-        op3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                optionContainer.setVisibility(View.GONE);
-            }
-        });
-
     }
 
     @Override
@@ -153,26 +260,6 @@ public class MainActivity extends AppCompatActivity {
         return !isFirst;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main2, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-            startActivity(intent);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     public static class PlaceholderFragment extends Fragment {
         private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -199,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-         SectionsPagerAdapter(FragmentManager fm) {
+        SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
