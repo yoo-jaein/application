@@ -13,8 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -32,7 +32,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static android.R.attr.bitmap;
 import static com.example.myapplication.ProblemDomain.Constants.GET_PICTURE_URI;
 
 public class MyPageFragment extends Fragment {
@@ -98,6 +97,12 @@ public class MyPageFragment extends Fragment {
         int w=fillbar.getWidth();
         int h=fillbar.getHeight();
 
+        int count=0;
+
+        for(Posts posts:client.getMyLikeList())
+            count+=posts.getLike();
+        
+        if(count<250) w=w*(count/250);
         unfillbar.setLayoutParams(new FrameLayout.LayoutParams(w,h));
 
 
