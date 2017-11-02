@@ -175,6 +175,7 @@ class clientRead extends Thread
 							else {
 								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 								cControl.setMyLikeCount(Integer.parseInt(((String)temp)));
+								cControl.getMe().setTotalLike(Integer.parseInt(((String)temp)));
 							}
 						}
 						else if(cControl.isPost()){
@@ -228,6 +229,11 @@ class clientRead extends Thread
 						if reading data from socket is User
 					 */
 					else if (temp instanceof User) {
+						try {
+							cControl.setMyLikeCount(((User) temp).getTotalLike());
+						}catch(Exception e){
+							e.printStackTrace();
+						}
 						if(cControl.isLogin()){
 							Log.d("CLIENT", "login");
 							cControl.setLogin(false);
