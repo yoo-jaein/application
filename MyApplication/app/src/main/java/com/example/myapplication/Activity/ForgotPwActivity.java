@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toast;
 
 import com.example.myapplication.PhysicalArchitecture.ClientController;
 import com.example.myapplication.ProblemDomain.Constants;
@@ -47,8 +46,7 @@ public class ForgotPwActivity extends Activity {
             @Override
             public void handleMessage(Message msg) {
                 if(msg.what== Constants.RECEIVE_SUCCESSS){
-                    client.removeHandler(this);
-                    // TODO 이메일로 비밀번호 전송 완료했다는 알림 띄우기
+                    client.setHandler(null);
                     Toast.makeText(getApplicationContext(), "비밀번호 전송 완료", Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -72,7 +70,7 @@ public class ForgotPwActivity extends Activity {
             public void onClick(View view) {
                 String emailstring = emailtext.getText().toString();
 
-                client.addHandler(handler);
+                client.setHandler(handler);
                 client.findPass(emailtext.getText().toString());
 
                 if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailstring).matches())    // 이메일 유효성 검사
