@@ -71,6 +71,8 @@ public class TimeLineFragment extends Fragment {
                 }
             }
         };
+        client.addHandler(handler);
+        client.refresh();
     }
 
     @Override
@@ -86,9 +88,6 @@ public class TimeLineFragment extends Fragment {
                 client.morePosts();
             }
         });
-
-        client.addHandler(handler);
-        client.refresh();
 
         timeline = (ListView) view.findViewById(R.id.timeline);
 

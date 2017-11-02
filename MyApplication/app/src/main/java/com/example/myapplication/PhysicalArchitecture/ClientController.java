@@ -426,7 +426,7 @@ public class ClientController{
 	}
 
 	 void setWaiting(boolean waiting) {
-		this.waiting = waiting;
+		this                                                                                                                                                                                                                                                                                                                                                                                                                                         .waiting = waiting;
 	}
 
 	 boolean isLogin() {
