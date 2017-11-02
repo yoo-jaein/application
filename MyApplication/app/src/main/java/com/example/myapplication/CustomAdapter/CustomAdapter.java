@@ -31,7 +31,7 @@ import java.util.ArrayList;
 public class CustomAdapter extends BaseAdapter {
 
     ArrayList<Posts> contentslist = new ArrayList<Posts>();
-    ArrayList<Object> user;
+    ArrayList<Integer> user;
     private ClientController client = null;
     int cnt = 0;
 
@@ -111,7 +111,7 @@ public class CustomAdapter extends BaseAdapter {
                     Log.d("test", "CustomAdapter: " + cnt + "Thread run start");
                     Log.d("test", "CustomAdapter: " + cnt + "post: " + posts.getPostsIndex() + " postname:" + posts.getMusic().getMusicName());
 
-                    if (user.contains((Object) posts.getPostsIndex())) {
+                    if (user.contains(posts.getPostsIndex())) {
                         likebutton.setVisibility(View.VISIBLE);
                         unlikebutton.setVisibility(View.INVISIBLE);
                         likebutton.bringToFront();

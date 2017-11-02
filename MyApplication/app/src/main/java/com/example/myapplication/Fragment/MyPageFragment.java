@@ -101,7 +101,7 @@ public class MyPageFragment extends Fragment {
 
         for(Posts posts:client.getMyLikeList())
             count+=posts.getLike();
-        
+
         if(count<250) w=w*(count/250);
         unfillbar.setLayoutParams(new FrameLayout.LayoutParams(w,h));
 

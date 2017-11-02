@@ -15,7 +15,7 @@ public class User implements Serializable {
 
 	private int index;
 	private String id, pw;
-	private ArrayList<Object> likeList;
+	private ArrayList<Integer> likeList;
 	private ArrayList<Object> myList;
 	private File Fimage;
 	private byte[] Iimage;
@@ -24,7 +24,7 @@ public class User implements Serializable {
 		this.index = 0;
 		this.id = null;
 		this.pw = null;
-		this.likeList = new ArrayList<Object>();
+		this.likeList = new ArrayList<Integer>();
 		this.myList = new ArrayList<Object>();
 		this.Fimage = null;
 		this.Iimage = null;
@@ -35,7 +35,7 @@ public class User implements Serializable {
 		this.index = index;
 		this.id = id;
 		this.pw = pw;
-		this.likeList = new ArrayList<Object>();
+		this.likeList = new ArrayList<Integer>();
 		this.myList = new ArrayList<Object>();
 		this.Fimage = null;
 		this.Iimage = null;
@@ -54,7 +54,7 @@ public class User implements Serializable {
 		return index;
 	}
 
-	public ArrayList<Object> getLikeList() {
+	public ArrayList<Integer> getLikeList() {
 		return likeList;
 	}
 
@@ -88,7 +88,7 @@ public class User implements Serializable {
 		this.pw = pw;
 	}
 
-	public void setUserLikeList(ArrayList<Object> likeList) {
+	public void setUserLikeList(ArrayList<Integer> likeList) {
 		this.likeList = likeList;
 	}
 
