@@ -69,19 +69,6 @@ public class CustomAdapter extends BaseAdapter {
         return position;
     }
 
-    Drawable ByteToDrawable(byte[] b) {
-        Drawable image;
-        Log.d("test", "CustomAdapter:ByteToDrawable start");
-        Bitmap src = BitmapFactory.decodeByteArray(b, 0, b.length);
-        Log.d("test", "CustomAdapter:ByteToDrawable settingOption");
-        Bitmap bitmap = ImageController.resizeBitmap(src,1000);
-
-//        Bitmap bitmap=BitmapFactory.decodeByteArray(b, 0, b.length);
-        Log.d("test", "CustomAdapter:ByteToDrawable settingBitmap");
-        image = new BitmapDrawable(bitmap);
-        return image;
-    }
-
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final Context context = parent.getContext();
@@ -176,7 +163,7 @@ public class CustomAdapter extends BaseAdapter {
                     byte[] image = posts.getImage();
                     Log.d("test", "CustomAdapter : " + cnt + " postimage setting start :" + image);
                     if (image == null) postimage.setImageResource(R.drawable.drawemptybox);
-                    else postimage.setImageDrawable(ByteToDrawable(image));
+                    else postimage.setImageDrawable(ImageController.ByteToDrawable(image));
                     Log.d("test", "CustomAdapter : " + cnt + " postimage setting success");
                     Log.d("test", "CustomAdapter : " + cnt + " getView end===========================================================");
 
