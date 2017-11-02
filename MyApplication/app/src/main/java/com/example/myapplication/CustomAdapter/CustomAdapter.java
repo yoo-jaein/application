@@ -130,6 +130,8 @@ public class CustomAdapter extends BaseAdapter {
                             client.addHandler(handler);
                             client.dislike(posts.getPostsIndex());
                             likeList.remove((Object)posts.getPostsIndex());
+                            int cnt=(posts.getLike());
+                            likecnt.setText("like "+cnt);
                         }
                     });
                     unlikebutton.setOnClickListener(new View.OnClickListener() {
@@ -142,6 +144,8 @@ public class CustomAdapter extends BaseAdapter {
                             client.addHandler(handler);
                             client.like(posts.getPostsIndex());
                             likeList.add(posts.getPostsIndex());
+                            int cnt=(posts.getLike());
+                            likecnt.setText("like "+cnt);
                         }
                     });
 

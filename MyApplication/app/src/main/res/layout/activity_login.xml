@@ -153,15 +153,6 @@
             android:scaleType="centerInside"
             app:srcCompat="@drawable/loginnewbutton" />
 
-        <ImageButton
-            android:id="@+id/facebookloginButton"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:background="#00000000"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/facebookbutton1" />
-
     </LinearLayout>
 
 </LinearLayout>
