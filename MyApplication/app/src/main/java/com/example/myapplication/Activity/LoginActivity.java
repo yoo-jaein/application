@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                client.removeHandler(this);
+                client.setHandler(null);
                 if(msg.what== Constants.RECEIVE_SUCCESSS){
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
@@ -106,7 +106,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             public void onClick(View view) {
                 // TODO check email and password
                 Log.d("test" , mEmailView.getText().toString() + " / " +  mPasswordView.getText().toString());
-                client.addHandler(handler);
+                client.setHandler(handler);
                 client.login(mEmailView.getText().toString(), mPasswordView.getText().toString());
             }
         });

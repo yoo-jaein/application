@@ -127,7 +127,7 @@ public class CustomAdapter extends BaseAdapter {
                             likebutton.setVisibility(View.INVISIBLE);
                             likebutton.bringToFront();
 
-                            client.addHandler(handler);
+                            client.setHandler(handler);
                             client.dislike(posts.getPostsIndex());
                             likeList.remove((Object)posts.getPostsIndex());
                             int cnt=(posts.getLike());
@@ -141,7 +141,7 @@ public class CustomAdapter extends BaseAdapter {
                             unlikebutton.setVisibility(View.INVISIBLE);
                             unlikebutton.bringToFront();
 
-                            client.addHandler(handler);
+                            client.setHandler(handler);
                             client.like(posts.getPostsIndex());
                             likeList.add(posts.getPostsIndex());
                             int cnt=(posts.getLike());

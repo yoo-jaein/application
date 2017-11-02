@@ -52,7 +52,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 if(msg.what== Constants.RECEIVE_SUCCESSS){
 
-                    client.removeHandler(this);
+                    client.setHandler(null);
 
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
@@ -187,7 +187,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                     return;
                 }
-                client.addHandler(handler);
+                client.setHandler(handler);
                 client.register(emailstring, pwstring);
 
             }

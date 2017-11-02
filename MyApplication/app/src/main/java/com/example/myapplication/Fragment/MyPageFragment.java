@@ -1,5 +1,6 @@
 package com.example.myapplication.Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -63,7 +64,6 @@ public class MyPageFragment extends Fragment {
     }
 
 
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(client == null)
@@ -73,7 +73,7 @@ public class MyPageFragment extends Fragment {
             @Override
             public void handleMessage(Message msg){
 
-                client.addHandler(this);
+                client.setMyPageHandler(null);
 
                 if(msg.what== Constants.RECEIVE_REFRESH){
                     myPostsList = client.getMyPostsList();
@@ -83,7 +83,7 @@ public class MyPageFragment extends Fragment {
                     }
                     client.setMyLikeCount(totalCnt);
                     client.getMe().setTotalLike(totalCnt);
-                    client.addHandler(this);
+                    client.setMyPageHandler(this);
                     client.totalLike();
                     mylist.setAdapter(new CustomAdapter(myPostsList,client.getMe()));
                 }else if(msg.what==Constants.RECEIVE_SUCCESSS){
@@ -94,9 +94,8 @@ public class MyPageFragment extends Fragment {
                 }
             }
         };
-        client.addHandler(handler);
+        client.setMyPageHandler(handler);
         client.myPosts();
-
     }
 
     @Override
@@ -203,7 +202,7 @@ public class MyPageFragment extends Fragment {
                 client.getMe().setIImage(image);
                 profileImage.setImageBitmap(selPhoto);
 
-                client.addHandler(handler);
+                client.setMyPageHandler(handler);
                 client.updateUser(client.getMe());
 
             } catch (FileNotFoundException e) {

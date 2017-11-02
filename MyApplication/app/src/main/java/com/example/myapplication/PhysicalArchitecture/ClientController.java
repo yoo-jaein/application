@@ -30,7 +30,10 @@ public class ClientController{
 	private int timeLineOrder = Constants.TIME;
 
 	// for change mainthread UI
-	private ArrayList<Handler> handlerList = null;
+	private Handler timeLineHandler = null;
+	private Handler myLikeListHandler = null;
+	private Handler myPageHandler = null;
+	private Handler handler = null;
 	private Handler distanceOrderHandler = null;
 	private GPSInfo gpsInfo = null;
 
@@ -66,14 +69,11 @@ public class ClientController{
 	public Client client;
 	private static ClientController cControl = new ClientController();
 
-	private int handlerCnt = 0;
-
 	public ClientController() {
 		timeLine = new ArrayList<>();
 		myPostsList = new ArrayList<>();
 		myLikeList  = new ArrayList<>();
 		moreList = new ArrayList<>();
-		handlerList = new ArrayList<>();
 
 		locationContentIdList = new ArrayList<Integer>();
 
@@ -409,19 +409,40 @@ public class ClientController{
    /*
       get and set method
     */
-   //public Handler getHandler() { return handler;}
 
-	public void addHandler(Handler handler) {
-		handlerList.add(handler);
-		handlerCnt++;
+	public Handler getTimeLineHandler() {
+		return timeLineHandler;
 	}
 
-	public void removeHandler(Handler handler){
-		handlerList.remove(handler);
-		handlerCnt--;
+	public void setTimeLineHandler(Handler timeLineHandler) {
+		this.timeLineHandler = timeLineHandler;
 	}
 
-    boolean isWaiting() {
+	public Handler getMyLikeListHandler() {
+		return myLikeListHandler;
+	}
+
+	public void setMyLikeListHandler(Handler myLikeListHandler) {
+		this.myLikeListHandler = myLikeListHandler;
+	}
+
+	public Handler getMyPageHandler() {
+		return myPageHandler;
+	}
+
+	public void setMyPageHandler(Handler myPageHandler) {
+		this.myPageHandler = myPageHandler;
+	}
+
+	public Handler getHandler() {
+		return handler;
+	}
+
+	public void setHandler(Handler handler) {
+		this.handler = handler;
+	}
+
+	boolean isWaiting() {
 		return waiting;
 	}
 
@@ -568,7 +589,6 @@ public class ClientController{
 		return me;
 	}
 
-	public ArrayList<Handler> getHandlerList(){ return handlerList; }
 	/*
        get data
      */

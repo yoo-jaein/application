@@ -123,7 +123,7 @@ class clientRead extends Thread
 					if(System.currentTimeMillis() - cControl.getStartTime() > 5000){
 						Log.d("CLIENT", "time over!!!!");
 						cControl.setWaiting(false);
-						cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_ERROR);
+						cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 					}
 
 					temp = clientInputStream.readObject();
@@ -137,43 +137,43 @@ class clientRead extends Thread
 							Log.d("CLIENT", "login");
 							cControl.setLogin(false);
 							if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_ERROR);
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 							}
 						}
 						else if(cControl.isRegister()){
 							Log.d("CLIENT", "register");
 							cControl.setRegister(false);
 							if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_ERROR);
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 							}else if(((String)temp).compareTo("#fin")==0){
-								cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 							}
 						}
 						else if(cControl.isFindPass()){
 							Log.d("CLIENT", "findPass");
 							cControl.setFindPass(false);
 							if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_ERROR);
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 							}
 							else if(((String)temp).compareTo("#fin")==0){
-								cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 							}
 						}
                         else if(cControl.isRefresh()){
                             Log.d("CLIENT", "refresh");
                             cControl.setRefresh(false);
                             if(((String)temp).compareTo("#err")==0) {
-                                cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_ERROR);
+                                cControl.getTimeLineHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
                             }
                         }
 						else if(cControl.isTotalLike()){
 							Log.d("CLIENT", "totalLike");
 							cControl.setTotalLike(false);
 							if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_ERROR);
+								cControl.getMyPageHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 							}
 							else {
-								cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
+								cControl.getMyPageHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 								cControl.setMyLikeCount(Integer.parseInt(((String)temp)));
 								cControl.getMe().setTotalLike(Integer.parseInt(((String)temp)));
 							}
@@ -182,44 +182,44 @@ class clientRead extends Thread
 							Log.d("CLIENT", "post");
 							cControl.setPost(false);
 							if(((String)temp).compareTo("#fin")==0){
-								cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 							}
 							else if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_ERROR);
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 							}else{
-								cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_ERROR);
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 							}
 						}
 						else if(cControl.isDelete()){
 							Log.d("CLIENT", "delete");
 							cControl.setDelete(false);
 							if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_ERROR);
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 							}
 						}
 						else if(cControl.isLike()){
 							Log.d("CLIENT", "like");
 							cControl.setLike(false);
 							if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_ERROR);
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 							}
 						}
 						else if(cControl.isDislike()){
 							Log.d("CLIENT", "disLike");
 							cControl.setLike(false);
 							if(((String)temp).compareTo("#fin")==0){
-								cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 							}
 							else if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_ERROR);
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 							}
 						}else if(cControl.isUpdateUser()){
 							Log.d("CLIENT", "updateUser");
 							if(((String)temp).compareTo("#fin")==0){
-								cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 							}
 							else if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_ERROR);
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 							}
 						}
 						Log.d("CLIENT", temp.toString());
@@ -238,19 +238,19 @@ class clientRead extends Thread
 							Log.d("CLIENT", "login");
 							cControl.setLogin(false);
 							cControl.setMe((User)temp);
-							cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
+							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 						}
 						else if(cControl.isRegister()){
 							Log.d("CLIENT", "register");
 							cControl.setRegister(false);
 							cControl.setMe((User)temp);
-							cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
+							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 						}
 						else if(cControl.isUpdateUser()){
 							Log.d("CLIENT", "updateUser");
 							cControl.setLike(false);
 							cControl.setMe((User)temp);
-							cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
+							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 						}
 						Log.d("CLIENT", temp.toString());
 						cControl.setWaiting(false);
@@ -264,40 +264,39 @@ class clientRead extends Thread
 							cControl.setMorePosts(false);
 							cControl.addTimeLine((PostsList)temp);
 							cControl.setMoreList((PostsList)temp);
-							cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_MORE);
+							cControl.getTimeLineHandler().sendEmptyMessage(Constants.RECEIVE_MORE);
 						}
 						else if(cControl.isRefresh()){
 							Log.d("CLIENT", "refresh");
 							cControl.setRefresh(false);
 							cControl.setTimeLine((PostsList)temp);
-							cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_REFRESH);
+							cControl.getTimeLineHandler().sendEmptyMessage(Constants.RECEIVE_REFRESH);
 						}
 						else if(cControl.isMyPosts()){
 							Log.d("CLIENT", "myPosts");
 							cControl.setMyPosts(false);
 							cControl.setMyPostsList((PostsList)temp);
-							cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_REFRESH);
+							cControl.getMyPageHandler().sendEmptyMessage(Constants.RECEIVE_REFRESH);
 						}
 						else if(cControl.isMoreMyPosts()){
 							Log.d("CLIENT", "moreMyPosts");
 							cControl.setMoreMyPosts(false);
 							cControl.addMyPostsList((PostsList)temp);
 							cControl.setMoreList((PostsList)temp);
-							cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_MORE);
+							cControl.getMyPageHandler().sendEmptyMessage(Constants.RECEIVE_MORE);
 						}
 						else if(cControl.isMyLike()){
 							Log.d("CLIENT", "myLike");
 							cControl.setMyLike(false);
 							cControl.setMyLikeList((PostsList)temp);
-							cControl.setMoreList((PostsList)temp);
-							cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_REFRESH);
+							cControl.getMyLikeListHandler().sendEmptyMessage(Constants.RECEIVE_REFRESH);
 						}
 						else if(cControl.isMoreMyLike()){
 							Log.d("CLIENT", "moreMyLike");
 							cControl.setMoreMyLike(false);
 							cControl.addMyLikeList((PostsList)temp);
 							cControl.setMoreList((PostsList)temp);
-							cControl.getHandlerList().get(0).sendEmptyMessage(Constants.RECEIVE_MORE);
+							cControl.getMyLikeListHandler().sendEmptyMessage(Constants.RECEIVE_MORE);
 						}
 						Log.d("CLIENT", temp.toString());
 						cControl.setWaiting(false);

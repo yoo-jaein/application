@@ -26,16 +26,22 @@ public class LikeListFragment extends Fragment {
     private Handler handler;
 
     private ListView likelist;
+    private CustomAdapter adapter;
+
+    private View view;
 
     private ArrayList<Posts> mylikeList;
-
-    public LikeListFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view= inflater.inflate(R.layout.fragment_like_list, container, false);
+
+        likelist = (ListView)view.findViewById(R.id.likelist);
 
         if(client == null)
             client = ClientController.getClientControl();
@@ -43,32 +49,20 @@ public class LikeListFragment extends Fragment {
         handler = new Handler(){
             @Override
             public void handleMessage(Message msg){
-                client.removeHandler(this);
+                client.setMyLikeListHandler(null);
 
                 if(msg.what== Constants.RECEIVE_REFRESH){
                     mylikeList = client.getMyLikeList();
-
-                    likelist.setAdapter(new CustomAdapter(mylikeList, client.getMe()));
+                    adapter = new CustomAdapter(mylikeList,client.getMe());
+                    likelist.setAdapter(adapter);
                 }else if(msg.what==Constants.RECEIVE_FAILED){
                     // TODO when receive err message
                 }
             }
         };
 
-        client.addHandler(handler);
+        client.setMyLikeListHandler(handler);
         client.myLike();
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_like_list, container, false);
-
-        likelist = (ListView)view.findViewById(R.id.likelist);
-
-        client.addHandler(handler);
-        client.myLike();
-
         return  view;
     }
 }
