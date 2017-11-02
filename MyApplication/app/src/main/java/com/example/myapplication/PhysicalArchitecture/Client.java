@@ -359,6 +359,7 @@ class clientWrite extends Thread
 				}
 				while (sendToReadyUser) {
 					out.writeObject(postsConsole);
+                    Log.d("CLIENT", "write complete");
 					sendToReadyUser = false;
 				}
 			}
