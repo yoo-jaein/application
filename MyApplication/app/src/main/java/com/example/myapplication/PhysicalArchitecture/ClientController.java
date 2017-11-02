@@ -4,6 +4,7 @@ import android.content.Context;
 import android.location.LocationManager;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import com.example.myapplication.Foundation.PostsList;
 import com.example.myapplication.ProblemDomain.Constants;
@@ -71,7 +72,7 @@ public class ClientController{
 		myLikeList  = new ArrayList<>();
 		moreList = new ArrayList<>();
 
-		locationContentIdList = new ArrayList<>();
+		locationContentIdList = new ArrayList<Integer>();
 
 		me = null;
 
@@ -81,6 +82,7 @@ public class ClientController{
 			@Override
 			public void handleMessage(Message msg) {
 				if(msg.what == Constants.RECEIVE_SUCCESSS){
+                    Log.d("test", "receive GPS inform");
 					locationContentIdList = (ArrayList<Integer>)(msg.obj);
 					level = 0;
 				}
@@ -213,7 +215,7 @@ public class ClientController{
 				case Constants.TIME: message += "time";
 					break;
 				case Constants.DISTANCE: message += "distance";
-					for(int locationContentId : locationContentIdList)
+					for(Integer locationContentId : locationContentIdList)
 						message += "%" + locationContentId;
 					break;
 				case Constants.LIKE: message += "like";

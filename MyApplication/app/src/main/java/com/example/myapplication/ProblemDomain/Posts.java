@@ -109,9 +109,6 @@ public class Posts implements Serializable{
 	@Override
 	public String toString() {
 		return "Posts [postsID=" + postsID + ", locationInfo=" + locationInfo + ", music=" + music + ", comment=" + comment
-				+ ", userID=" + userID + ", like=" + like + ", createTime=" + createTime + ", Fimage=" + Fimage
-				+ ", Iimage=" + Arrays.toString(Iimage) + "]";
+				+ ", userID=" + userID + ", like=" + like + ", createTime=" + createTime;
 	}
-
-
 }

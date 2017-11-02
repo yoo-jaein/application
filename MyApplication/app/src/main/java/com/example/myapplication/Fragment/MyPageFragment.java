@@ -73,7 +73,7 @@ public class MyPageFragment extends Fragment {
 
                 client.setHandlerNull();
 
-                if(msg.what== Constants.RECEIVE_SUCCESSS){
+                if(msg.what== Constants.RECEIVE_REFRESH){
                     myPostsList = client.getMyPostsList();
                     mylist.setAdapter(new CustomAdapter(myPostsList,client.getMe()));
                 }else if(msg.what==Constants.RECEIVE_FAILED){
@@ -115,7 +115,6 @@ public class MyPageFragment extends Fragment {
                     count+=posts.getLike();
 
                 if(count<250) w=(w*(count/250.0));
-                Log.d("test","My Page: like count="+count+" w="+w+" h="+h);
                 fillbar.setLayoutParams(new RelativeLayout.LayoutParams((int)w,(int)h));
             }
         });

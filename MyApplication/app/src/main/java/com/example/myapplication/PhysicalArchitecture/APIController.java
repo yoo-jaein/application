@@ -101,7 +101,7 @@ public class APIController {
 
     public void getLocationContentIdList(double mapX, double mapY, int radius, Handler handler){
         this.handler = handler;
-        TourAPIThread thread;
+        TourAPIContentIdThread thread;
 
         String query = "";
         query += "&mapX=";
@@ -113,7 +113,7 @@ public class APIController {
         query += "&numOfRows=";
         query += 50;
 
-        thread = new TourAPIThread(SEARCH_BY_LOCATION_BASED_LIST, query);
+        thread = new TourAPIContentIdThread(SEARCH_BY_LOCATION_BASED_LIST, query, handler);
         thread.start();
     }
 
