@@ -106,7 +106,7 @@
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-condensed"
                 android:gravity="top"
-                android:hint="설명쓰기" />
+                android:hint="내용을 작성하세요" />
 
             <LinearLayout
                 android:layout_width="match_parent"

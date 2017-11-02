@@ -66,6 +66,9 @@ public class LikeListFragment extends Fragment {
 
         likelist = (ListView)view.findViewById(R.id.likelist);
 
+        client.addHandler(handler);
+        client.myLike();
+
         return  view;
     }
 }

@@ -48,19 +48,13 @@ public class TimeLineFragment extends Fragment {
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
+                Log.d("handler", "received message in handler");
                 client.removeHandler(this);
                 if (msg.what == Constants.RECEIVE_REFRESH) {
                     postsArrayList = client.getTimeLine();
                     adapter = new CustomAdapter(postsArrayList,client.getMe());
                     timeline.setAdapter(adapter);
 
-                    // TODO 게시물을 더 받아왔을 경우 리스트뷰 갱신. 테스트 필요함.
-                    timeline.getAdapter().registerDataSetObserver(new DataSetObserver() {
-                        @Override
-                        public void onChanged() {
-                            timeline.deferNotifyDataSetChanged();
-                        }
-                    });
                 } else if(msg.what == Constants.RECEIVE_MORE){
                     // 게시물을 더 받아왔을 경우 더 받아온 포스트를 현재 ArrayList에 더함.
                     // client.getMoreList는 타임라인이든 내게시물이든 내가 좋아요 누른 게시물이든 더 받은 포스트가 들어있다.
@@ -90,6 +84,9 @@ public class TimeLineFragment extends Fragment {
         });
 
         timeline = (ListView) view.findViewById(R.id.timeline);
+
+        client.addHandler(handler);
+        client.refresh();
 
         return view;
     }
