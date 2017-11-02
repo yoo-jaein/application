@@ -89,7 +89,7 @@ public class MyPageFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         view= inflater.inflate(R.layout.fragment_my_page, container, false);
 
@@ -97,12 +97,13 @@ public class MyPageFragment extends Fragment {
         client.myPosts();
 
         nametext=(TextView)view.findViewById(R.id.user_name);
-        nametext.setText(client.getMe().getId());
+        String name=client.getMe().getId();
+        String names[]=name.split("@");
+        nametext.setText(names[0]);
 
 
         postcnt=(TextView)view.findViewById(R.id.mypostcntTextview);
         likecnt=(TextView)view.findViewById(R.id.mylikecount);
-        likecnt.setText("like " );
 
         mylist=(ListView)view.findViewById(R.id.mylist);
         mylist.setAdapter(new CustomAdapter(client.getMyPostsList(),client.getMe()));
@@ -120,13 +121,16 @@ public class MyPageFragment extends Fragment {
                 double w=(double)unfillbar.getWidth()/3;
                 double count=0.0;
 
-                for(Posts posts:client.getMyLikeList())
-                    count+=posts.getLike();
-
+                count=client.getMyLikeCount();
                 if(count<250) w=(w*(count/250.0));
                 fillbar.setLayoutParams(new RelativeLayout.LayoutParams((int)w,(int)h));
 
                 postcnt.setText(""+client.getMe().getMyList().size());
+                int cnt=0;
+                try {
+                    cnt=client.getMyLikeCount();
+                }catch (Exception e) {}
+                likecnt.setText("like " + cnt);
             }
         });
 
