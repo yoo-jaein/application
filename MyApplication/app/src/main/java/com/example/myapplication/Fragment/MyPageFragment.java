@@ -13,11 +13,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.myapplication.CustomAdapter.CustomAdapter;
@@ -57,6 +59,8 @@ public class MyPageFragment extends Fragment {
         // Required empty public constructor
     }
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,8 +70,10 @@ public class MyPageFragment extends Fragment {
         handler = new Handler(){
             @Override
             public void handleMessage(Message msg){
+
+                client.setHandlerNull();
+
                 if(msg.what== Constants.RECEIVE_SUCCESSS){
-                    client.setHandlerNull();
                     myPostsList = client.getMyPostsList();
                     mylist.setAdapter(new CustomAdapter(myPostsList,client.getMe()));
                 }else if(msg.what==Constants.RECEIVE_FAILED){
@@ -76,14 +82,15 @@ public class MyPageFragment extends Fragment {
             }
         };
 
-        client.setHandler(handler);
-        client.myPosts();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view= inflater.inflate(R.layout.fragment_my_page, container, false);
+
+        client.setHandler(handler);
+        client.myPosts();
 
         nametext=(TextView)view.findViewById(R.id.user_name);
         nametext.setText("young ju");
@@ -94,17 +101,24 @@ public class MyPageFragment extends Fragment {
 /////////////////////stretch fill bar according to like count
         fillbar=(ImageView)view.findViewById(R.id.fill_like_bar);
         unfillbar=(ImageView)view.findViewById(R.id.unfillbar);
-        int w=fillbar.getWidth();
-        int h=fillbar.getHeight();
 
-        int count=0;
+        RelativeLayout f=(RelativeLayout) view.findViewById(R.id.r);
+        f.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
 
-        for(Posts posts:client.getMyLikeList())
-            count+=posts.getLike();
+                double h=(double) unfillbar.getHeight();
+                double w=(double)unfillbar.getWidth()/3;
+                double count=0.0;
 
-        if(count<250) w=w*(count/250);
-        unfillbar.setLayoutParams(new FrameLayout.LayoutParams(w,h));
+                for(Posts posts:client.getMyLikeList())
+                    count+=posts.getLike();
 
+                if(count<250) w=(w*(count/250.0));
+                Log.d("test","My Page: like count="+count+" w="+w+" h="+h);
+                fillbar.setLayoutParams(new RelativeLayout.LayoutParams((int)w,(int)h));
+            }
+        });
 
 //////////////////////////////////////////////////////////////////////////////////////////
 

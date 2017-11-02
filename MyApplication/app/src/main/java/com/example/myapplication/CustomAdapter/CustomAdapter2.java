@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.example.myapplication.PhysicalArchitecture.ImageController;
 import com.example.myapplication.ProblemDomain.Posts;
 import com.example.myapplication.R;
 
@@ -75,14 +76,6 @@ public class CustomAdapter2 extends BaseAdapter {
     }
 
 
-    Drawable ByteToDrawable(byte[] b) {
-        Drawable image;
-        Bitmap bitmap= BitmapFactory.decodeByteArray(b, 0, b.length);
-        Log.d("test","bitmap");
-        image = new BitmapDrawable(bitmap);
-        return image;
-    }
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -101,9 +94,10 @@ public class CustomAdapter2 extends BaseAdapter {
         Thread mThread = new Thread() {
             public void run() {
                 try {
-                    image1.setImageDrawable(ByteToDrawable(s.s1.getImage()));
-                    image2.setImageDrawable(ByteToDrawable(s.s2.getImage()));
-                    image3.setImageDrawable(ByteToDrawable(s.s3.getImage()));
+                    byte[] b;
+                    if((b=s.s1.getImage())!=null) image1.setImageDrawable(ImageController.ByteToDrawable(s.s1.getImage()));
+                    if((b=s.s2.getImage())!=null) image2.setImageDrawable(ImageController.ByteToDrawable(s.s2.getImage()));
+                    if((b=s.s3.getImage())!=null) image3.setImageDrawable(ImageController.ByteToDrawable(s.s3.getImage()));
                 } catch (Exception ex) {
                 }
             }

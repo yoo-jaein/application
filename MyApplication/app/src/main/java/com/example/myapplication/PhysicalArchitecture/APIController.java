@@ -99,6 +99,24 @@ public class APIController {
         thread.start();
     }
 
+    public void getLocationContentIdList(double mapX, double mapY, int radius, Handler handler){
+        this.handler = handler;
+        TourAPIThread thread;
+
+        String query = "";
+        query += "&mapX=";
+        query += mapX;
+        query += "&mapY=";
+        query += mapY;
+        query += "&radius=";
+        query += radius;
+        query += "&numOfRows=";
+        query += 50;
+
+        thread = new TourAPIThread(SEARCH_BY_LOCATION_BASED_LIST, query);
+        thread.start();
+    }
+
     public void getMusicList(String keyword, Handler handler){
         this.handler = handler;
 
@@ -218,6 +236,84 @@ public class APIController {
                 e.printStackTrace();
             }
 
+        }
+    }
+
+    private class TourAPIContentIdThread extends Thread{
+        private ArrayList<Integer> locationContentIdList;
+
+        private String query = "";
+        private String call;
+
+        private Handler contentIdHandler;
+
+        private TourAPIContentIdThread(int callCode, String query, Handler handler) {
+            this.call = getQueryMode(callCode);
+            this.query = query;
+
+            contentIdHandler = handler;
+            locationContentIdList = new ArrayList<>();
+        }
+
+        @Override
+        public void run() {
+            String queryURL = "" + TOUR_INIT_URI + call + TOUR_SERVICE_KEY + query
+                    + TOUR_MOBILE_OS + TOUR_MOBILE_APP;
+            Log.d("URL", queryURL);
+
+            boolean nameCodeList = false;
+
+            try {
+                URL url = new URL(queryURL);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                InputStream is = new BufferedInputStream(urlConnection.getInputStream());
+
+                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                XmlPullParser xpp = factory.newPullParser();
+                xpp.setInput(new InputStreamReader(is, "UTF-8"));
+
+                String tag;
+                String sub = "";
+
+                xpp.next();
+                int eventType = xpp.getEventType();
+
+                ArrayList<String> nameList = new ArrayList<>();
+                ArrayList<String> codeList = new ArrayList<>();
+
+                while (eventType != XmlPullParser.END_DOCUMENT) {
+                    switch (eventType) {
+                        case XmlPullParser.START_DOCUMENT:
+                            break;
+
+                        case XmlPullParser.START_TAG:
+                            tag = xpp.getName();
+
+                            if (tag.equals("contentid")) {
+                                xpp.next();
+                                locationContentIdList.add(Integer.parseInt(xpp.getText()));
+                            }
+                        case XmlPullParser.TEXT:
+                            break;
+                        case XmlPullParser.END_TAG:
+                            tag = xpp.getName();
+                            break;
+                    }
+                    eventType = xpp.next();
+                }
+
+                if(locationContentIdList.size() > 0) {
+                    Message message = Message.obtain(handler, Constants.RECEIVE_LOCATION_LIST, locationContentIdList);
+                    message.what = Constants.RECEIVE_SUCCESSS;
+                    contentIdHandler.sendMessage(message);
+                }else{
+                    contentIdHandler.sendEmptyMessage(Constants.RECEIVE_FAILED);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

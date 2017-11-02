@@ -69,7 +69,7 @@ public class WritingNewPostActivity extends AppCompatActivity {
                     client.setHandlerNull();
                     finish();
                 }
-                else if(msg.what==Constants.RECEIVE_FAILED){
+                else if(msg.what==Constants.RECEIVE_ERROR){
                     // TODO when received err message
                 }
             }

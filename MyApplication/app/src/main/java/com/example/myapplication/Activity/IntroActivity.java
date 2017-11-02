@@ -23,43 +23,16 @@ public class IntroActivity extends AppCompatActivity {
 
     private Handler handlers;
 
-    ViewPager vp;
-
-    ImageView select1;
-    ImageView select2;
-    ImageView select3;
-
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            try {
-                Intent intent = new Intent(IntroActivity.this, LoginActivity.class);
+           Intent intent = new Intent(IntroActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-            }catch (Exception e) {
-            }
+
         }
     };
-
-    Runnable runnable1 = new Runnable() {
-        @Override
-        public void run() {
-            vp.setCurrentItem(1);
-            select1.setImageResource(R.drawable.guideunselect);
-            select2.setImageResource(R.drawable.guideselect);
-        }
-    };
-
-    Runnable runnable2 = new Runnable() {
-        @Override
-        public void run() {
-            vp.setCurrentItem(2);
-            select2.setImageResource(R.drawable.guideunselect);
-            select3.setImageResource(R.drawable.guideselect);
-        }
-    };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,32 +43,7 @@ public class IntroActivity extends AppCompatActivity {
         client = ClientController.getClientControl();
         client.client.start();
 
-        Button skip=(Button)findViewById(R.id.guideskipButton);
-        skip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("test","IntroActivity : skip Onclick Listener");
-                handlers.removeMessages(0);
-                Intent intent = new Intent(IntroActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        select1=(ImageView)findViewById(R.id.guideselect1);
-        select2=(ImageView)findViewById(R.id.guideselect2);
-        select3=(ImageView)findViewById(R.id.guideselect3);
-
-        select1.setImageResource(R.drawable.guideselect);
-
-        handlers.postDelayed(runnable1,4000);
-        handlers.postDelayed(runnable2,8000);
-        handlers.postDelayed(runnable, 14000);
-
-        vp = (ViewPager)findViewById(R.id.vp);
-        vp.setAdapter(new pagerAdapter(getSupportFragmentManager()));
-        vp.setCurrentItem(0);
-
+        handlers.postDelayed(runnable, 3000);
 
     }
 
@@ -111,32 +59,3 @@ public class IntroActivity extends AppCompatActivity {
     }
 
 }
-
-class pagerAdapter extends FragmentStatePagerAdapter
-{
-    public pagerAdapter(android.support.v4.app.FragmentManager fm)
-    {
-        super(fm);
-    }
-    @Override
-    public android.support.v4.app.Fragment getItem(int position)
-    {
-        switch(position)
-        {
-            case 0:
-                return new Help1Fragment();
-            case 1:
-                return new Help2Fragment();
-            case 2:
-                return new Help3Fragment();
-            default:
-                return null;
-        }
-    }
-    @Override
-    public int getCount()
-    {
-        return 3;
-    }
-}
-

@@ -20,16 +20,16 @@ public class PostsFragment extends Fragment {
     private ClientController client = null;
     private Handler handler;
 
-    public ImageView writer_image;
-    public ImageView post_image;
-    public TextView writer_name;
-    public TextView post_text;
+    private ImageView writer_image;
+    private ImageView post_image;
+    private TextView writer_name;
+    private TextView post_text;
 
-    String name;
-    String contents;
+    private String name;
+    private String contents;
 
-    ImageButton likebutton;
-    ImageButton unlikebutton;
+    private ImageButton likebutton;
+    private ImageButton unlikebutton;
 
     public PostsFragment() {
         Bundle args=getArguments();

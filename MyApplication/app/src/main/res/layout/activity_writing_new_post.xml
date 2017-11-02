@@ -26,6 +26,7 @@
                 android:layout_height="25dp"
                 android:layout_marginTop="10dp"
                 android:scaleType="centerInside"
+                android:contentDescription="@string/missing_image_content"
                 app:srcCompat="@drawable/postingtitle" />
 
             <LinearLayout
@@ -43,6 +44,7 @@
                     android:background="#00000000"
                     android:cropToPadding="false"
                     android:scaleType="fitStart"
+                    android:contentDescription="@string/missing_image_content"
                     app:srcCompat="@drawable/postingbackicon" />
 
                 <ImageButton
@@ -53,6 +55,7 @@
                     android:layout_marginHorizontal="10dp"
                     android:background="#00000000"
                     android:scaleType="fitEnd"
+                    android:contentDescription="@string/missing_image_content"
                     app:srcCompat="@drawable/postingfinishicon" />
             </LinearLayout>
 
@@ -70,6 +73,7 @@
                 android:layout_margin="20dp"
                 android:layout_weight="1"
                 android:scaleType="fitCenter"
+                android:contentDescription="@string/missing_image_content"
                 app:srcCompat="@drawable/defaultpicture" />
 
             <EditText
@@ -118,6 +122,7 @@
                     android:layout_weight="1"
                     android:background="#00000000"
                     android:scaleType="centerInside"
+                    android:contentDescription="@string/missing_image_content"
                     app:srcCompat="@drawable/postingpictureicon" />
 
                 <ImageButton
@@ -127,6 +132,7 @@
                     android:layout_weight="1"
                     android:background="#00000000"
                     android:scaleType="centerInside"
+                    android:contentDescription="@string/missing_image_content"
                     app:srcCompat="@drawable/postingmusicicon" />
 
                 <ImageButton
@@ -136,6 +142,7 @@
                     android:layout_weight="1"
                     android:background="#00000000"
                     android:scaleType="centerInside"
+                    android:contentDescription="@string/missing_image_content"
                     app:srcCompat="@drawable/postinglocationicon" />
             </LinearLayout>
 

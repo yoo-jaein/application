@@ -9,8 +9,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_OWNER_DATA"></uses-permission>
-    <uses-permission android:name="android.permission.READ_OWNER_DATA"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_OWNER_DATA" />
+    <uses-permission android:name="android.permission.READ_OWNER_DATA" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -22,8 +22,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar"
-        >
+        android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".Activity.LoginActivity"
             android:label="@string/title_activity_login" />
@@ -37,8 +36,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.IntroActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,17 +47,19 @@
         <activity
             android:name=".Activity.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/Theme.AppCompat.Light"></activity>
+            android:theme="@style/Theme.AppCompat.Light" />
+        <activity android:name=".Activity.HelpActivity"></activity>
+        <activity android:name=".Activity.SearchLocationActivity"></activity>
+        <activity android:name=".Activity.SearchMusicActivity"></activity>
+        <activity android:name=".Activity.SignUpActivity"></activity>
         <activity
-            android:name=".Activity.HelpActivity">
-        </activity>
-        <activity
-            android:name=".Activity.SearchLocationActivity">
-        </activity>
-        <activity
-            android:name=".Activity.SearchMusicActivity">
-        </activity>
-    </application>
+            android:name=".Activity.ForgotPwActivity"
+            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog"></activity>
 
+        <service
+            android:name=".Service.GPSInfo"
+            android:enabled="true"
+            android:exported="true"></service>
+    </application>
 
 </manifest>

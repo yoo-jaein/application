@@ -3,10 +3,12 @@ package com.example.myapplication.Activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Typeface;
@@ -30,6 +32,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.myapplication.PhysicalArchitecture.ClientController;
@@ -66,19 +69,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        CheckAppFirstExecute();
 
         client = ClientController.getClientControl();
 
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
+                client.setHandlerNull();
                 if(msg.what== Constants.RECEIVE_SUCCESSS){
-                    client.setHandlerNull();
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
-                else if(msg.what==Constants.RECEIVE_FAILED){
+                else if(msg.what==Constants.RECEIVE_ERROR){
                     // TODO when received err message
                 }
             }
@@ -115,12 +119,48 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Log.d("test" , mEmailView.getText().toString() + " / " +  mPasswordView.getText().toString());
                 client.setHandler(handler);
                 client.login(mEmailView.getText().toString(), mPasswordView.getText().toString());
+                //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                //startActivity(intent);
+                //finish();
             }
         });
 
         mLoginFormView = findViewById(R.id.login_form);
 
+        ImageButton mSignUpButton = (ImageButton) findViewById(R.id.joinButton);
+        mSignUpButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton mForgotPwButton = (ImageButton) findViewById(R.id.lostpwButton);
+        mForgotPwButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ForgotPwActivity.class);
+                startActivity(intent);
+            }
+        });
     }
+
+    //앱최초실행확인 (true - 최초실행)
+    public boolean CheckAppFirstExecute(){
+        SharedPreferences pref = getSharedPreferences("IsFirst" , Activity.MODE_PRIVATE);
+        boolean isFirst = pref.getBoolean("isFirst", false);
+        if(!isFirst){ //if first run, go to HelpActivity
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putBoolean("isFirst", true);
+            editor.commit();
+
+            Intent intent = new Intent(getApplicationContext(), HelpActivity.class);
+            startActivity(intent);
+        }
+        return !isFirst;
+    }
+
 
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {

@@ -10,7 +10,6 @@ import com.example.myapplication.ProblemDomain.User;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
@@ -19,7 +18,7 @@ import java.net.SocketAddress;
  * @author jm
  * 서버-클라이언트 연결 클래스
  */
-public class Client extends Thread implements Serializable
+public class Client extends Thread
 {
 	private Socket sock;
 	private clientWrite clientW;
@@ -88,7 +87,7 @@ public class Client extends Thread implements Serializable
 	}
 }
 
-class clientRead extends Thread implements Serializable
+class clientRead extends Thread
 {
 	private Socket socket;
 	private ClientController cControl;
@@ -124,7 +123,7 @@ class clientRead extends Thread implements Serializable
 					if(System.currentTimeMillis() - cControl.getStartTime() > 5000){
 						Log.d("CLIENT", "time over!!!!");
 						cControl.setWaiting(false);
-						cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_FAILED);
+						cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 					}
 
 					temp = clientInputStream.readObject();
@@ -138,14 +137,26 @@ class clientRead extends Thread implements Serializable
 							Log.d("CLIENT", "login");
 							cControl.setLogin(false);
 							if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_FAILED);
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 							}
 						}
 						else if(cControl.isRegister()){
 							Log.d("CLIENT", "register");
 							cControl.setRegister(false);
 							if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_FAILED);
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
+							}else if(((String)temp).compareTo("#fin")==0){
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
+							}
+						}
+						else if(cControl.isFindPass()){
+							Log.d("CLIENT", "findPass");
+							cControl.setFindPass(false);
+							if(((String)temp).compareTo("#err")==0) {
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
+							}
+							else if(((String)temp).compareTo("#fin")==0){
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 							}
 						}
 						else if(cControl.isPost()){
@@ -155,21 +166,23 @@ class clientRead extends Thread implements Serializable
 								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 							}
 							else if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_FAILED);
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
+							}else{
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 							}
 						}
 						else if(cControl.isDelete()){
 							Log.d("CLIENT", "delete");
 							cControl.setDelete(false);
 							if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_FAILED);
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 							}
 						}
 						else if(cControl.isLike()){
 							Log.d("CLIENT", "like");
 							cControl.setLike(false);
 							if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_FAILED);
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 							}
 						}
 						else if(cControl.isDislike()){
@@ -179,7 +192,7 @@ class clientRead extends Thread implements Serializable
 								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 							}
 							else if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_FAILED);
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 							}
 						}else if(cControl.isUpdateUser()){
 							Log.d("CLIENT", "updateUser");
@@ -187,7 +200,7 @@ class clientRead extends Thread implements Serializable
 								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 							}
 							else if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_FAILED);
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 							}
 						}
 						Log.d("CLIENT", temp.toString());
@@ -226,6 +239,7 @@ class clientRead extends Thread implements Serializable
 							Log.d("CLIENT", "morePosts");
 							cControl.setMorePosts(false);
 							cControl.addTimeLine((PostsList)temp);
+							cControl.setMoreList((PostsList)temp);
 							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 						}
 						else if(cControl.isRefresh()){
@@ -244,18 +258,21 @@ class clientRead extends Thread implements Serializable
 							Log.d("CLIENT", "moreMyPosts");
 							cControl.setMoreMyPosts(false);
 							cControl.addMyPostsList((PostsList)temp);
+							cControl.setMoreList((PostsList)temp);
 							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 						}
 						else if(cControl.isMyLike()){
 							Log.d("CLIENT", "myLike");
 							cControl.setMyLike(false);
 							cControl.setMyLikeList((PostsList)temp);
+							cControl.setMoreList((PostsList)temp);
 							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 						}
 						else if(cControl.isMoreMyLike()){
 							Log.d("CLIENT", "moreMyLike");
 							cControl.setMoreMyLike(false);
 							cControl.addMyLikeList((PostsList)temp);
+							cControl.setMoreList((PostsList)temp);
 							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 						}
 						Log.d("CLIENT", temp.toString());
@@ -277,7 +294,7 @@ class clientRead extends Thread implements Serializable
 	}
 }
 
-class clientWrite extends Thread implements Serializable
+class clientWrite extends Thread
 {
 	private Socket socket;
 
