@@ -69,14 +69,14 @@ public class MainActivity extends AppCompatActivity{
         gpsInfo = new GPSInfo(MainActivity.this);
         // GPS 사용유무 가져오기
         if (gpsInfo.isGetLocation()) {
-
             double latitude = gpsInfo.getLatitude();
             double longitude = gpsInfo.getLongitude();
-
         } else {
             // GPS 를 사용할수 없으므로
             gpsInfo.showSettingsAlert();
         }
+
+        client.setGpsInfo(gpsInfo);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity{
         });
 
         timeOrderButton = (ImageButton)findViewById(R.id.timeOrderButton);
-        //timeOrderButton.setVisibility(View.INVISIBLE);
+        timeOrderButton.setVisibility(View.GONE);
         timeOrderButton.setAlpha(0f);
         timeOrderButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity{
                 Log.d("test", "timeorder button click");
                 client.setTimeLineOrder(Constants.TIME);
                 if(mSectionsPagerAdapter.getTimeLine() != null)
-                    client.setHandler(mSectionsPagerAdapter.getTimeLine().getHandler());
+                    client.addHandler(mSectionsPagerAdapter.getTimeLine().getHandler());
                 else
                     Log.d("test", "timeLine is null");
                 client.refresh();
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity{
         });
 
         distanceOrderButton = (ImageButton)findViewById(R.id.distanceOrderButton);
-        //distanceOrderButton.setVisibility(View.INVISIBLE);
+        distanceOrderButton.setVisibility(View.GONE);
         distanceOrderButton.setAlpha(0f);
         distanceOrderButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,14 +136,14 @@ public class MainActivity extends AppCompatActivity{
                 Log.d("test", "distanceorder button click");
                 client.setTimeLineOrder(Constants.DISTANCE);
                 if(mSectionsPagerAdapter.getTimeLine() != null)
-                    client.setHandler(mSectionsPagerAdapter.getTimeLine().getHandler());
+                    client.addHandler(mSectionsPagerAdapter.getTimeLine().getHandler());
                 else
                     Log.d("test", "timeLine is null");
                 client.refresh();
             }
         });
         likeOrderButton = (ImageButton)findViewById(R.id.likeOrderButton);
-        //likeOrderButton.setVisibility(View.INVISIBLE);
+        likeOrderButton.setVisibility(View.GONE);
         likeOrderButton.setAlpha(0f);
         likeOrderButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity{
                 Log.d("test", "likeorder button click");
                 client.setTimeLineOrder(Constants.LIKE);
                 if(mSectionsPagerAdapter.getTimeLine() != null)
-                    client.setHandler(mSectionsPagerAdapter.getTimeLine().getHandler());
+                    client.addHandler(mSectionsPagerAdapter.getTimeLine().getHandler());
                 else
                     Log.d("test", "timeLine is null");
                 client.refresh();
@@ -183,6 +183,7 @@ public class MainActivity extends AppCompatActivity{
     private void showOptionAnim(){
         option = true;
 
+        timeOrderButton.setVisibility(View.VISIBLE);
         timeOrderButton.animate().translationY(170).setDuration(500).withLayer();
         timeOrderButton.animate().alpha(1f).setDuration(500).setListener((new AnimatorListenerAdapter() {
             @Override
@@ -193,24 +194,26 @@ public class MainActivity extends AppCompatActivity{
                 timeOrderButton.setAlpha(1f);
             }
         }));
+        distanceOrderButton.setVisibility(View.VISIBLE);
         distanceOrderButton.animate().translationY(280).setDuration(500).withLayer();
         distanceOrderButton.animate().alpha(1000).setDuration(500).setListener((new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                timeOrderButton.setVisibility(View.VISIBLE);
+                distanceOrderButton.setVisibility(View.VISIBLE);
                 //OR
-                timeOrderButton.setAlpha(1f);
+                distanceOrderButton.setAlpha(1f);
             }
-        }));;
+        }));
+        likeOrderButton.setVisibility(View.VISIBLE);
         likeOrderButton.animate().translationY(390).setDuration(500).withLayer();
         likeOrderButton.animate().alpha(1f).setDuration(500).setListener((new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                timeOrderButton.setVisibility(View.VISIBLE);
+                likeOrderButton.setVisibility(View.VISIBLE);
                 //OR
-                timeOrderButton.setAlpha(1f);
+                likeOrderButton.setAlpha(1f);
             }
         }));
     }
@@ -223,7 +226,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                timeOrderButton.setVisibility(View.VISIBLE);
+                timeOrderButton.setVisibility(View.GONE);
                 //OR
                 timeOrderButton.setAlpha(0f);
             }
@@ -233,7 +236,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                distanceOrderButton.setVisibility(View.VISIBLE);
+                distanceOrderButton.setVisibility(View.GONE);
                 //OR
                 distanceOrderButton.setAlpha(0f);
             }
@@ -243,7 +246,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                likeOrderButton.setVisibility(View.VISIBLE);
+                likeOrderButton.setVisibility(View.GONE);
                 //OR
                 likeOrderButton.setAlpha(0f);
             }

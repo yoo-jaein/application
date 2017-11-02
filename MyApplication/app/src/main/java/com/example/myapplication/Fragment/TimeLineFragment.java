@@ -48,16 +48,10 @@ public class TimeLineFragment extends Fragment {
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                client.setHandlerNull();
+                client.removeHandler(this);
                 if (msg.what == Constants.RECEIVE_REFRESH) {
-
-                    Log.d("test", "TimeLineFragment: thread start");
-                    int cnt = 0;
                     postsArrayList = client.getTimeLine();
-                    Log.d("test", "TimeLineFragment: client.getTimeLine =" + postsArrayList);
-
                     adapter = new CustomAdapter(postsArrayList,client.getMe());
-
                     timeline.setAdapter(adapter);
 
                     // TODO 게시물을 더 받아왔을 경우 리스트뷰 갱신. 테스트 필요함.
@@ -88,11 +82,12 @@ public class TimeLineFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                client.setHandler(handler);
+                client.addHandler(handler);
+                client.morePosts();
             }
         });
 
-        client.setHandler(handler);
+        client.addHandler(handler);
         client.refresh();
 
         timeline = (ListView) view.findViewById(R.id.timeline);

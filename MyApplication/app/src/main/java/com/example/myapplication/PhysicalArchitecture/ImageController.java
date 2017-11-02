@@ -6,6 +6,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
+
 /**
  * Created by jm on 2017-10-30.
  * 액티비티마다 비트맵 크기 조절하는 등 비트맵 관련 함수가 좀 필요할거같아서
@@ -36,5 +38,12 @@ public class ImageController {
             bitmap.recycle();
         }
         return result;
+    }
+
+    public static byte[] bitmapToByteArray( Bitmap bitmap, int quality) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream() ;
+        bitmap.compress( Bitmap.CompressFormat.JPEG, quality, stream) ;
+        byte[] byteArray = stream.toByteArray() ;
+        return byteArray ;
     }
 }

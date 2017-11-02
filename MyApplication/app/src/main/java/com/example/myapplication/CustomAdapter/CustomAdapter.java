@@ -127,7 +127,7 @@ public class CustomAdapter extends BaseAdapter {
                             likebutton.setVisibility(View.INVISIBLE);
                             likebutton.bringToFront();
 
-                            client.setHandler(handler);
+                            client.addHandler(handler);
                             client.dislike(posts.getPostsIndex());
                             likeList.remove((Object)posts.getPostsIndex());
                         }
@@ -139,7 +139,7 @@ public class CustomAdapter extends BaseAdapter {
                             unlikebutton.setVisibility(View.INVISIBLE);
                             unlikebutton.bringToFront();
 
-                            client.setHandler(handler);
+                            client.addHandler(handler);
                             client.like(posts.getPostsIndex());
                             likeList.add(posts.getPostsIndex());
                         }

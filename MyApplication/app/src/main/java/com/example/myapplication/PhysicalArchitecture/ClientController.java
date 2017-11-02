@@ -1,7 +1,5 @@
 package com.example.myapplication.PhysicalArchitecture;
 
-import android.content.Context;
-import android.location.LocationManager;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -32,7 +30,7 @@ public class ClientController{
 	private int timeLineOrder = Constants.TIME;
 
 	// for change mainthread UI
-	private Handler handler = null;
+	private ArrayList<Handler> handlerList = null;
 	private Handler distanceOrderHandler = null;
 	private GPSInfo gpsInfo = null;
 
@@ -68,11 +66,14 @@ public class ClientController{
 	public Client client;
 	private static ClientController cControl = new ClientController();
 
+	private int handlerCnt = 0;
+
 	public ClientController() {
 		timeLine = new ArrayList<>();
 		myPostsList = new ArrayList<>();
 		myLikeList  = new ArrayList<>();
 		moreList = new ArrayList<>();
+		handlerList = new ArrayList<>();
 
 		locationContentIdList = new ArrayList<Integer>();
 
@@ -84,12 +85,13 @@ public class ClientController{
 			@Override
 			public void handleMessage(Message msg) {
 				if(msg.what == Constants.RECEIVE_SUCCESSS){
-                    Log.d("test", "receive GPS inform");
+                    Log.d("GPS", "receive GPS inform");
 					locationContentIdList = (ArrayList<Integer>)(msg.obj);
 					level = 0;
 				}
 				else if(msg.what == Constants.RECEIVE_FAILED){
 					// TODO when received falled
+					Log.d("GPS", "receive GPS inform");
 					if(gpsInfo!= null){
 						gpsInfo.getLocation(level++);
 					}
@@ -225,6 +227,9 @@ public class ClientController{
 				case Constants.TIME: message += "time";
 					break;
 				case Constants.DISTANCE: message += "distance";
+					if(locationContentIdList.size() <= 0) {
+						// TODO
+					}
 					for(Integer locationContentId : locationContentIdList)
 						message += "%" + locationContentId;
 					break;
@@ -404,16 +409,16 @@ public class ClientController{
    /*
       get and set method
     */
-   public Handler getHandler() { return handler;}
+   //public Handler getHandler() { return handler;}
 
-	public void setHandler(Handler handler) {
-		if(this.handler == null) {
-			this.handler = handler;
-		}
+	public void addHandler(Handler handler) {
+		handlerList.add(handler);
+		handlerCnt++;
 	}
 
-	public void setHandlerNull(){
-		this.handler = null;
+	public void removeHandler(Handler handler){
+		handlerList.remove(handler);
+		handlerCnt--;
 	}
 
     boolean isWaiting() {
@@ -563,7 +568,7 @@ public class ClientController{
 		return me;
 	}
 
-
+	public ArrayList<Handler> getHandlerList(){ return handlerList; }
 	/*
        get data
      */

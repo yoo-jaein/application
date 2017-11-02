@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.util.Log;
 
 import com.example.myapplication.PhysicalArchitecture.APIController;
 import com.example.myapplication.PhysicalArchitecture.ClientController;
@@ -104,7 +105,7 @@ public class GPSInfo extends Service implements LocationListener {
                                 if (location != null) {
                                     lat = location.getLatitude();
                                     lon = location.getLongitude();
-
+                                    Log.d("GPS", "lat : " + lat + " / lon : " + lon );
                                     APIController.getAPIController().getLocationContentIdList(lat, lon, 1000 * level, ClientController.getClientControl().getDistanceOrderHandler());
                                 }
                             }
@@ -192,6 +193,7 @@ public class GPSInfo extends Service implements LocationListener {
 
     public void onLocationChanged(Location location) {
         // TODO Auto-generated method stub
+        Log.d("GPS", "get gps location");
         APIController.getAPIController().getLocationContentIdList(location.getLongitude(), location.getLatitude(), 1000, ClientController.getClientControl().getDistanceOrderHandler());
     }
 

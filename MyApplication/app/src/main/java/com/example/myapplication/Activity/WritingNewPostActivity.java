@@ -67,7 +67,7 @@ public class WritingNewPostActivity extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 if(msg.what== Constants.RECEIVE_SUCCESSS){
                     Log.d("test", "post handler");
-                    client.setHandlerNull();
+                    client.addHandler(this);
                     finish();
                 }
                 else if(msg.what==Constants.RECEIVE_ERROR){
@@ -96,7 +96,7 @@ public class WritingNewPostActivity extends AppCompatActivity {
 
                 posts.setCreateTime(sdfNow.format(date));
 
-                client.setHandler(handler);
+                client.addHandler(handler);
                 client.post(posts);
             }
         });

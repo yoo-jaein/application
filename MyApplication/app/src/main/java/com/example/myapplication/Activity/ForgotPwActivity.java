@@ -40,7 +40,7 @@ public class ForgotPwActivity extends Activity {
             @Override
             public void handleMessage(Message msg) {
                 if(msg.what== Constants.RECEIVE_SUCCESSS){
-                    client.setHandlerNull();
+                    client.removeHandler(this);
                     // TODO 이메일로 비밀번호 전송 완료했다는 알림 띄우기
                     finish();
                 }
@@ -57,7 +57,7 @@ public class ForgotPwActivity extends Activity {
         sendbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                client.setHandler(handler);
+                client.addHandler(handler);
                 client.findPass(emailtext.getText().toString());
             }
         });
