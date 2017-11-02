@@ -49,6 +49,8 @@ public class MyPageFragment extends Fragment {
 
     private TextView postcnt;
     private TextView nametext;
+    private TextView likecnt;
+
     private ListView mylist;
 
     private int arr_type=1;
@@ -93,9 +95,12 @@ public class MyPageFragment extends Fragment {
         client.myPosts();
 
         nametext=(TextView)view.findViewById(R.id.user_name);
-        nametext.setText("young ju");
+        nametext.setText(client.getMe().getId());
+
 
         postcnt=(TextView)view.findViewById(R.id.mypostcntTextview);
+        likecnt=(TextView)view.findViewById(R.id.mylikecount);
+        likecnt.setText("like " );
 
         mylist=(ListView)view.findViewById(R.id.mylist);
         mylist.setAdapter(new CustomAdapter(client.getMyPostsList(),client.getMe()));
@@ -119,7 +124,7 @@ public class MyPageFragment extends Fragment {
                 if(count<250) w=(w*(count/250.0));
                 fillbar.setLayoutParams(new RelativeLayout.LayoutParams((int)w,(int)h));
 
-                postcnt.setText(client.getMe().getMyList().size());
+                postcnt.setText(""+client.getMe().getMyList().size());
             }
         });
 

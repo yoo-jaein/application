@@ -122,8 +122,8 @@
                     android:layout_marginRight="12dp"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/layout"
-                    android:text="Edit"
+                    android:background="@color/aaa1"
+                    android:text="프로필 수정"
                     android:textSize="8sp"
                     android:textStyle="bold" />
 
