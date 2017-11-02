@@ -13,11 +13,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.myapplication.CustomAdapter.CustomAdapter;
@@ -56,6 +58,8 @@ public class MyPageFragment extends Fragment {
     public MyPageFragment() {
         // Required empty public constructor
     }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,17 +101,24 @@ public class MyPageFragment extends Fragment {
 /////////////////////stretch fill bar according to like count
         fillbar=(ImageView)view.findViewById(R.id.fill_like_bar);
         unfillbar=(ImageView)view.findViewById(R.id.unfillbar);
-        int w=fillbar.getWidth();
-        int h=fillbar.getHeight();
 
-        int count=0;
+        RelativeLayout f=(RelativeLayout) view.findViewById(R.id.r);
+        f.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
 
-        for(Posts posts:client.getMyLikeList())
-            count+=posts.getLike();
-        
-        if(count<250) w=w*(count/250);
-        unfillbar.setLayoutParams(new FrameLayout.LayoutParams(w,h));
+                double h=(double) unfillbar.getHeight();
+                double w=(double)unfillbar.getWidth()/3;
+                double count=0.0;
 
+                for(Posts posts:client.getMyLikeList())
+                    count+=posts.getLike();
+
+                if(count<250) w=(w*(count/250.0));
+                Log.d("test","My Page: like count="+count+" w="+w+" h="+h);
+                fillbar.setLayoutParams(new RelativeLayout.LayoutParams((int)w,(int)h));
+            }
+        });
 
 //////////////////////////////////////////////////////////////////////////////////////////
 

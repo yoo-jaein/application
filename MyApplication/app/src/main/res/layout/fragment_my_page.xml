@@ -94,6 +94,7 @@
                 </LinearLayout>
 
                 <RelativeLayout
+                    android:id="@+id/r"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -101,8 +102,8 @@
                         android:id="@+id/fill_like_bar"
                         android:layout_width="30dp"
                         android:layout_height="15dp"
-                        android:scaleType="centerCrop"
                         android:contentDescription="@string/missing_image_content"
+                        android:scaleType="centerCrop"
                         app:srcCompat="@drawable/filledlikebar" />
 
                     <ImageView
