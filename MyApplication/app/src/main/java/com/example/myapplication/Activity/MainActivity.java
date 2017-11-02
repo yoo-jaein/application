@@ -262,7 +262,6 @@ public class MainActivity extends AppCompatActivity{
 
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
     }
 
 /*
@@ -319,27 +318,25 @@ public class MainActivity extends AppCompatActivity{
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 0: timeLineFragment = new TimeLineFragment();
-                    return timeLineFragment;
-                    /*
-                    if (timeLineFragment == null)
-                        return timeLineFragment = new TimeLineFragment();
+                case 0:
+                    if (timeLineFragment == null) {
+                        timeLineFragment = new TimeLineFragment();
+                        return timeLineFragment;
+                    }
                     else return timeLineFragment;
-                    */
-                case 1: likeListFragment = new LikeListFragment();
-                    return likeListFragment;
-                    /*
-                    if (timeLineFragment == null)
-                        return likeListFragment = new LikeListFragment();
-                    else return likeListFragment;
-                    */
-                case 2: myPageFragment = new MyPageFragment();
-                    return myPageFragment;
-                    /*
-                    if (myPageFragment == null)
-                        return myPageFragment = new MyPageFragment();
-                    else return myPageFragment;
-                    */
+
+                case 1:
+                    if (likeListFragment == null) {
+                        likeListFragment = new LikeListFragment();
+                        return likeListFragment;
+                    }
+                    else return timeLineFragment;
+                case 2:
+                    if (myPageFragment == null) {
+                        myPageFragment = new MyPageFragment();
+                        return myPageFragment;
+                    }
+                    else return timeLineFragment;
             }
             return null;
         }

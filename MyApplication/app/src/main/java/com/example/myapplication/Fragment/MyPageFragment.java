@@ -80,14 +80,25 @@ public class MyPageFragment extends Fragment {
 
                 if(msg.what== Constants.RECEIVE_REFRESH){
                     myPostsList = client.getMyPostsList();
+                    int totalCnt = 0;
+                    for(Posts posts : client.getMyPostsList()){
+                        totalCnt += posts.getLike();
+                    }
+                    client.setMyLikeCount(totalCnt);
+                    client.getMe().setTotalLike(totalCnt);
+                    client.setHandler(this);
+                    client.totalLike();
                     mylist.setAdapter(new CustomAdapter(myPostsList,client.getMe()));
                 }else if(msg.what==Constants.RECEIVE_SUCCESSS){
+
                     // TODO when receive fin message
                 }else if(msg.what==Constants.RECEIVE_FAILED){
                     // TODO when receive err message
                 }
             }
         };
+        client.setHandler(handler);
+        client.myPosts();
 
     }
 
@@ -95,9 +106,6 @@ public class MyPageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         view= inflater.inflate(R.layout.fragment_my_page, container, false);
-
-        client.setHandler(handler);
-        client.myPosts();
 
         profileImage = (ImageView) view.findViewById(R.id.user_image);
 
@@ -138,7 +146,7 @@ public class MyPageFragment extends Fragment {
                 postcnt.setText(""+client.getMe().getMyList().size());
                 int cnt=0;
                 try {
-                    cnt=client.getMyLikeCount();
+                    cnt = client.getMyLikeCount();
                 }catch (Exception e) {}
                 likecnt.setText("like " + cnt);
             }
