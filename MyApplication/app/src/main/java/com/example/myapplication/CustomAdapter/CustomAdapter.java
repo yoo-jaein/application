@@ -35,8 +35,8 @@ import java.util.ArrayList;
 
 public class CustomAdapter extends BaseAdapter {
 
-    ArrayList<Posts> contentslist = new ArrayList<Posts>();
-    ArrayList<Integer> user;
+    private ArrayList<Posts> contentslist = new ArrayList<Posts>();
+    private ArrayList<Integer> likeList;
     private ClientController client = null;
     private int cnt = 0;
 
@@ -45,7 +45,7 @@ public class CustomAdapter extends BaseAdapter {
     public CustomAdapter(ArrayList<Posts> contentslist, User user) {
         Log.d("test", "CustomAdapter : start CustomAdapter");
         this.contentslist = contentslist;
-        this.user = user.getLikeList();
+        this.likeList = user.getLikeList();
 
         client = ClientController.getClientControl();
     }
@@ -91,14 +91,19 @@ public class CustomAdapter extends BaseAdapter {
         final Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                if (msg.what == Constants.RECEIVE_SUCCESSS) {
+                if(msg.what== Constants.RECEIVE_SUCCESSS){
 
-                } else if (msg.what == Constants.RECEIVE_FAILED) {
+                }
+                else if(msg.what==Constants.RECEIVE_FAILED){
                     // TODO when received err message
-                } else if (msg.what == Constants.RECEIVE_LIKE) {
+                }
+                else if(msg.what == Constants.RECEIVE_LIKE){
                     client.getMe().addLikeList(posts.getPostsIndex());
-                } else if (msg.what == Constants.RECEIVE_DISLIKE) {
+                    likeList = client.getMe().getLikeList();
+                }
+                else if(msg.what == Constants.RECEIVE_DISLIKE) {
                     client.getMe().delLikeList(posts.getPostsIndex());
+                    likeList = client.getMe().getLikeList();
                 }
             }
         };
@@ -109,8 +114,9 @@ public class CustomAdapter extends BaseAdapter {
                 try {
                     Log.d("test", "CustomAdapter: " + cnt + "Thread run start");
                     Log.d("test", "CustomAdapter: " + cnt + "post: " + posts.getPostsIndex() + " postname:" + posts.getMusic().getMusicName());
-
-                    if (user.contains(posts.getPostsIndex())) {
+                    for (int p: likeList)  Log.d("test", "like list size : " + p);
+                    if (likeList.contains(posts.getPostsIndex())) {
+                        Log.d("test", "contain, post index : " + posts.getPostsIndex());
                         likebutton.setVisibility(View.VISIBLE);
                         unlikebutton.setVisibility(View.INVISIBLE);
                         likebutton.bringToFront();
@@ -128,7 +134,7 @@ public class CustomAdapter extends BaseAdapter {
                             likebutton.bringToFront();
 
                             client.setHandler(handler);
-                            client.like(posts.getPostsIndex());
+                            client.dislike(posts.getPostsIndex());
                         }
                     });
                     unlikebutton.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +145,7 @@ public class CustomAdapter extends BaseAdapter {
                             unlikebutton.bringToFront();
 
                             client.setHandler(handler);
-                            client.dislike(posts.getPostsIndex());
+                            client.like(posts.getPostsIndex());
                         }
                     });
 
@@ -179,7 +185,7 @@ public class CustomAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private void likeOn() {
+    private void likeOn(){
 
     }
 }

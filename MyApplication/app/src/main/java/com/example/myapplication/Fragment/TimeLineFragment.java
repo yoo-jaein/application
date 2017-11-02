@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 public class TimeLineFragment extends Fragment {
 
-    private Handler handler;
+    private static Handler handler;
     private ClientController client = null;
 
     private ArrayList<Posts> postsArrayList;

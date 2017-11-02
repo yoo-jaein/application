@@ -28,29 +28,30 @@ public class LikeListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_like_list, container, false);
-
         if(client == null)
             client = ClientController.getClientControl();
 
         handler = new Handler(){
             @Override
             public void handleMessage(Message msg){
-                if(msg.what== Constants.RECEIVE_SUCCESSS){
-                    client.setHandlerNull();
+                client.setHandlerNull();
+
+                if(msg.what== Constants.RECEIVE_REFRESH){
+
                     likelist.setAdapter(new CustomAdapter(client.getMyLikeList(),client.getMe()));
                 }else if(msg.what==Constants.RECEIVE_FAILED){
                     // TODO when receive err message
                 }
             }
         };
-// TODO client test
-//        client.setHandler(handler);
-//        client.myLike();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view= inflater.inflate(R.layout.fragment_like_list, container, false);
+
+        client.setHandler(handler);
+        client.myLike();
 
         return  view;
     }

@@ -119,7 +119,10 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 Log.d("test", "timeorder button click");
                 client.setTimeLineOrder(Constants.TIME);
-                client.setHandler(((TimeLineFragment)(mSectionsPagerAdapter.getItem(0))).getHandler());
+                if(mSectionsPagerAdapter.getTimeLine() != null)
+                    client.setHandler(mSectionsPagerAdapter.getTimeLine().getHandler());
+                else
+                    Log.d("test", "timeLine is null");
                 client.refresh();
             }
         });
@@ -132,7 +135,10 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 Log.d("test", "distanceorder button click");
                 client.setTimeLineOrder(Constants.DISTANCE);
-                client.setHandler(((TimeLineFragment)(mSectionsPagerAdapter.getItem(0))).getHandler());
+                if(mSectionsPagerAdapter.getTimeLine() != null)
+                    client.setHandler(mSectionsPagerAdapter.getTimeLine().getHandler());
+                else
+                    Log.d("test", "timeLine is null");
                 client.refresh();
             }
         });
@@ -144,7 +150,10 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 Log.d("test", "likeorder button click");
                 client.setTimeLineOrder(Constants.LIKE);
-                client.setHandler(((TimeLineFragment)(mSectionsPagerAdapter.getItem(0))).getHandler());
+                if(mSectionsPagerAdapter.getTimeLine() != null)
+                    client.setHandler(mSectionsPagerAdapter.getTimeLine().getHandler());
+                else
+                    Log.d("test", "timeLine is null");
                 client.refresh();
             }
         });
@@ -299,6 +308,10 @@ public class MainActivity extends AppCompatActivity{
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+        TimeLineFragment timeLineFragment = null;
+        LikeListFragment likeListFragment = null;
+        MyPageFragment myPageFragment = null;
+
         SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -306,11 +319,33 @@ public class MainActivity extends AppCompatActivity{
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 0: return new TimeLineFragment();
-                case 1: return new LikeListFragment();
-                case 2: return new MyPageFragment();
+                case 0: timeLineFragment = new TimeLineFragment();
+                    return timeLineFragment;
+                    /*
+                    if (timeLineFragment == null)
+                        return timeLineFragment = new TimeLineFragment();
+                    else return timeLineFragment;
+                    */
+                case 1: likeListFragment = new LikeListFragment();
+                    return likeListFragment;
+                    /*
+                    if (timeLineFragment == null)
+                        return likeListFragment = new LikeListFragment();
+                    else return likeListFragment;
+                    */
+                case 2: myPageFragment = new MyPageFragment();
+                    return myPageFragment;
+                    /*
+                    if (myPageFragment == null)
+                        return myPageFragment = new MyPageFragment();
+                    else return myPageFragment;
+                    */
             }
             return null;
+        }
+
+        public TimeLineFragment getTimeLine(){
+            return timeLineFragment;
         }
 
         @Override

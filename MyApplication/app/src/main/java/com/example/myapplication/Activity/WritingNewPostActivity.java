@@ -66,6 +66,7 @@ public class WritingNewPostActivity extends AppCompatActivity {
             @Override
             public void handleMessage(Message msg) {
                 if(msg.what== Constants.RECEIVE_SUCCESSS){
+                    Log.d("test", "post handler");
                     client.setHandlerNull();
                     finish();
                 }
@@ -176,7 +177,7 @@ public class WritingNewPostActivity extends AppCompatActivity {
 
     public byte[] bitmapToByteArray( Bitmap bitmap ) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream() ;
-        bitmap.compress( Bitmap.CompressFormat.JPEG, 100, stream) ;
+        bitmap.compress( Bitmap.CompressFormat.JPEG, 50, stream) ;
         byte[] byteArray = stream.toByteArray() ;
         return byteArray ;
     }
