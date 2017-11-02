@@ -18,7 +18,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.myapplication.Activity.MainActivity;
 import com.example.myapplication.PhysicalArchitecture.ClientController;
 import com.example.myapplication.PhysicalArchitecture.ImageController;
 import com.example.myapplication.ProblemDomain.Constants;
@@ -39,8 +38,6 @@ public class CustomAdapter extends BaseAdapter {
     private ArrayList<Integer> likeList;
     private ClientController client = null;
     private int cnt = 0;
-
-    private Handler handler;
 
     public CustomAdapter(ArrayList<Posts> contentslist, User user) {
         Log.d("test", "CustomAdapter : start CustomAdapter");
@@ -135,6 +132,7 @@ public class CustomAdapter extends BaseAdapter {
 
                             client.setHandler(handler);
                             client.dislike(posts.getPostsIndex());
+                            likeList.remove((Object)posts.getPostsIndex());
                         }
                     });
                     unlikebutton.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +144,7 @@ public class CustomAdapter extends BaseAdapter {
 
                             client.setHandler(handler);
                             client.like(posts.getPostsIndex());
+                            likeList.add(posts.getPostsIndex());
                         }
                     });
 

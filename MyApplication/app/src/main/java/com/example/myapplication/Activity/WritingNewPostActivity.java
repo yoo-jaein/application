@@ -181,5 +181,4 @@ public class WritingNewPostActivity extends AppCompatActivity {
         byte[] byteArray = stream.toByteArray() ;
         return byteArray ;
     }
-
 }

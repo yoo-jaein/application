@@ -159,13 +159,24 @@ class clientRead extends Thread
 								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 							}
 						}
-                        else if(cControl.isFindPass()){
+                        else if(cControl.isRefresh()){
                             Log.d("CLIENT", "refresh");
                             cControl.setRefresh(false);
                             if(((String)temp).compareTo("#err")==0) {
                                 cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
                             }
                         }
+						else if(cControl.isTotalLike()){
+							Log.d("CLIENT", "totalLike");
+							cControl.setTotalLike(false);
+							if(((String)temp).compareTo("#err")==0) {
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
+							}
+							else {
+								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
+								cControl.setMyLikeCount(Integer.parseInt(((String)temp)));
+							}
+						}
 						else if(cControl.isPost()){
 							Log.d("CLIENT", "post");
 							cControl.setPost(false);

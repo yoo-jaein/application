@@ -38,6 +38,7 @@ public class ClientController{
 
 	private String message = "";
 
+	private int myLikeCount = 0;
 	/*
        checking request complete.
      */
@@ -48,6 +49,7 @@ public class ClientController{
 	private boolean findPass = false;
 	private boolean refresh = false;
 	private boolean morePosts = false;
+	private boolean totalLike = false;
 	private boolean myPosts = false;
 	private boolean moreMyPosts = false;
 	private boolean myLike = false;
@@ -120,6 +122,14 @@ public class ClientController{
 
 	 void setMe(User user) {
 		me = user;
+	}
+
+	public int getMyLikeCount() {
+		return myLikeCount;
+	}
+
+	public void setMyLikeCount(int myLikeCount) {
+		this.myLikeCount = myLikeCount;
 	}
 
 	public void setGpsInfo(GPSInfo gpsInfo){
@@ -242,6 +252,21 @@ public class ClientController{
 				case Constants.DISTANCE: message += "distance"; break;
 				case Constants.LIKE: message += "like"; break;
 			}
+
+			client.sendToServer(message);
+
+			message = "";
+		}
+	}
+
+	public void totalLike(){
+		if(!waiting) {
+			startTime = System.currentTimeMillis();
+
+			waiting = true;
+			totalLike = true;
+
+			message = "#totalLike";
 
 			client.sendToServer(message);
 
@@ -484,7 +509,15 @@ public class ClientController{
 		this.myLike = myLike;
 	}
 
-	 void setMoreMyLike(boolean moreLike) {
+	public boolean isTotalLike() {
+		return totalLike;
+	}
+
+	public void setTotalLike(boolean totalLike) {
+		this.totalLike = totalLike;
+	}
+
+	void setMoreMyLike(boolean moreLike) {
 		this.moreMyLike = moreLike;
 	}
 

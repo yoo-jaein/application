@@ -76,6 +76,8 @@ public class MyPageFragment extends Fragment {
                 if(msg.what== Constants.RECEIVE_REFRESH){
                     myPostsList = client.getMyPostsList();
                     mylist.setAdapter(new CustomAdapter(myPostsList,client.getMe()));
+                }else if(msg.what==Constants.RECEIVE_SUCCESSS){
+                    // TODO when receive err message
                 }else if(msg.what==Constants.RECEIVE_FAILED){
                     // TODO when receive err message
                 }
