@@ -48,6 +48,20 @@
             android:background="#00000000"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/emptyhearticon" />
+
+        <TextView
+            android:id="@+id/postlikecnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/likeButton"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentRight="false"
+            android:layout_alignParentTop="false"
+            android:layout_alignWithParentIfMissing="false"
+            android:layout_toLeftOf="@+id/likeButton"
+            android:text="like"
+            android:textSize="20dp" />
     </RelativeLayout>
 
     <LinearLayout

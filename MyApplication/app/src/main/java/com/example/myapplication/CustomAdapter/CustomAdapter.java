@@ -2,10 +2,6 @@ package com.example.myapplication.CustomAdapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
@@ -79,6 +75,7 @@ public class CustomAdapter extends BaseAdapter {
         final TextView location = (TextView) convertView.findViewById(R.id.post_location);
         final TextView music = (TextView) convertView.findViewById(R.id.post_music);
         final TextView time = (TextView) convertView.findViewById(R.id.post_time);
+        final TextView likecnt=(TextView)convertView.findViewById(R.id.postlikecnt);
 
         final ImageView postimage = (ImageView) convertView.findViewById(R.id.post_image);
         final ImageButton likebutton = (ImageButton) convertView.findViewById(R.id.likeButton);
@@ -161,6 +158,8 @@ public class CustomAdapter extends BaseAdapter {
                     });
                     content.setText(posts.getComment().toString());
                     time.setText(posts.getCreateTime().toString());
+
+                    likecnt.setText("like "+posts.getLike());
 
                     byte[] image = posts.getImage();
                     Log.d("test", "CustomAdapter : " + cnt + " postimage setting start :" + image);
