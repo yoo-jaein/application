@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        CheckAppFirstExecute();
+ //////////////////////////////////////////////////////////////////       CheckAppFirstExecute();
 /*
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
@@ -256,6 +256,7 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
+/*
     //앱최초실행확인 (true - 최초실행)
     public boolean CheckAppFirstExecute(){
         SharedPreferences pref = getSharedPreferences("IsFirst" , Activity.MODE_PRIVATE);
@@ -270,6 +271,7 @@ public class MainActivity extends AppCompatActivity{
         }
         return !isFirst;
     }
+*/
 
     public static class PlaceholderFragment extends Fragment {
         private static final String ARG_SECTION_NUMBER = "section_number";
