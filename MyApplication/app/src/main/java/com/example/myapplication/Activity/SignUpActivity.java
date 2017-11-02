@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -179,6 +181,10 @@ public class SignUpActivity extends AppCompatActivity {
                 {
                     Toast.makeText(getApplicationContext(),"유효하지 않은 비밀번호입니다",Toast.LENGTH_SHORT).show();
                     pwtext.requestFocus();
+
+                    Animation shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+                    pwtext.startAnimation(shake);
+
                     return;
                 }
                 client.setHandler(handler);

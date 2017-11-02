@@ -23,6 +23,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -34,6 +35,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.PhysicalArchitecture.ClientController;
 import com.example.myapplication.ProblemDomain.Constants;
@@ -83,7 +85,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     finish();
                 }
                 else if(msg.what==Constants.RECEIVE_ERROR){
-                    // TODO when received err message
+                    Toast.makeText(getApplicationContext(), "로그인에 실패하였습니다", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -95,33 +97,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         client = ClientController.getClientControl();
 
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setTypeface(Typeface.DEFAULT);
-        /*
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                   attemptLogin();
-
-                    return true;
-                }
-                return false;
-            }
-        });
-        */
+        mPasswordView.setTypeface(Typeface.SANS_SERIF);
+        mPasswordView.setTransformationMethod(new PasswordTransformationMethod());
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 // TODO check email and password
-                //  attemptLogin();
                 Log.d("test" , mEmailView.getText().toString() + " / " +  mPasswordView.getText().toString());
                 client.setHandler(handler);
                 client.login(mEmailView.getText().toString(), mPasswordView.getText().toString());
-                //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                //startActivity(intent);
-                //finish();
             }
         });
 
@@ -201,64 +187,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 populateAutoComplete();
             }
         }
-    }
-
-
-    private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
-
-        // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
-
-        // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-
-        boolean cancel = false;
-        View focusView = null;
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
-        }
-    }
-
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
     }
 
 
@@ -346,7 +274,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         };
 
         int ADDRESS = 0;
-        int IS_PRIMARY = 1;
     }
 
     /**

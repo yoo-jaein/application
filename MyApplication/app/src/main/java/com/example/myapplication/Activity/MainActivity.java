@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.location.Location;
 import android.location.LocationManager;
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);*/
 
         client = ClientController.getClientControl();
+        getWindow().setStatusBarColor(Color.parseColor("#516FA5"));
 
         gpsInfo = new GPSInfo(MainActivity.this);
         // GPS 사용유무 가져오기
