@@ -3,6 +3,7 @@ package com.example.myapplication.Fragment;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import com.example.myapplication.CustomAdapter.CustomAdapter;
 import com.example.myapplication.CustomAdapter.CustomAdapter2;
 import com.example.myapplication.PhysicalArchitecture.ClientController;
+import com.example.myapplication.PhysicalArchitecture.ImageController;
 import com.example.myapplication.ProblemDomain.Constants;
 import com.example.myapplication.ProblemDomain.Posts;
 import com.example.myapplication.R;
@@ -46,6 +48,7 @@ public class MyPageFragment extends Fragment {
 
     private ImageView fillbar;
     private ImageView unfillbar;
+    private ImageView profileImage;
 
     private TextView postcnt;
     private TextView nametext;
@@ -79,7 +82,7 @@ public class MyPageFragment extends Fragment {
                     myPostsList = client.getMyPostsList();
                     mylist.setAdapter(new CustomAdapter(myPostsList,client.getMe()));
                 }else if(msg.what==Constants.RECEIVE_SUCCESSS){
-                    // TODO when receive err message
+                    // TODO when receive fin message
                 }else if(msg.what==Constants.RECEIVE_FAILED){
                     // TODO when receive err message
                 }
@@ -96,9 +99,16 @@ public class MyPageFragment extends Fragment {
         client.setHandler(handler);
         client.myPosts();
 
+        profileImage = (ImageView) view.findViewById(R.id.user_image);
+
+        if(client.getMe() != null){
+            if(client.getMe().getIImage() != null){
+                profileImage.setImageDrawable(ImageController.ByteToDrawable(client.getMe().getIImage()));
+            }
+        }
+
         nametext=(TextView)view.findViewById(R.id.user_name);
         nametext.setText(client.getMe().getId());
-
 
         postcnt=(TextView)view.findViewById(R.id.mypostcntTextview);
         likecnt=(TextView)view.findViewById(R.id.mylikecount);
@@ -165,7 +175,6 @@ public class MyPageFragment extends Fragment {
             }
         });
 
-
         return view;
     }
 
@@ -179,10 +188,13 @@ public class MyPageFragment extends Fragment {
                 Bitmap selPhoto = MediaStore.Images.Media.getBitmap(resolver, selPhotoUri);
 
                 byte[] image = bitmapToByteArray(selPhoto);
-           //     posts.setIImage(image);
 
-                ImageView imageView = (ImageView) view.findViewById(R.id.user_image);
-                imageView.setImageBitmap(selPhoto);
+                client.getMe().setIImage(image);
+                profileImage.setImageBitmap(selPhoto);
+
+                client.setHandler(handler);
+                client.updateUser(client.getMe());
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

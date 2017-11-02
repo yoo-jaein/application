@@ -391,17 +391,13 @@ public class ClientController{
 		}
 	}
 
-	public void updateUser(){
+	public void updateUser(User user){
 		if(!waiting) {
 			startTime = System.currentTimeMillis();
 
 			waiting = true;
 
-			message = "#updateUser";
-
-			client.sendToServer(message);
-
-			message = "";
+			client.sendToServer(user);
 		}
 	}
 
