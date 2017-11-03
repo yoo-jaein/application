@@ -98,7 +98,7 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
             item.setCanShowCallout(true);
             item.setAutoCalloutVisible(true);
 
-            item.setCalloutLeftImage(locationImage);
+            //item.setCalloutLeftImage(locationImage);
             item.setAutoCalloutVisible(true);
 
             tMapView.removeMarkerItem(item.getID());
@@ -126,7 +126,7 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
                 } else {
                     //   bitmapList.addAll((ArrayList<Bitmap>) (msg.obj));
                     int markerID = msg.what;
-                    markerItemList.get(markerID).setCalloutLeftImage(locationImage);
+                    //markerItemList.get(markerID).setCalloutLeftImage(locationImage);
                 }
             }
         };
@@ -252,7 +252,6 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
         markerIdList.clear();
 
         for (int i = 0; i < locationList.size(); i++) {
-
             TMapPoint point = new TMapPoint(locationList.get(i).getMapY(), locationList.get(i).getMapX());
             TMapMarkerItem item = new TMapMarkerItem();
 
@@ -297,32 +296,25 @@ public class SearchLocationActivity extends AppCompatActivity implements TMapGps
                 bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_tourlistattraction);
                 pinIconList.append(code, ImageController.resizeBitmap(bitmap, 200));
             } else if (code == Constants.CONTENTES_TYPE_CODE[2]) {
-                //bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_culturalfacility);
                 bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_tourlistattraction);
                 pinIconList.append(code, ImageController.resizeBitmap(bitmap, 200));
             } else if (code == Constants.CONTENTES_TYPE_CODE[3]) {
-                //bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_event_performance_festival);
-                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_tourlistattraction);
+                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_event_performance_festival);
                 pinIconList.append(code, ImageController.resizeBitmap(bitmap, 200));
             } else if (code == Constants.CONTENTES_TYPE_CODE[4]) {
-                //bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_travelcourse);
-                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_tourlistattraction);
+                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_travelcourse);
                 pinIconList.append(code, ImageController.resizeBitmap(bitmap, 200));
             } else if (code == Constants.CONTENTES_TYPE_CODE[5]) {
-                //bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_leisure);
-                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_tourlistattraction);
+                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_leisure);
                 pinIconList.append(code, ImageController.resizeBitmap(bitmap, 200));
             } else if (code == Constants.CONTENTES_TYPE_CODE[6]) {
-                //bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_lodging);
-                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_tourlistattraction);
+                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_lodging);
                 pinIconList.append(code, ImageController.resizeBitmap(bitmap, 200));
             } else if (code == Constants.CONTENTES_TYPE_CODE[7]) {
-                //bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_shopping);
-                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_tourlistattraction);
+                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_shopping);
                 pinIconList.append(code, ImageController.resizeBitmap(bitmap, 200));
             } else if (code == Constants.CONTENTES_TYPE_CODE[8]) {
-                //bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_restaurant);
-                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_tourlistattraction);
+                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.map_pin_restaurant);
                 pinIconList.append(code, ImageController.resizeBitmap(bitmap, 200));
             }
         }

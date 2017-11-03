@@ -80,12 +80,15 @@ public class LikeListFragment extends Fragment {
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 //현재 화면에 보이는 첫번째 리스트 아이템의 번호(firstVisibleItem) + 현재 화면에 보이는 리스트 아이템의 갯수(visibleItemCount)가 리스트 전체의 갯수(totalItemCount) -1 보다 크거나 같을때
                 lastitemVisibleFlag = (totalItemCount > 0) && (firstVisibleItem + visibleItemCount >= totalItemCount);
+                Log.d("test", "onScroll / FLAG : " + lastitemVisibleFlag);
             }
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 //OnScrollListener.SCROLL_STATE_IDLE은 스크롤이 이동하다가 멈추었을때 발생되는 스크롤 상태입니다.
                 //즉 스크롤이 바닦에 닿아 멈춘 상태에 처리를 하겠다는 뜻
+                Log.d("test", "onScrollStateChanged");
                 if(scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && lastitemVisibleFlag) {
+                    Log.d("test", "onScrollStateChanged:IF");
                     //TODO 화면이 바닦에 닿을때 처리
                     client.setMyPageHandler(handler);
                     client.moreMyPosts();
