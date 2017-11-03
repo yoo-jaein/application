@@ -37,7 +37,7 @@ public class CustomAdapter extends BaseAdapter {
     private int cnt = 0;
 
     public CustomAdapter(ArrayList<Posts> contentslist, User user) {
-        Log.d("test", "CustomAdapter : start CustomAdapter");
+        Log.d("test", "CustomAdapter : start CustomAdapter +"+contentslist.size());
         this.contentslist = contentslist;
         this.likeList = user.getLikeList();
 
@@ -67,7 +67,6 @@ public class CustomAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         final Context context = parent.getContext();
 
-        Log.d("test", "CustomAdapter: getView + position:" + position);
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.fragment_posts, parent, false);
@@ -97,7 +96,7 @@ public class CustomAdapter extends BaseAdapter {
                 else if(msg.what == Constants.RECEIVE_LIKE){
                     client.getMe().addLikeList(posts.getPostsIndex());
                     likeList = client.getMe().getLikeList();
-
+                    client.setHandler(this);
 
                 }
                 else if(msg.what == Constants.RECEIVE_DISLIKE) {
@@ -111,11 +110,8 @@ public class CustomAdapter extends BaseAdapter {
         Thread mThread = new Thread() {
             public void run() {
                 try {
-                    Log.d("test", "CustomAdapter: " + cnt + "Thread run start");
-                    Log.d("test", "CustomAdapter: " + cnt + "post: " + posts.getPostsIndex() + " postname:" + posts.getMusic().getMusicName());
-                    for (int p: likeList)  Log.d("test", "like list size : " + p);
+                  for (int p: likeList)  Log.d("test", "like list size : " + p);
                     if (likeList.contains(posts.getPostsIndex())) {
-                        Log.d("test", "contain, post index : " + posts.getPostsIndex());
                         likebutton.setVisibility(View.VISIBLE);
                         unlikebutton.setVisibility(View.INVISIBLE);
                         likebutton.bringToFront();
@@ -167,11 +163,8 @@ public class CustomAdapter extends BaseAdapter {
                     likecnt.setText("like "+posts.getLike());
 
                     byte[] image = posts.getImage();
-                    Log.d("test", "CustomAdapter : " + cnt + " postimage setting start :" + image);
-                    if (image == null) postimage.setImageResource(R.drawable.drawemptybox);
+                   if (image == null) postimage.setImageResource(R.drawable.drawemptybox);
                     else postimage.setImageDrawable(ImageController.ByteToDrawable(image));
-                    Log.d("test", "CustomAdapter : " + cnt + " postimage setting success");
-                    Log.d("test", "CustomAdapter : " + cnt + " getView end===========================================================");
 
                 } catch (Exception ex) {
 
