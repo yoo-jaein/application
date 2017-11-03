@@ -13,6 +13,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.util.ArrayList;
 
 /**
  * @author jm
@@ -114,198 +115,211 @@ class clientRead extends Thread
 					e.printStackTrace();
 				}
 
+				if(cControl.getWaitingList().size() > 0){
+					Log.d("client", "wait setting");
+					switch (cControl.getWaitingList().get(0)){
+						case Constants.WAIT_REFRESH:
+							cControl.setRefresh(true);
+							break;
+						case Constants.WAIT_MOREPOSTS:
+							cControl.setMorePosts(true);
+							break;
+						case Constants.WAIT_MYLIKELIST:
+							cControl.setMyLike(true);
+							break;
+						case Constants.WAIT_MOREMYLIKE:
+							cControl.setMoreMyLike(true);
+							break;
+						case Constants.WAIT_MYPOSTSLIST:
+							cControl.setMyPosts(true);
+							break;
+						case Constants.WAIT_MOREMYPOSTS:
+							cControl.setMoreMyPosts(true);
+							break;
+					}
+				}
 				/*
 					when client sends message to server,
 					client reads data from socket and handles the func
 				 */
-				while(cControl.isWaiting()) {
-					// time over --- break roop
-					if(System.currentTimeMillis() - cControl.getStartTime() > 5000){
-						Log.d("CLIENT", "time over!!!!");
-						cControl.setWaiting(false);
-						cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
-					}
 
-					temp = clientInputStream.readObject();
+				// time over --- break roop
+				temp = clientInputStream.readObject();
 
-					/*
-						if reading data from socket is string send message to mainthread handler.
-						current setting is #fin and #err but we must add err code for each reason
-					 */
-					if (temp instanceof String) {
-						if(cControl.isLogin()){
-							Log.d("CLIENT", "login");
-							cControl.setLogin(false);
-							if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
-							}
+				/*
+					if reading data from socket is string send message to mainthread handler.
+					current setting is #fin and #err but we must add err code for each reason
+				 */
+				if (temp instanceof String) {
+					if(cControl.isLogin()){
+						Log.d("CLIENT", "login");
+						cControl.setLogin(false);
+						if(((String)temp).compareTo("#err")==0) {
+							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 						}
-						else if(cControl.isRegister()){
-							Log.d("CLIENT", "register");
-							cControl.setRegister(false);
-							if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
-							}else if(((String)temp).compareTo("#fin")==0){
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
-							}
-						}
-						else if(cControl.isFindPass()){
-							Log.d("CLIENT", "findPass");
-							cControl.setFindPass(false);
-							if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
-							}
-							else if(((String)temp).compareTo("#fin")==0){
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
-							}
-						}
-                        else if(cControl.isRefresh()){
-                            Log.d("CLIENT", "refresh");
-                            cControl.setRefresh(false);
-                            if(((String)temp).compareTo("#err")==0) {
-                                cControl.getTimeLineHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
-                            }
-                        }
-						else if(cControl.isTotalLike()){
-							Log.d("CLIENT", "totalLike");
-							cControl.setTotalLike(false);
-							if(((String)temp).compareTo("#err")==0) {
-								cControl.getMyPageHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
-							}
-							else {
-								cControl.getMyPageHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
-								cControl.setMyLikeCount(Integer.parseInt(((String)temp)));
-								cControl.getMe().setTotalLike(Integer.parseInt(((String)temp)));
-							}
-						}
-						else if(cControl.isPost()){
-							Log.d("CLIENT", "post");
-							cControl.setPost(false);
-							if(((String)temp).compareTo("#fin")==0){
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
-							}
-							else if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
-							}else{
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
-							}
-						}
-						else if(cControl.isDelete()){
-							Log.d("CLIENT", "delete");
-							cControl.setDelete(false);
-							if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
-							}
-						}
-						else if(cControl.isLike()){
-							Log.d("CLIENT", "like");
-							cControl.setLike(false);
-							if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
-							}
-						}
-						else if(cControl.isDislike()){
-							Log.d("CLIENT", "disLike");
-							cControl.setLike(false);
-							if(((String)temp).compareTo("#fin")==0){
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
-							}
-							else if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
-							}
-						}else if(cControl.isUpdateUser()){
-							Log.d("CLIENT", "updateUser");
-							if(((String)temp).compareTo("#fin")==0){
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
-							}
-							else if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
-							}
-						}
-						Log.d("CLIENT", temp.toString());
-						cControl.setWaiting(false);
 					}
-					/*
-						if reading data from socket is User
-					 */
-					else if (temp instanceof User) {
-						try {
-							cControl.setMyLikeCount(((User) temp).getTotalLike());
-						}catch(Exception e){
-							e.printStackTrace();
-						}
-						if(cControl.isLogin()){
-							Log.d("CLIENT", "login");
-							cControl.setLogin(false);
-							cControl.setMe((User)temp);
+					else if(cControl.isRegister()){
+						Log.d("CLIENT", "register");
+						cControl.setRegister(false);
+						if(((String)temp).compareTo("#err")==0) {
+							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
+						}else if(((String)temp).compareTo("#fin")==0){
 							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 						}
-						else if(cControl.isRegister()){
-							Log.d("CLIENT", "register");
-							cControl.setRegister(false);
-							cControl.setMe((User)temp);
+					}
+					else if(cControl.isFindPass()){
+						Log.d("CLIENT", "findPass");
+						cControl.setFindPass(false);
+						if(((String)temp).compareTo("#err")==0) {
+							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
+						}
+						else if(((String)temp).compareTo("#fin")==0){
 							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 						}
-						else if(cControl.isUpdateUser()){
-							Log.d("CLIENT", "updateUser");
-							cControl.setLike(false);
-							cControl.setMe((User)temp);
+					}
+					else if(cControl.isRefresh()){
+						Log.d("CLIENT", "refresh");
+						cControl.setRefresh(false);
+						if(((String)temp).compareTo("#err")==0) {
+							cControl.getTimeLineHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
+						}
+					}
+					else if(cControl.isTotalLike()){
+						Log.d("CLIENT", "totalLike");
+						cControl.setTotalLike(false);
+						if(((String)temp).compareTo("#err")==0) {
+							cControl.getMyPageHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
+						}
+						else {
+							cControl.getMyPageHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
+							cControl.setMyLikeCount(Integer.parseInt(((String)temp)));
+							cControl.getMe().setTotalLike(Integer.parseInt(((String)temp)));
+						}
+					}
+					else if(cControl.isPost()){
+						Log.d("CLIENT", "post");
+						cControl.setPost(false);
+						if(((String)temp).compareTo("#fin")==0){
 							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 						}
-						Log.d("CLIENT", temp.toString());
-						cControl.setWaiting(false);
+						else if(((String)temp).compareTo("#err")==0) {
+							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
+						}else{
+							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
+						}
 					}
-					/*
-						if reading data from socket is PostsList
-					 */
-					else if (temp instanceof PostsList) {
-						if(cControl.isMorePosts()){
-							Log.d("CLIENT", "morePosts");
-							cControl.setMorePosts(false);
-							cControl.addTimeLine((PostsList)temp);
-							cControl.setMoreList((PostsList)temp);
-							cControl.getTimeLineHandler().sendEmptyMessage(Constants.RECEIVE_MORE);
+					else if(cControl.isDelete()){
+						Log.d("CLIENT", "delete");
+						cControl.setDelete(false);
+						if(((String)temp).compareTo("#err")==0) {
+							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 						}
-						else if(cControl.isRefresh()){
-							Log.d("CLIENT", "refresh");
-							cControl.setRefresh(false);
-							cControl.setTimeLine((PostsList)temp);
-							cControl.getTimeLineHandler().sendEmptyMessage(Constants.RECEIVE_REFRESH);
-						}
-						else if(cControl.isMyPosts()){
-							Log.d("CLIENT", "myPosts");
-							cControl.setMyPosts(false);
-							cControl.setMyPostsList((PostsList)temp);
-							cControl.getMyPageHandler().sendEmptyMessage(Constants.RECEIVE_REFRESH);
-						}
-						else if(cControl.isMoreMyPosts()){
-							Log.d("CLIENT", "moreMyPosts");
-							cControl.setMoreMyPosts(false);
-							cControl.addMyPostsList((PostsList)temp);
-							cControl.setMoreList((PostsList)temp);
-							cControl.getMyPageHandler().sendEmptyMessage(Constants.RECEIVE_MORE);
-						}
-						else if(cControl.isMyLike()){
-							Log.d("CLIENT", "myLike");
-							cControl.setMyLike(false);
-							cControl.setMyLikeList((PostsList)temp);
-							cControl.getMyLikeListHandler().sendEmptyMessage(Constants.RECEIVE_REFRESH);
-						}
-						else if(cControl.isMoreMyLike()){
-							Log.d("CLIENT", "moreMyLike");
-							cControl.setMoreMyLike(false);
-							cControl.addMyLikeList((PostsList)temp);
-							cControl.setMoreList((PostsList)temp);
-							cControl.getMyLikeListHandler().sendEmptyMessage(Constants.RECEIVE_MORE);
-						}
-						Log.d("CLIENT", temp.toString());
-						cControl.setWaiting(false);
 					}
-					else if(temp == null)
-						Log.d("CLIENT", "temp is null");
-					else
-						Log.d("CLIENT", "temp is not expected");
+					else if(cControl.isLike()){
+						Log.d("CLIENT", "like");
+						cControl.setLike(false);
+						if(((String)temp).compareTo("#err")==0) {
+							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
+						}
+					}
+					else if(cControl.isDislike()){
+						Log.d("CLIENT", "disLike");
+						cControl.setLike(false);
+						if(((String)temp).compareTo("#fin")==0){
+							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
+						}
+						else if(((String)temp).compareTo("#err")==0) {
+							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
+						}
+					}else if(cControl.isUpdateUser()){
+						Log.d("CLIENT", "updateUser");
+						if(((String)temp).compareTo("#fin")==0){
+							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
+						}
+						else if(((String)temp).compareTo("#err")==0) {
+							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
+						}
+					}
+					Log.d("CLIENT", temp.toString());
 				}
+				/*
+					if reading data from socket is User
+				 */
+				else if (temp instanceof User) {
+					try {
+						cControl.setMyLikeCount(((User) temp).getTotalLike());
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+					if(cControl.isLogin()){
+						Log.d("CLIENT", "login");
+						cControl.setLogin(false);
+						cControl.setMe((User)temp);
+						cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
+					}
+					else if(cControl.isRegister()){
+						Log.d("CLIENT", "register");
+						cControl.setRegister(false);
+						cControl.setMe((User)temp);
+						cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
+					}
+					else if(cControl.isUpdateUser()){
+						Log.d("CLIENT", "updateUser");
+						cControl.setLike(false);
+						cControl.setMe((User)temp);
+						cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
+					}
+					Log.d("CLIENT", temp.toString());
+				}
+				/*
+					if reading data from socket is PostsList
+				 */
+				else if (temp instanceof PostsList) {
+					if(cControl.isMorePosts()){
+						Log.d("CLIENT", "morePosts");
+						cControl.setMorePosts(false);
+						cControl.addTimeLine((PostsList)temp);
+						cControl.setMoreList((PostsList)temp);
+						cControl.getTimeLineHandler().sendEmptyMessage(Constants.RECEIVE_MORE);
+					}
+					else if(cControl.isRefresh()){
+						Log.d("CLIENT", "refresh");
+						cControl.setRefresh(false);
+						cControl.setTimeLine((PostsList)temp);
+						cControl.getTimeLineHandler().sendEmptyMessage(Constants.RECEIVE_REFRESH);
+					}
+					else if(cControl.isMyPosts()){
+						Log.d("CLIENT", "myPosts");
+						cControl.setMyPosts(false);
+						cControl.setMyPostsList((PostsList)temp);
+						cControl.getMyPageHandler().sendEmptyMessage(Constants.RECEIVE_REFRESH);
+					}
+					else if(cControl.isMoreMyPosts()){
+						Log.d("CLIENT", "moreMyPosts");
+						cControl.setMoreMyPosts(false);
+						cControl.addMyPostsList((PostsList)temp);
+						cControl.setMoreList((PostsList)temp);
+						cControl.getMyPageHandler().sendEmptyMessage(Constants.RECEIVE_MORE);
+					}
+					else if(cControl.isMyLike()){
+						Log.d("CLIENT", "myLike");
+						cControl.setMyLike(false);
+						cControl.setMyLikeList((PostsList)temp);
+						cControl.getMyLikeListHandler().sendEmptyMessage(Constants.RECEIVE_REFRESH);
+					}
+					else if(cControl.isMoreMyLike()){
+						Log.d("CLIENT", "moreMyLike");
+						cControl.setMoreMyLike(false);
+						cControl.addMyLikeList((PostsList)temp);
+						cControl.setMoreList((PostsList)temp);
+						cControl.getMyLikeListHandler().sendEmptyMessage(Constants.RECEIVE_MORE);
+					}
+					Log.d("CLIENT", temp.toString());
+				}
+				else if(temp == null)
+					Log.d("CLIENT", "temp is null");
+				else
+					Log.d("CLIENT", "temp is not expected");
 			}
 		}
 		catch (IOException e) {
@@ -321,7 +335,7 @@ class clientWrite extends Thread
 {
 	private Socket socket;
 
-	private String console;
+	private ArrayList<String> stringConsoles;
 	private Posts postsConsole;
 	private User userConsole;
 
@@ -335,6 +349,7 @@ class clientWrite extends Thread
 		sendToReadyString=false;
 		sendToReadyPosts=false;
 		sendToReadyUser=false;
+		stringConsoles = new ArrayList<String>();
 	}
 
 	@Override
@@ -346,17 +361,21 @@ class clientWrite extends Thread
 
 			while(true) {
 				try {
-					Thread.sleep(10);
+					Thread.sleep(100);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
 				while (sendToReadyString) {
-					Log.d("CLIENT", "in thread before writing");
-					out.writeObject(console);
-					Log.d("CLIENT", "write complete");
-					sendToReadyString = false;
+					out.writeObject(stringConsoles.get(0));
+					Log.d("client", "client string write : " + stringConsoles.get(0));
+					stringConsoles.remove(0);
+					Log.d("client", "stringList size : " + stringConsoles.size());
+
+					if(stringConsoles.size()==0) {
+						sendToReadyString = false;
+					}
 				}
 				while (sendToReadyPosts) {
 					out.writeObject(postsConsole);
@@ -378,7 +397,9 @@ class clientWrite extends Thread
 
 	void sendToServer(String msg)
 	{
-		console=msg;
+		String string = msg;
+		stringConsoles.add(string);
+		Log.d("client", "stringList size : " + stringConsoles.size());
 		sendToReadyString=true;
 	}
    	void sendToServerPosts(Posts posts)

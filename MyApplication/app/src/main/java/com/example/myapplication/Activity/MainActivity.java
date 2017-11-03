@@ -337,30 +337,28 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 0:/*
+                case 0:
                     Log.d("fragment", "timeline selected");
                     if (timeLineFragment == null) {
                         timeLineFragment = new TimeLineFragment();
                         return timeLineFragment;
                     }
-                    else return timeLineFragment;*/
-                    return new TimeLineFragment();
-                case 1:/*
+                    else return timeLineFragment;
+
+                case 1:
                     Log.d("fragment", "mylikelist selected");
                     if (likeListFragment == null) {
                         likeListFragment = new LikeListFragment();
                         return likeListFragment;
                     }
-                    else return likeListFragment;*/
-                    return new LikeListFragment();
-                case 2:/*
+                    else return likeListFragment;
+                case 2:
                     Log.d("fragment", "mypage selected");
                     if (myPageFragment == null) {
                         myPageFragment = new MyPageFragment();
                         return myPageFragment;
                     }
-                    else return myPageFragment;*/
-                    return new MyPageFragment();
+                    else return myPageFragment;
             }
             return null;
         }
@@ -377,6 +375,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             return "";
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
         }
     }
 }

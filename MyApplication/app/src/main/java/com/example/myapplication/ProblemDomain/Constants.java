@@ -38,5 +38,10 @@ public class Constants{
     public static final int DISTANCE = 31;
     public static final int LIKE = 32;
 
-
+    public static final int WAIT_REFRESH = 50;
+    public static final int WAIT_MOREPOSTS = 53;
+    public static final int WAIT_MYLIKELIST = 56;
+    public static final int WAIT_MOREMYLIKE = 59;
+    public static final int WAIT_MYPOSTSLIST = 62;
+    public static final int WAIT_MOREMYPOSTS = 65;
 }
