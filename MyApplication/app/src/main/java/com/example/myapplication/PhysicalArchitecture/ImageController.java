@@ -29,7 +29,7 @@ public class ImageController {
 
         Bitmap src = BitmapFactory.decodeByteArray(b, 0, b.length);
         Log.d("test", "CustomAdapter:ByteToDrawable settingOption");
-        Bitmap bitmap = ImageController.resizeBitmap(src,1000);
+        Bitmap bitmap = ImageController.resizeBitmap(src,800);
 
 //        Bitmap bitmap=BitmapFactory.decodeByteArray(b, 0, b.length);
         Log.d("test", "CustomAdapter:ByteToDrawable settingBitmap");

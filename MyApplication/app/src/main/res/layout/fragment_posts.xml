@@ -26,7 +26,7 @@
             android:layout_height="300dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:scaleType="centerInside"
+            android:scaleType="centerCrop"
             app:srcCompat="@drawable/postpicture" />
 
         <ImageButton
@@ -60,7 +60,6 @@
             android:layout_alignParentTop="false"
             android:layout_alignWithParentIfMissing="false"
             android:layout_toLeftOf="@+id/likeButton"
-            android:text="like"
             android:textSize="20dp" />
     </RelativeLayout>
 

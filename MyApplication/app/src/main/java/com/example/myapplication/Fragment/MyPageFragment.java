@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -53,7 +54,7 @@ public class MyPageFragment extends Fragment {
     private TextView likecnt;
 
     private ListView mylist;
-
+    private boolean lastitemVisibleFlag = false;
     private int arr_type=1;
 
     private  View view;
@@ -121,7 +122,23 @@ public class MyPageFragment extends Fragment {
 
         mylist=(ListView)view.findViewById(R.id.mylist);
         mylist.setAdapter(new CustomAdapter(client.getMyPostsList(),client.getMe()));
-
+        mylist.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                //현재 화면에 보이는 첫번째 리스트 아이템의 번호(firstVisibleItem) + 현재 화면에 보이는 리스트 아이템의 갯수(visibleItemCount)가 리스트 전체의 갯수(totalItemCount) -1 보다 크거나 같을때
+                lastitemVisibleFlag = (totalItemCount > 0) && (firstVisibleItem + visibleItemCount >= totalItemCount);
+            }
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                //OnScrollListener.SCROLL_STATE_IDLE은 스크롤이 이동하다가 멈추었을때 발생되는 스크롤 상태입니다.
+                //즉 스크롤이 바닦에 닿아 멈춘 상태에 처리를 하겠다는 뜻
+                if(scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && lastitemVisibleFlag) {
+                    //TODO 화면이 바닦에 닿을때 처리
+                    client.setMyPageHandler(handler);
+                    client.moreMyPosts();
+                }
+            }
+        });
 /////////////////////stretch fill bar according to like count
         fillbar=(ImageView)view.findViewById(R.id.fill_like_bar);
         unfillbar=(ImageView)view.findViewById(R.id.unfillbar);

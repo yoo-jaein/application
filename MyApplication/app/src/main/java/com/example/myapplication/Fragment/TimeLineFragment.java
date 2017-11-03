@@ -119,7 +119,6 @@ public class TimeLineFragment extends Fragment {
 
 
         timeline.setOnScrollListener(new AbsListView.OnScrollListener() {
-
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 //현재 화면에 보이는 첫번째 리스트 아이템의 번호(firstVisibleItem) + 현재 화면에 보이는 리스트 아이템의 갯수(visibleItemCount)가 리스트 전체의 갯수(totalItemCount) -1 보다 크거나 같을때
@@ -131,9 +130,10 @@ public class TimeLineFragment extends Fragment {
                 //즉 스크롤이 바닦에 닿아 멈춘 상태에 처리를 하겠다는 뜻
                 if(scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && lastitemVisibleFlag) {
                     //TODO 화면이 바닦에 닿을때 처리
+                    client.setTimeLineHandler(handler);
+                    client.morePosts();
                 }
             }
-
         });
 
 

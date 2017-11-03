@@ -101,7 +101,6 @@ public class CustomAdapter extends BaseAdapter {
                 }
             }
         };
-        final int num = cnt++;
 
         Thread mThread = new Thread() {
             public void run() {
@@ -130,8 +129,8 @@ public class CustomAdapter extends BaseAdapter {
                             client.setHandler(handler);
                             client.dislike(posts.getPostsIndex());
                             likeList.remove((Object)posts.getPostsIndex());
-                            int cnt=(posts.getLike());
-                            likecnt.setText("like "+cnt);
+                            //int cnt=(posts.getLike());
+                            //likecnt.setText("like "+cnt);
                         }
                     });
                     unlikebutton.setOnClickListener(new View.OnClickListener() {
@@ -144,8 +143,8 @@ public class CustomAdapter extends BaseAdapter {
                             client.setHandler(handler);
                             client.like(posts.getPostsIndex());
                             likeList.add(posts.getPostsIndex());
-                            int cnt=(posts.getLike());
-                            likecnt.setText("like "+cnt);
+                            //int cnt=(posts.getLike());
+                            //likecnt.setText("like "+cnt);
                         }
                     });
 
@@ -163,7 +162,7 @@ public class CustomAdapter extends BaseAdapter {
                     content.setText(posts.getComment().toString());
                     time.setText(posts.getCreateTime().toString());
 
-                    likecnt.setText("like "+posts.getLike());
+                    //likecnt.setText("like "+posts.getLike());
 
                     byte[] image = posts.getImage();
                     Log.d("test", "CustomAdapter : " + cnt + " postimage setting start :" + image);
