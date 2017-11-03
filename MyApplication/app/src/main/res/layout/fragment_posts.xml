@@ -62,6 +62,7 @@
             android:layout_alignWithParentIfMissing="false"
             android:layout_toLeftOf="@+id/likeButton"
             android:text="like"
+            android:textColor="@android:color/background_light"
             android:textSize="20dp" />
     </RelativeLayout>
 
