@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.PhysicalArchitecture.ClientController;
 import com.example.myapplication.PhysicalArchitecture.ImageController;
@@ -155,7 +156,11 @@ public class CustomAdapter extends BaseAdapter {
                         public void onClick(View view) {
                             Music selectedMusic = posts.getMusic();
                             Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setData(Uri.parse("melonapp://play?" + "cid=" + selectedMusic.getMusicId() + "&ctype=1&menuid=" + selectedMusic.getMenuId()));
+                            try {
+                                intent.setData(Uri.parse("melonapp://play?" + "cid=" + selectedMusic.getMusicId() + "&ctype=1&menuid=" + selectedMusic.getMenuId()));
+                            }catch ( Exception e) {
+                                Toast.makeText(context,"노래를 재생하기 위해서는 Melon이 필요합니다.",Toast.LENGTH_SHORT).show();
+                            }
                             context.startActivity(intent);
                         }
                     });
