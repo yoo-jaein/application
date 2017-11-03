@@ -17,6 +17,7 @@
         android:textStyle="bold" />
 
     <RelativeLayout
+        android:id="@+id/postlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

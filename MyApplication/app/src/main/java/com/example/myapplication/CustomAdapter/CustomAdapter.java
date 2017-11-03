@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.myapplication.PhysicalArchitecture.ClientController;
@@ -71,6 +72,8 @@ public class CustomAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.fragment_posts, parent, false);
         }
+        final RelativeLayout layout=(RelativeLayout)convertView.findViewById(R.id.postlayout);
+
         final TextView content = (TextView) convertView.findViewById(R.id.post_text);
         final TextView location = (TextView) convertView.findViewById(R.id.post_location);
         final TextView music = (TextView) convertView.findViewById(R.id.post_music);
@@ -94,6 +97,8 @@ public class CustomAdapter extends BaseAdapter {
                 else if(msg.what == Constants.RECEIVE_LIKE){
                     client.getMe().addLikeList(posts.getPostsIndex());
                     likeList = client.getMe().getLikeList();
+
+
                 }
                 else if(msg.what == Constants.RECEIVE_DISLIKE) {
                     client.getMe().delLikeList(posts.getPostsIndex());
@@ -130,8 +135,6 @@ public class CustomAdapter extends BaseAdapter {
                             client.setHandler(handler);
                             client.dislike(posts.getPostsIndex());
                             likeList.remove((Object)posts.getPostsIndex());
-                            int cnt=(posts.getLike());
-                            likecnt.setText("like "+cnt);
                         }
                     });
                     unlikebutton.setOnClickListener(new View.OnClickListener() {
@@ -144,8 +147,6 @@ public class CustomAdapter extends BaseAdapter {
                             client.setHandler(handler);
                             client.like(posts.getPostsIndex());
                             likeList.add(posts.getPostsIndex());
-                            int cnt=(posts.getLike());
-                            likecnt.setText("like "+cnt);
                         }
                     });
 

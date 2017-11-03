@@ -101,15 +101,15 @@
                     <ImageView
                         android:id="@+id/fill_like_bar"
                         android:layout_width="30dp"
-                        android:layout_height="15dp"
+                        android:layout_height="wrap_content"
                         android:contentDescription="@string/missing_image_content"
-                        android:scaleType="centerCrop"
+                        android:scaleType="fitXY"
                         app:srcCompat="@drawable/filledlikebar" />
 
                     <ImageView
                         android:id="@+id/unfillbar"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="15dp"
                         android:layout_marginRight="12dp"
                         android:contentDescription="@string/missing_image_content"
                         app:srcCompat="@drawable/unfilledlikebar" />

@@ -1,16 +1,14 @@
 package com.example.myapplication.CustomAdapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.example.myapplication.PhysicalArchitecture.ImageController;
 import com.example.myapplication.ProblemDomain.Posts;
@@ -86,6 +84,8 @@ public class CustomAdapter2 extends BaseAdapter {
             convertView = inflater.inflate(R.layout.instagram_listview, parent, false);
         }
 
+        final LinearLayout layout=(LinearLayout)convertView.findViewById(R.id.instaLinear);
+
         final ImageView image1 = (ImageView) convertView.findViewById(R.id.firstimage);
         final ImageView image2 = (ImageView) convertView.findViewById(R.id.secondimage);
         final ImageView image3 = (ImageView) convertView.findViewById(R.id.thirdimage);
@@ -98,6 +98,29 @@ public class CustomAdapter2 extends BaseAdapter {
                     if((b=s.s1.getImage())!=null) image1.setImageDrawable(ImageController.ByteToDrawable(s.s1.getImage()));
                     if((b=s.s2.getImage())!=null) image2.setImageDrawable(ImageController.ByteToDrawable(s.s2.getImage()));
                     if((b=s.s3.getImage())!=null) image3.setImageDrawable(ImageController.ByteToDrawable(s.s3.getImage()));
+
+                    layout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            int w=layout.getWidth()/3;
+                            int h=w;
+
+                            Log.d("test","CustomAdapter2: w="+w+" h="+h);
+
+                            image1.setLayoutParams(new LinearLayout.LayoutParams(w,h));
+                            image2.setLayoutParams(new LinearLayout.LayoutParams(w,h));
+                            image3.setLayoutParams(new LinearLayout.LayoutParams(w,h));
+
+                        }});
+                    int w=layout.getWidth()/3;
+                    int h=w;
+
+                    Log.d("test","CustomAdapter2: w="+w+" h="+h);
+
+                    image1.setLayoutParams(new LinearLayout.LayoutParams(w,h));
+                    image2.setLayoutParams(new LinearLayout.LayoutParams(w,h));
+                    image3.setLayoutParams(new LinearLayout.LayoutParams(w,h));
+
                 } catch (Exception ex) {
                 }
             }
