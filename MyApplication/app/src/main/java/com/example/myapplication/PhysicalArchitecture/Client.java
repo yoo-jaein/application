@@ -234,7 +234,6 @@ class clientRead extends Thread
 							cControl.getMyPageHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 						}
 						else {
-							cControl.getMyPageHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 							cControl.setMyLikeCount(Integer.parseInt(((String)temp)));
 							cControl.getMe().setTotalLike(Integer.parseInt(((String)temp)));
 						}

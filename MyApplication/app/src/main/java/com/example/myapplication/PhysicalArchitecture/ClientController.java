@@ -314,6 +314,8 @@ public class ClientController{
 	public void post(Posts p){
 		startTime = System.currentTimeMillis();
 
+		waitingList.add(Constants.WAIT_POST);
+
 		post = true;
 
 		client.sendToServer(p);

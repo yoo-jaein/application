@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -37,6 +38,8 @@ public class TimeLineFragment extends Fragment {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ListView timeline;
     private ListAdapter adapter;
+
+    private boolean lastitemVisibleFlag = false;        //화면에 리스트의 마지막 아이템이 보여지는지 체크
 
     private View view;
 
@@ -109,19 +112,32 @@ public class TimeLineFragment extends Fragment {
 
         mSwipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_layout);
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                client.setHandler(handler);
-                client.morePosts();
-            }
-        });
-
-
         timeline = (ListView) view.findViewById(R.id.timeline);
 
         client.setTimeLineHandler(handler);
         client.refresh();
+
+
+        timeline.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                //현재 화면에 보이는 첫번째 리스트 아이템의 번호(firstVisibleItem) + 현재 화면에 보이는 리스트 아이템의 갯수(visibleItemCount)가 리스트 전체의 갯수(totalItemCount) -1 보다 크거나 같을때
+                lastitemVisibleFlag = (totalItemCount > 0) && (firstVisibleItem + visibleItemCount >= totalItemCount);
+            }
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                //OnScrollListener.SCROLL_STATE_IDLE은 스크롤이 이동하다가 멈추었을때 발생되는 스크롤 상태입니다.
+                //즉 스크롤이 바닦에 닿아 멈춘 상태에 처리를 하겠다는 뜻
+                if(scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && lastitemVisibleFlag) {
+                    //TODO 화면이 바닦에 닿을때 처리
+                }
+            }
+
+        });
+
+
+        출처: http://krespo.net/176 [KRESPO.NET]
 
         return view;
     }

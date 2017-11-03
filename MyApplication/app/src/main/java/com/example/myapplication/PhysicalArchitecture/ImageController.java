@@ -19,6 +19,14 @@ public class ImageController {
     public static Drawable ByteToDrawable(byte[] b) {
         Drawable image;
         Log.d("test", "CustomAdapter:ByteToDrawable start");
+        BitmapFactory.Options options2 = new BitmapFactory.Options();
+
+        options2.inPreferredConfig = Bitmap.Config.RGB_565;
+
+        options2.inSampleSize = 1;
+
+        options2.inPurgeable = true;
+
         Bitmap src = BitmapFactory.decodeByteArray(b, 0, b.length);
         Log.d("test", "CustomAdapter:ByteToDrawable settingOption");
         Bitmap bitmap = ImageController.resizeBitmap(src,1000);

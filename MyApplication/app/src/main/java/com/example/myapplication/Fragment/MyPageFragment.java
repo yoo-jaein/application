@@ -37,7 +37,7 @@ import static com.example.myapplication.ProblemDomain.Constants.GET_PICTURE_URI;
 
 public class MyPageFragment extends Fragment {
 
-    private Handler handler;
+    private static Handler handler;
     private ClientController client = null;
     private ArrayList<Posts> myPostsList;
 
@@ -93,6 +93,7 @@ public class MyPageFragment extends Fragment {
                 }
             }
         };
+
         client.setMyPageHandler(handler);
         client.myPosts();
     }

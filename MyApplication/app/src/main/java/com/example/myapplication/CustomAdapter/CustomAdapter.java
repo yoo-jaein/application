@@ -177,6 +177,7 @@ public class CustomAdapter extends BaseAdapter {
                 }
             }
         };
+
         mThread.start();
 
         try {
