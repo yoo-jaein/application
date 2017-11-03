@@ -18,9 +18,6 @@ import com.example.myapplication.PhysicalArchitecture.ClientController;
 import com.example.myapplication.R;
 
 public class HelpActivity extends AppCompatActivity {
-
-    ClientController client;
-
     private Handler handlers;
 
     ViewPager vp;
@@ -66,9 +63,6 @@ public class HelpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
         init();
-
-        client = ClientController.getClientControl();
-        client.client.start();
 
         Button skip=(Button)findViewById(R.id.guideskipButton);
         skip.setOnClickListener(new View.OnClickListener() {

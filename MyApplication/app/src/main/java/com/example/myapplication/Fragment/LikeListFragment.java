@@ -3,6 +3,7 @@ package com.example.myapplication.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -24,7 +25,7 @@ import java.util.List;
 public class LikeListFragment extends Fragment {
 
     private ClientController client = null;
-    private Handler handler;
+    private static Handler handler;
 
     private ListView likelist;
 
@@ -33,6 +34,12 @@ public class LikeListFragment extends Fragment {
     private ArrayList<Posts> mylikeList;
 
     public LikeListFragment() {
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         Log.d("fragment", "in LikeListFragment()");
 
         if(client == null)

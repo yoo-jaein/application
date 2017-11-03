@@ -215,6 +215,16 @@ class clientRead extends Thread
 							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 						}
 					}
+					else if(cControl.isGetLikePosts()){
+						Log.d("CLIENT", "getlikePosts");
+						cControl.setGetLikePosts(false);
+						if(((String)temp).compareTo("#err")==0) {
+							cControl.setTempLikeCount(Integer.parseInt((String)temp));
+							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_LIKE);
+						}else{
+							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
+						}
+					}
 					else if(cControl.isLike()){
 						Log.d("CLIENT", "like");
 						cControl.setLike(false);
@@ -305,6 +315,8 @@ class clientRead extends Thread
 						Log.d("CLIENT", "myLike");
 						cControl.setMyLike(false);
 						cControl.setMyLikeList((PostsList)temp);
+						if(cControl.getMyLikeListHandler() != null)
+
 						cControl.getMyLikeListHandler().sendEmptyMessage(Constants.RECEIVE_REFRESH);
 					}
 					else if(cControl.isMoreMyLike()){
