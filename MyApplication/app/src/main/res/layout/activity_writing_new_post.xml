@@ -24,9 +24,10 @@
                 android:id="@+id/imageView5"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
+                android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_marginTop="10dp"
-                android:scaleType="centerInside"
                 android:contentDescription="@string/missing_image_content"
+                android:scaleType="centerInside"
                 app:srcCompat="@drawable/postingtitle" />
 
             <LinearLayout
@@ -42,20 +43,20 @@
                     android:layout_gravity="left"
                     android:layout_marginHorizontal="10dp"
                     android:background="#00000000"
+                    android:contentDescription="@string/missing_image_content"
                     android:cropToPadding="false"
                     android:scaleType="fitStart"
-                    android:contentDescription="@string/missing_image_content"
                     app:srcCompat="@drawable/postingbackicon" />
 
                 <ImageButton
                     android:id="@+id/postingFinish"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="right"
                     android:layout_marginHorizontal="10dp"
                     android:background="#00000000"
-                    android:scaleType="fitEnd"
                     android:contentDescription="@string/missing_image_content"
+                    android:scaleType="fitEnd"
                     app:srcCompat="@drawable/postingfinishicon" />
             </LinearLayout>
 

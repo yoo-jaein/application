@@ -1,7 +1,5 @@
 package com.example.myapplication.Fragment;
 
-import android.database.DataSetObservable;
-import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -43,6 +41,10 @@ public class TimeLineFragment extends Fragment {
 
     private View view;
 
+    private int cursor=0;
+
+    private boolean curr=true;
+
     public TimeLineFragment() {
         super();
 
@@ -53,17 +55,25 @@ public class TimeLineFragment extends Fragment {
             @Override
             public void handleMessage(Message msg) {
                 Log.d("handler", "received message in handler");
-                client.setHandler(null);
                 if (msg.what == Constants.RECEIVE_REFRESH) {
+                    Log.d("test","timeline handler : refresh");
                     postsArrayList = client.getTimeLine();
                     adapter = new CustomAdapter(postsArrayList,client.getMe());
                     timeline.setAdapter(adapter);
                     timeline.deferNotifyDataSetChanged();
-                } else if(msg.what == Constants.RECEIVE_MORE){
-                    // 게시물을 더 받아왔을 경우 더 받아온 포스트를 현재 ArrayList에 더함.
-                    // client.getMoreList는 타임라인이든 내게시물이든 내가 좋아요 누른 게시물이든 더 받은 포스트가 들어있다.
-                    // TODO 리스트뷰 갱신이 자동으로 될지 테스트 필요
-                    postsArrayList.addAll(client.getMoreList());
+                    cursor=client.getTimeLine().size();
+                    Log.d("test",">>cursor size"+cursor);
+                } else if(msg.what == Constants.RECEIVE_MORE ){
+                    if(cursor!=client.getTimeLine().size()) {
+                        Log.d("test", "timeline handler : receivemore");
+                        postsArrayList = client.getTimeLine();
+                        adapter = new CustomAdapter(postsArrayList, client.getMe());
+                        timeline.setAdapter(adapter);
+                        timeline.deferNotifyDataSetChanged();
+                        timeline.setSelection(cursor-1);
+                        Log.d("cursor", "set>>cursor size" + cursor);
+                        curr=true;
+                    }
                 } else if (msg.what == Constants.RECEIVE_FAILED) {
                     // TODO when receive err message
                 }
@@ -120,24 +130,22 @@ public class TimeLineFragment extends Fragment {
 
         timeline.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                //현재 화면에 보이는 첫번째 리스트 아이템의 번호(firstVisibleItem) + 현재 화면에 보이는 리스트 아이템의 갯수(visibleItemCount)가 리스트 전체의 갯수(totalItemCount) -1 보다 크거나 같을때
-                lastitemVisibleFlag = (totalItemCount > 0) && (firstVisibleItem + visibleItemCount >= totalItemCount);
+            public void onScrollStateChanged(AbsListView absListView, int i) {
             }
+
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                //OnScrollListener.SCROLL_STATE_IDLE은 스크롤이 이동하다가 멈추었을때 발생되는 스크롤 상태입니다.
-                //즉 스크롤이 바닦에 닿아 멈춘 상태에 처리를 하겠다는 뜻
-                if(scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && lastitemVisibleFlag) {
-                    //TODO 화면이 바닦에 닿을때 처리
-                    client.setTimeLineHandler(handler);
-                    client.morePosts();
+            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if(firstVisibleItem+visibleItemCount==totalItemCount && totalItemCount !=0) {
+                    Log.d("cursor",">>>>>>>>>>>timeline last item");
+                    if(curr) {
+                        client.setTimeLineHandler(handler);
+                        client.morePosts();
+                        curr=false;
+                        cursor = client.getTimeLine().size();
+                    }
                 }
             }
         });
-
-
-        출처: http://krespo.net/176 [KRESPO.NET]
 
         return view;
     }
