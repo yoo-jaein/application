@@ -41,6 +41,7 @@ public class ClientController{
 	private String message = "";
 
 	private int myLikeCount = 0;
+	private int tempLikeCount = 0;
 	/*
        checking request complete.
      */
@@ -62,6 +63,7 @@ public class ClientController{
 	private boolean dislike = false;
 	private boolean updateUser = false;
 	private boolean closeSocket = false;
+	private boolean getLikePosts = false;
 
 	private long startTime = 0;
 
@@ -346,6 +348,8 @@ public class ClientController{
 	public void dislike(int index){
 		startTime = System.currentTimeMillis();
 
+		dislike = true;
+
 		message = "#dislike%";
 		message += index;
 
@@ -358,6 +362,17 @@ public class ClientController{
 		startTime = System.currentTimeMillis();
 
 		client.sendToServer(user);
+	}
+
+	public void getPostsLikeByPostsId(int id){
+		message = "#getPostsLike%";
+		message += id;
+
+		getLikePosts = true;
+
+		client.sendToServer(message);
+
+		message = "";
 	}
 
    /*
@@ -523,6 +538,22 @@ public class ClientController{
 
 	 void setMoreMyPosts(boolean moreMyPosts) {
 		this.moreMyPosts = moreMyPosts;
+	}
+
+	public boolean isGetLikePosts() {
+		return getLikePosts;
+	}
+
+	public void setGetLikePosts(boolean getLikePosts) {
+		this.getLikePosts = getLikePosts;
+	}
+
+	public int getTempLikeCount() {
+		return tempLikeCount;
+	}
+
+	public void setTempLikeCount(int tempLikeCount) {
+		this.tempLikeCount = tempLikeCount;
 	}
 
 	public boolean isCloseSocket(){   return closeSocket;   }

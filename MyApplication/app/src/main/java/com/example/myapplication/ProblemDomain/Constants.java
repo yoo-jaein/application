@@ -1,7 +1,5 @@
 package com.example.myapplication.ProblemDomain;
 
-import java.io.Serializable;
-
 /**
  * Created by jm on 2017-04-23.
  */
@@ -21,6 +19,7 @@ public class Constants{
     public static final int RECEIVE_SUCCESSS = -1;
     public static final int RECEIVE_REFRESH = 40;
     public static final int RECEIVE_MORE = 41;
+    public static final int RECEIVE_POSTLIKE = 70;
     public static final int RECEIVE_CODE_LIST = 0;
     public static final int RECEIVE_LOCATION_LIST = 1;
 

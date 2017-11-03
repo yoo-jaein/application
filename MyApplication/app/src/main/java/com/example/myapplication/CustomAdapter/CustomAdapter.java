@@ -37,7 +37,7 @@ public class CustomAdapter extends BaseAdapter {
     private int cnt = 0;
 
     public CustomAdapter(ArrayList<Posts> contentslist, User user) {
-        Log.d("test", "CustomAdapter : start CustomAdapter +"+contentslist.size());
+
         this.contentslist = contentslist;
         this.likeList = user.getLikeList();
 
@@ -71,13 +71,13 @@ public class CustomAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.fragment_posts, parent, false);
         }
-        final RelativeLayout layout=(RelativeLayout)convertView.findViewById(R.id.postlayout);
+        final RelativeLayout layout = (RelativeLayout) convertView.findViewById(R.id.postlayout);
 
         final TextView content = (TextView) convertView.findViewById(R.id.post_text);
         final TextView location = (TextView) convertView.findViewById(R.id.post_location);
         final TextView music = (TextView) convertView.findViewById(R.id.post_music);
         final TextView time = (TextView) convertView.findViewById(R.id.post_time);
-        final TextView likecnt=(TextView)convertView.findViewById(R.id.postlikecnt);
+        final TextView likecnt = (TextView) convertView.findViewById(R.id.postlikecnt);
 
         final ImageView postimage = (ImageView) convertView.findViewById(R.id.post_image);
         final ImageButton likebutton = (ImageButton) convertView.findViewById(R.id.likeButton);
@@ -87,21 +87,20 @@ public class CustomAdapter extends BaseAdapter {
         final Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                if(msg.what== Constants.RECEIVE_SUCCESSS){
+                Log.d("client", "customAdapter handler");
+                if (msg.what == Constants.RECEIVE_SUCCESSS) {
 
-                }
-                else if(msg.what==Constants.RECEIVE_FAILED){
+                } else if (msg.what == Constants.RECEIVE_FAILED) {
                     // TODO when received err message
-                }
-                else if(msg.what == Constants.RECEIVE_LIKE){
+                } else if (msg.what == Constants.RECEIVE_LIKE) {
                     client.getMe().addLikeList(posts.getPostsIndex());
                     likeList = client.getMe().getLikeList();
-                    client.setHandler(this);
-
-                }
-                else if(msg.what == Constants.RECEIVE_DISLIKE) {
+                } else if (msg.what == Constants.RECEIVE_DISLIKE) {
                     client.getMe().delLikeList(posts.getPostsIndex());
                     likeList = client.getMe().getLikeList();
+                } else if(msg.what==Constants.RECEIVE_POSTLIKE) {
+                    Log.d("CLIENT","set postlike"+client.getTempLikeCount());
+                    likecnt.setText("like "+client.getTempLikeCount());
                 }
             }
         };
@@ -110,7 +109,7 @@ public class CustomAdapter extends BaseAdapter {
         Thread mThread = new Thread() {
             public void run() {
                 try {
-                  for (int p: likeList)  Log.d("test", "like list size : " + p);
+                    for (int p : likeList) Log.d("test", "like list size : " + p);
                     if (likeList.contains(posts.getPostsIndex())) {
                         likebutton.setVisibility(View.VISIBLE);
                         unlikebutton.setVisibility(View.INVISIBLE);
@@ -130,7 +129,11 @@ public class CustomAdapter extends BaseAdapter {
 
                             client.setHandler(handler);
                             client.dislike(posts.getPostsIndex());
-                            likeList.remove((Object)posts.getPostsIndex());
+                            likeList.remove((Object) posts.getPostsIndex());
+
+                            client.setHandler(handler);
+                            client.getPostsLikeByPostsId(posts.getPostsIndex());
+
                         }
                     });
                     unlikebutton.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +146,9 @@ public class CustomAdapter extends BaseAdapter {
                             client.setHandler(handler);
                             client.like(posts.getPostsIndex());
                             likeList.add(posts.getPostsIndex());
+                            client.setHandler(handler);
+                            client.getPostsLikeByPostsId(posts.getPostsIndex());
+
                         }
                     });
 
@@ -160,10 +166,10 @@ public class CustomAdapter extends BaseAdapter {
                     content.setText(posts.getComment().toString());
                     time.setText(posts.getCreateTime().toString());
 
-                    likecnt.setText("like "+posts.getLike());
+                    likecnt.setText("like " + posts.getLike());
 
                     byte[] image = posts.getImage();
-                   if (image == null) postimage.setImageResource(R.drawable.drawemptybox);
+                    if (image == null) postimage.setImageResource(R.drawable.drawemptybox);
                     else postimage.setImageDrawable(ImageController.ByteToDrawable(image));
 
                 } catch (Exception ex) {
@@ -181,7 +187,7 @@ public class CustomAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private void likeOn(){
+    private void likeOn() {
 
     }
 }
