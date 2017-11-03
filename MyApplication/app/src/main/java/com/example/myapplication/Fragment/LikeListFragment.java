@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,22 +27,13 @@ public class LikeListFragment extends Fragment {
     private Handler handler;
 
     private ListView likelist;
-    private CustomAdapter adapter;
 
     private View view;
 
     private ArrayList<Posts> mylikeList;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view= inflater.inflate(R.layout.fragment_like_list, container, false);
-
-        likelist = (ListView)view.findViewById(R.id.likelist);
+    public LikeListFragment() {
+        Log.d("fragment", "in LikeListFragment()");
 
         if(client == null)
             client = ClientController.getClientControl();
@@ -49,12 +41,13 @@ public class LikeListFragment extends Fragment {
         handler = new Handler(){
             @Override
             public void handleMessage(Message msg){
+                Log.d("test", "in likelist handler");
                 client.setMyLikeListHandler(null);
 
                 if(msg.what== Constants.RECEIVE_REFRESH){
                     mylikeList = client.getMyLikeList();
-                    adapter = new CustomAdapter(mylikeList,client.getMe());
-                    likelist.setAdapter(adapter);
+
+                    likelist.setAdapter(new CustomAdapter(mylikeList, client.getMe()));
                 }else if(msg.what==Constants.RECEIVE_FAILED){
                     // TODO when receive err message
                 }
@@ -63,6 +56,20 @@ public class LikeListFragment extends Fragment {
 
         client.setMyLikeListHandler(handler);
         client.myLike();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("test", "in onCreateView()");
+
+        view= inflater.inflate(R.layout.fragment_like_list, container, false);
+
+        likelist = (ListView)view.findViewById(R.id.likelist);
+        likelist.setAdapter(new CustomAdapter(mylikeList, client.getMe()));
+
+        client.setMyLikeListHandler(handler);
+        client.myLike();
+
         return  view;
     }
 }

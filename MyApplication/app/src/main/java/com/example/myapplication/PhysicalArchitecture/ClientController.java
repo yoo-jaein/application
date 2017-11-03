@@ -24,6 +24,7 @@ public class ClientController{
 	private ArrayList<Posts> moreList;
 
 	private ArrayList<Integer> locationContentIdList;
+	private ArrayList<Integer> waitingList;
 
 	private User me = null;
 
@@ -74,7 +75,7 @@ public class ClientController{
 		myPostsList = new ArrayList<>();
 		myLikeList  = new ArrayList<>();
 		moreList = new ArrayList<>();
-
+		waitingList = new ArrayList<>();
 		locationContentIdList = new ArrayList<Integer>();
 
 		me = null;
@@ -164,246 +165,199 @@ public class ClientController{
      */
 
 	public void login(String id, String pass){
-		if(!waiting) {
-			startTime = System.currentTimeMillis();
+		startTime = System.currentTimeMillis();
 
-			waiting = true;
-			login = true;
+		login = true;
 
-			message = "#login%";
-			message += id;
-			message += "%";
-			message += pass;
+		message = "#login%";
+		message += id;
+		message += "%";
+		message += pass;
 
-			client.sendToServer(message);
-			message = "";
-		}
+		client.sendToServer(message);
+		message = "";
 	}
 
 	public void register(String id, String pass){
-		if(!waiting) {
-			startTime = System.currentTimeMillis();
+		startTime = System.currentTimeMillis();
 
-			waiting = true;
-			register = true;
+		register = true;
 
-			message = "#register%";
-			message += id;
-			message += "%";
-			message += pass;
+		message = "#register%";
+		message += id;
+		message += "%";
+		message += pass;
 
-			client.sendToServer(message);
+		client.sendToServer(message);
 
-			message = "";
-		}
+		message = "";
 	}
 
 	public void findPass(String id){
-		if(!waiting) {
-			startTime = System.currentTimeMillis();
+		startTime = System.currentTimeMillis();
 
-			waiting = true;
-			findPass = true;
+		findPass = true;
 
-			message = "#findPass%";
-			message += id;
+		message = "#findPass%";
+		message += id;
 
-			client.sendToServer(message);
+		client.sendToServer(message);
 
-			message = "";
-		}
+		message = "";
 	}
 
 	public void refresh(){
-		if(!waiting) {
-			startTime = System.currentTimeMillis();
 
-			waiting = true;
-			refresh = true;
+		startTime = System.currentTimeMillis();
 
-			message = "#refresh%";
+		waitingList.add(Constants.WAIT_REFRESH);
 
-			switch(timeLineOrder){
-				case Constants.TIME: message += "time";
-					break;
-				case Constants.DISTANCE: message += "distance";
-					if(locationContentIdList.size() <= 0) {
-						// TODO
-					}
-					for(Integer locationContentId : locationContentIdList)
-						message += "%" + locationContentId;
-					break;
-				case Constants.LIKE: message += "like";
-					break;
-			}
+		message = "#refresh%";
 
-			client.sendToServer(message);
-
-			message = "";
+		switch(timeLineOrder){
+			case Constants.TIME: message += "time";
+				break;
+			case Constants.DISTANCE: message += "distance";
+				if(locationContentIdList.size() <= 0) {
+					// TODO
+				}
+				for(Integer locationContentId : locationContentIdList)
+					message += "%" + locationContentId;
+				break;
+			case Constants.LIKE: message += "like";
+				break;
 		}
+
+		client.sendToServer(message);
+
+		message = "";
 	}
 
 	public void morePosts(){
-		if(!waiting) {
-			startTime = System.currentTimeMillis();
+		startTime = System.currentTimeMillis();
 
-			waiting = true;
-			morePosts = true;
+		waitingList.add(Constants.WAIT_MOREPOSTS);
 
-			message = "#morePosts%";
+		message = "#morePosts%";
 
-			switch(timeLineOrder){
-				case Constants.TIME: message += "time"; break;
-				case Constants.DISTANCE: message += "distance"; break;
-				case Constants.LIKE: message += "like"; break;
-			}
-
-			client.sendToServer(message);
-
-			message = "";
+		switch(timeLineOrder){
+			case Constants.TIME: message += "time"; break;
+			case Constants.DISTANCE: message += "distance"; break;
+			case Constants.LIKE: message += "like"; break;
 		}
+
+		client.sendToServer(message);
+
+		message = "";
 	}
 
 	public void totalLike(){
-		if(!waiting) {
-			startTime = System.currentTimeMillis();
+		totalLike = true;
 
-			waiting = true;
-			totalLike = true;
+		message = "#totalLike";
 
-			message = "#totalLike";
+		client.sendToServer(message);
 
-			client.sendToServer(message);
-
-			message = "";
-		}
+		message = "";
 	}
 
 	public void myPosts(){
-		if(!waiting) {
-			startTime = System.currentTimeMillis();
 
-			waiting = true;
-			myPosts = true;
+		startTime = System.currentTimeMillis();
 
-			message = "#myPosts";
+		waitingList.add(Constants.WAIT_MYPOSTSLIST);
 
-			client.sendToServer(message);
+		message = "#myPosts";
 
-			message = "";
-		}
+		client.sendToServer(message);
+
+		message = "";
+
 	}
 
 	public void moreMyPosts(){
-		if(!waiting) {
-			startTime = System.currentTimeMillis();
+		startTime = System.currentTimeMillis();
 
-			waiting = true;
-			moreMyPosts = true;
+		waitingList.add(Constants.WAIT_MOREMYPOSTS);
 
-			message = "#moreMyPosts";
+		message = "#moreMyPosts";
 
-			client.sendToServer(message);
+		client.sendToServer(message);
 
-			message = "";
-		}
+		message = "";
 	}
 
 	public void myLike(){
-		if(!waiting) {
-			startTime = System.currentTimeMillis();
+		waitingList.add(Constants.WAIT_MYLIKELIST);
 
-			waiting = true;
+		message = "#myLike";
 
-			message = "#myLike";
+		client.sendToServer(message);
 
-			client.sendToServer(message);
-
-			message = "";
-		}
+		message = "";
 	}
 
 	public void moreMyLike(){
-		if(!waiting) {
-			startTime = System.currentTimeMillis();
+		startTime = System.currentTimeMillis();
 
-			waiting = true;
-			moreMyLike = true;
+		waitingList.add(Constants.WAIT_MOREMYLIKE);
 
-			message = "#moreLike";
+		message = "#moreLike";
 
-			client.sendToServer(message);
+		client.sendToServer(message);
 
-			message = "";
-		}
+		message = "";
 	}
 
 	public void post(Posts p){
-		if(!waiting) {
-			startTime = System.currentTimeMillis();
+		startTime = System.currentTimeMillis();
 
-			waiting = true;
-			post = true;
+		post = true;
 
-			client.sendToServer(p);
-		}
+		client.sendToServer(p);
 	}
 
 	public void delete(int index){
-		if(!waiting) {
-			startTime = System.currentTimeMillis();
+		startTime = System.currentTimeMillis();
 
-			waiting = true;
-			delete = true;
+		delete = true;
 
-			message = "#delete%";
-			message += index;
+		message = "#delete%";
+		message += index;
 
-			client.sendToServer(message);
+		client.sendToServer(message);
 
-			message = "";
-		}
+		message = "";
 	}
 
-	public void like(int index   ){
-		if(!waiting) {
-			startTime = System.currentTimeMillis();
+	public void like(int index){
+		startTime = System.currentTimeMillis();
 
-			waiting = true;
-			like = true;
+		like = true;
 
-			message = "#like%";
-			message += index;
+		message = "#like%";
+		message += index;
 
-			client.sendToServer(message);
+		client.sendToServer(message);
 
-			message = "";
-		}
+		message = "";
 	}
 
 	public void dislike(int index){
-		if(!waiting) {
-			startTime = System.currentTimeMillis();
+		startTime = System.currentTimeMillis();
 
-			waiting = true;
+		message = "#dislike%";
+		message += index;
 
-			message = "#dislike%";
-			message += index;
+		client.sendToServer(message);
 
-			client.sendToServer(message);
-
-			message = "";
-		}
+		message = "";
 	}
 
 	public void updateUser(User user){
-		if(!waiting) {
-			startTime = System.currentTimeMillis();
+		startTime = System.currentTimeMillis();
 
-			waiting = true;
-
-			client.sendToServer(user);
-		}
+		client.sendToServer(user);
 	}
 
    /*
@@ -440,14 +394,6 @@ public class ClientController{
 
 	public void setHandler(Handler handler) {
 		this.handler = handler;
-	}
-
-	boolean isWaiting() {
-		return waiting;
-	}
-
-	 void setWaiting(boolean waiting) {
-		this                                                                                                                                                                                                                                                                                                                                                                                                                                         .waiting = waiting;
 	}
 
 	 boolean isLogin() {
@@ -606,6 +552,7 @@ public class ClientController{
 
 	public ArrayList<Posts> getMoreList(){ return moreList; }
 
+	public ArrayList<Integer> getWaitingList() { return waitingList; }
 	/*
        socket connection method
      */
