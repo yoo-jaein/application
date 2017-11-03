@@ -2,10 +2,12 @@ package com.example.myapplication.Fragment;
 
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -48,6 +50,7 @@ public class TimeLineFragment extends Fragment {
             client = ClientController.getClientControl();
 
         handler = new Handler() {
+            @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
             @Override
             public void handleMessage(Message msg) {
                 Log.d("handler", "received message in handler");
@@ -71,6 +74,7 @@ public class TimeLineFragment extends Fragment {
         client.refresh();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

@@ -2,16 +2,12 @@ package com.example.myapplication.Activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.app.Activity;
-import android.content.Context;
+import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
-import android.location.Location;
-import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -36,7 +32,7 @@ import com.example.myapplication.ProblemDomain.Constants;
 import com.example.myapplication.R;
 import com.example.myapplication.Service.GPSInfo;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private BackPressCloseHandler backPressCloseHandler;
@@ -56,11 +52,12 @@ public class MainActivity extends AppCompatActivity{
     private GPSInfo gpsInfo;
     private ClientController client;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
- //////////////////////////////////////////////////////////////////       CheckAppFirstExecute();
+        //////////////////////////////////////////////////////////////////       CheckAppFirstExecute();
 /*
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
@@ -96,24 +93,24 @@ public class MainActivity extends AppCompatActivity{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ListView timeline=(ListView)findViewById(R.id.timeline);
+                ListView timeline = (ListView) findViewById(R.id.timeline);
                 timeline.smoothScrollToPosition(0);
             }
         });
 
-        goToWritingButton = (FloatingActionButton)findViewById(R.id.goToWritingButton);
+        goToWritingButton = (FloatingActionButton) findViewById(R.id.goToWritingButton);
 
         goToWritingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("test","goToWritingbutton onclick listener :");
+                Log.d("test", "goToWritingbutton onclick listener :");
 
                 Intent intent = new Intent(getApplicationContext(), WritingNewPostActivity.class);
                 startActivity(intent);
             }
         });
 
-        timeOrderButton = (ImageButton)findViewById(R.id.timeOrderButton);
+        timeOrderButton = (ImageButton) findViewById(R.id.timeOrderButton);
         timeOrderButton.setVisibility(View.GONE);
         timeOrderButton.setAlpha(0f);
         timeOrderButton.setOnClickListener(new View.OnClickListener() {
@@ -121,16 +118,14 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 Log.d("test", "timeorder button click");
                 client.setTimeLineOrder(Constants.TIME);
-                if(mSectionsPagerAdapter.getTimeLine() != null) {
-                    if(mSectionsPagerAdapter.getTimeLine().getHandler() == null){
+                if (mSectionsPagerAdapter.getTimeLine() != null) {
+                    if (mSectionsPagerAdapter.getTimeLine().getHandler() == null) {
                         Log.d("handler", "timeline handler is null");
-                    }
-                    else {
+                    } else {
                         Log.d("handler", "timeline handler is not null");
                         client.setTimeLineHandler(mSectionsPagerAdapter.getTimeLine().getHandler());
                     }
-                }
-                else
+                } else
                     Log.d("test", "timeLine is null");
                 client.refresh();
 
@@ -138,7 +133,7 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        distanceOrderButton = (ImageButton)findViewById(R.id.distanceOrderButton);
+        distanceOrderButton = (ImageButton) findViewById(R.id.distanceOrderButton);
         distanceOrderButton.setVisibility(View.GONE);
         distanceOrderButton.setAlpha(0f);
         distanceOrderButton.setOnClickListener(new View.OnClickListener() {
@@ -146,7 +141,7 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 Log.d("test", "distanceorder button click");
                 client.setTimeLineOrder(Constants.DISTANCE);
-                if(mSectionsPagerAdapter.getTimeLine() != null)
+                if (mSectionsPagerAdapter.getTimeLine() != null)
                     client.setTimeLineHandler(mSectionsPagerAdapter.getTimeLine().getHandler());
                 else
                     Log.d("test", "timeLine is null");
@@ -155,7 +150,7 @@ public class MainActivity extends AppCompatActivity{
                 hideOptionAnim();
             }
         });
-        likeOrderButton = (ImageButton)findViewById(R.id.likeOrderButton);
+        likeOrderButton = (ImageButton) findViewById(R.id.likeOrderButton);
         likeOrderButton.setVisibility(View.GONE);
         likeOrderButton.setAlpha(0f);
         likeOrderButton.setOnClickListener(new View.OnClickListener() {
@@ -163,7 +158,7 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 Log.d("test", "likeorder button click");
                 client.setTimeLineOrder(Constants.LIKE);
-                if(mSectionsPagerAdapter.getTimeLine() != null)
+                if (mSectionsPagerAdapter.getTimeLine() != null)
                     client.setTimeLineHandler(mSectionsPagerAdapter.getTimeLine().getHandler());
                 else
                     Log.d("test", "timeLine is null");
@@ -173,30 +168,31 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        optionButton=(ImageButton)findViewById(R.id.mainoptionButton);
+        optionButton = (ImageButton) findViewById(R.id.mainoptionButton);
         optionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!option) {
+                if (!option) {
 
                     showOptionAnim();
-                }
-                else{
+                } else {
                     hideOptionAnim();
                 }
             }
         });
 
-        mSettingButton=(ImageButton)findViewById(R.id.mainmenuButton);
+        mSettingButton = (ImageButton) findViewById(R.id.mainmenuButton);
         mSettingButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view){
+            public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
                 startActivity(intent);
             }
         });
     }
 
-    private void showOptionAnim(){
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB_MR1)
+    private void showOptionAnim() {
         option = true;
 
         timeOrderButton.setVisibility(View.VISIBLE);
@@ -234,7 +230,9 @@ public class MainActivity extends AppCompatActivity{
         }));
     }
 
-    private void hideOptionAnim(){
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB_MR1)
+    private void hideOptionAnim() {
         option = false;
 
         timeOrderButton.animate().translationY(0).setDuration(500).withLayer();
@@ -274,6 +272,7 @@ public class MainActivity extends AppCompatActivity{
         backPressCloseHandler.onBackPressed();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     @Override
     protected void onStart() {
         super.onStart();
@@ -366,7 +365,7 @@ public class MainActivity extends AppCompatActivity{
             return null;
         }
 
-        public TimeLineFragment getTimeLine(){
+        public TimeLineFragment getTimeLine() {
             return timeLineFragment;
         }
 
@@ -377,7 +376,7 @@ public class MainActivity extends AppCompatActivity{
 
         @Override
         public CharSequence getPageTitle(int position) {
-          return "";
+            return "";
         }
     }
 }
