@@ -120,6 +120,9 @@ public class TimeLineFragment extends Fragment {
 
         timeline = (ListView) view.findViewById(R.id.timeline);
 
+        client.setTimeLineHandler(handler);
+        client.refresh();
+
         return view;
     }
 

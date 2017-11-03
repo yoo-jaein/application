@@ -1,10 +1,8 @@
 package com.example.myapplication.Activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,6 +28,7 @@ public class ForgotPwActivity extends Activity {
 
     private TextView txtdefault;
     private TextView txtfail;
+    private TextView txtfail2;
 
     private ClientController client;
     private Handler handler;
@@ -40,6 +39,19 @@ public class ForgotPwActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_forgot_pw);
 
+        txtbar = (TextView) findViewById(R.id.forgot_pw_txt);
+        emailtext = (EditText) findViewById(R.id.forgot_pw_email);
+
+        txtdefault = (TextView) findViewById(R.id.textView_default);
+        txtfail = (TextView) findViewById(R.id.textView_fail);
+        txtfail2 = (TextView) findViewById(R.id.textView_fail2);
+
+        sendbutton = (Button) findViewById(R.id.send_button);
+
+        txtdefault.setVisibility(View.VISIBLE);      // default
+        txtfail.setVisibility(View.INVISIBLE);
+        txtfail2.setVisibility(View.INVISIBLE);
+
         client = ClientController.getClientControl();
 
         handler = new Handler() {
@@ -47,23 +59,39 @@ public class ForgotPwActivity extends Activity {
             public void handleMessage(Message msg) {
                 if(msg.what== Constants.RECEIVE_SUCCESSS){
                     client.setHandler(null);
+                    // TODO 이메일로 비밀번호 전송 완료했다는 알림 띄우기
                     Toast.makeText(getApplicationContext(), "비밀번호 전송 완료", Toast.LENGTH_SHORT).show();
                     finish();
                 }
                 else if(msg.what==Constants.RECEIVE_ERROR){
-                    // TODO when received err message 회원가입 실패 시
+                    String emailstring = emailtext.getText().toString();
+
+                    if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailstring).matches())    // 이메일 유효성 검사
+                    {
+                        txtdefault.setVisibility(View.INVISIBLE);
+                        txtfail.setVisibility(View.VISIBLE);        // fail: not email
+                        txtfail2.setVisibility(View.INVISIBLE);
+
+                        Animation shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+                        emailtext.startAnimation(shake);
+
+                        emailtext.requestFocus();  // emailtext로 커서 focus 변경
+                        return;
+                    } else {
+                        txtdefault.setVisibility(View.INVISIBLE);
+                        txtfail.setVisibility(View.INVISIBLE);        // fail2: not exist email
+                        txtfail2.setVisibility(View.VISIBLE);
+
+                        Animation shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+                        emailtext.startAnimation(shake);
+
+                        emailtext.requestFocus();  // emailtext로 커서 focus 변경
+                        return;
+                    }
                 }
             }
         };
 
-        txtbar = (TextView) findViewById(R.id.forgot_pw_txt);
-        emailtext = (EditText) findViewById(R.id.forgot_pw_email);
-        txtdefault = (TextView) findViewById(R.id.textView_default);
-        txtfail = (TextView) findViewById(R.id.textView_fail);
-        sendbutton = (Button) findViewById(R.id.send_button);
-
-        txtdefault.setVisibility(View.VISIBLE);      // default
-        txtfail.setVisibility(View.INVISIBLE);
 
         sendbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,18 +100,6 @@ public class ForgotPwActivity extends Activity {
 
                 client.setHandler(handler);
                 client.findPass(emailtext.getText().toString());
-
-                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailstring).matches())    // 이메일 유효성 검사
-                {
-                    txtdefault.setVisibility(View.INVISIBLE);
-                    txtfail.setVisibility(View.VISIBLE);        // fail
-
-                    Animation shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
-                    emailtext.startAnimation(shake);
-
-                    emailtext.requestFocus();  // emailtext로 커서 focus 변경
-                    return;
-                }
             }
         });
 

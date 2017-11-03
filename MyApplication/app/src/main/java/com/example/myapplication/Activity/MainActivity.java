@@ -346,14 +346,14 @@ public class MainActivity extends AppCompatActivity{
                     }
                     else return timeLineFragment;
 
-                case 2:
+                case 1:
                     Log.d("fragment", "mylikelist selected");
                     if (likeListFragment == null) {
                         likeListFragment = new LikeListFragment();
                         return likeListFragment;
                     }
                     else return likeListFragment;
-                case 1:
+                case 2:
                     Log.d("fragment", "mypage selected");
                     if (myPageFragment == null) {
                         myPageFragment = new MyPageFragment();

@@ -107,28 +107,40 @@ class clientRead extends Thread
 			Object temp;
 
 			while(true) {
-				try {
-					Thread.sleep(10);
-					cControl.setStartTime(System.currentTimeMillis());
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+
+
+				while(cControl.getWaitingList().size() == 0){
+					try {
+						Thread.sleep(10);
+						cControl.setStartTime(System.currentTimeMillis());
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 
 				if(cControl.getWaitingList().size() > 0){
-					Log.d("client", "wait setting");
+					Log.d("client", "wait setting / waitingList size : " + cControl.getWaitingList().size());
+					Log.d("client", "watingList data : " + cControl.getWaitingList().toString());
+					Log.d("client", "current waiting code : " + cControl.getWaitingList().get(0));
 					switch (cControl.getWaitingList().get(0)){
+						case Constants.WAIT_LOGIN:
+							cControl.setLogin(true);
+							break;
+						case Constants.WAIT_REGISTER:
+							cControl.setRegister(true);
+							break;
+						case Constants.WAIT_FINDPASS:
+							cControl.setFindPass(true);
+							break;
 						case Constants.WAIT_REFRESH:
 							cControl.setRefresh(true);
 							break;
 						case Constants.WAIT_MOREPOSTS:
 							cControl.setMorePosts(true);
 							break;
-						case Constants.WAIT_MYLIKELIST:
-							cControl.setMyLike(true);
-							break;
-						case Constants.WAIT_MOREMYLIKE:
-							cControl.setMoreMyLike(true);
+						case Constants.WAIT_TOTALLIKE:
+							cControl.setTotalLike(true);
 							break;
 						case Constants.WAIT_MYPOSTSLIST:
 							cControl.setMyPosts(true);
@@ -136,8 +148,39 @@ class clientRead extends Thread
 						case Constants.WAIT_MOREMYPOSTS:
 							cControl.setMoreMyPosts(true);
 							break;
+						case Constants.WAIT_MYLIKELIST:
+							cControl.setMyLike(true);
+							break;
+						case Constants.WAIT_MOREMYLIKE:
+							cControl.setMoreMyLike(true);
+							break;
+						case Constants.WAIT_POST:
+							cControl.setPost(true);
+							break;
+						case Constants.WAIT_DELETE:
+							cControl.setDelete(true);
+							break;
+						case Constants.WAIT_LIKE:
+							cControl.setLike(true);
+							break;
+						case Constants.WAIT_DISLIKE:
+							cControl.setDislike(true);
+							break;
+						case Constants.WAIT_UPDATEUSER:
+							cControl.setUpdateUser(true);
+							break;
+						case Constants.WAIT_GETPOSTLIKEBYPOSTID:
+							cControl.setGetLikePosts(true);
+							break;
 					}
+					cControl.getWaitingList().remove(0);
 				}
+				if(cControl.isRefresh())
+					Log.d("client", "refresh is true");
+				else if(cControl.isLike())
+					Log.d("client", "like is true");
+				else if(cControl.isMyPosts())
+					Log.d("client", "like is true");
 				/*
 					when client sends message to server,
 					client reads data from socket and handles the func
@@ -178,7 +221,7 @@ class clientRead extends Thread
 						}
 					}
 					else if(cControl.isRefresh()){
-						Log.d("CLIENT", "refresh");
+						//Log.d("CLIENT", "refresh");
 						cControl.setRefresh(false);
 						if(((String)temp).compareTo("#err")==0) {
 							cControl.getTimeLineHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
@@ -286,33 +329,33 @@ class clientRead extends Thread
 				 */
 				else if (temp instanceof PostsList) {
 					if(cControl.isMorePosts()){
-						Log.d("CLIENT", "morePosts");
+						Log.d("CLIENT", "temp = postsList / morePosts");
 						cControl.setMorePosts(false);
 						cControl.addTimeLine((PostsList)temp);
 						cControl.setMoreList((PostsList)temp);
 						cControl.getTimeLineHandler().sendEmptyMessage(Constants.RECEIVE_MORE);
 					}
 					else if(cControl.isRefresh()){
-						Log.d("CLIENT", "refresh");
+						Log.d("CLIENT", "temp = postsList / refresh");
 						cControl.setRefresh(false);
 						cControl.setTimeLine((PostsList)temp);
 						cControl.getTimeLineHandler().sendEmptyMessage(Constants.RECEIVE_REFRESH);
 					}
 					else if(cControl.isMyPosts()){
-						Log.d("CLIENT", "myPosts");
+						Log.d("CLIENT", "temp = postsList / myPosts");
 						cControl.setMyPosts(false);
 						cControl.setMyPostsList((PostsList)temp);
 						cControl.getMyPageHandler().sendEmptyMessage(Constants.RECEIVE_REFRESH);
 					}
 					else if(cControl.isMoreMyPosts()){
-						Log.d("CLIENT", "moreMyPosts");
+						Log.d("CLIENT", "temp = postsList / moreMyPosts");
 						cControl.setMoreMyPosts(false);
 						cControl.addMyPostsList((PostsList)temp);
 						cControl.setMoreList((PostsList)temp);
 						cControl.getMyPageHandler().sendEmptyMessage(Constants.RECEIVE_MORE);
 					}
 					else if(cControl.isMyLike()){
-						Log.d("CLIENT", "myLike");
+						Log.d("CLIENT", "temp = postsList / myLike");
 						cControl.setMyLike(false);
 						cControl.setMyLikeList((PostsList)temp);
 						if(cControl.getMyLikeListHandler() != null)
@@ -320,7 +363,7 @@ class clientRead extends Thread
 						cControl.getMyLikeListHandler().sendEmptyMessage(Constants.RECEIVE_REFRESH);
 					}
 					else if(cControl.isMoreMyLike()){
-						Log.d("CLIENT", "moreMyLike");
+						Log.d("CLIENT", "temp = postsList / moreMyLike");
 						cControl.setMoreMyLike(false);
 						cControl.addMyLikeList((PostsList)temp);
 						cControl.setMoreList((PostsList)temp);

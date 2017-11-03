@@ -38,10 +38,20 @@ public class Constants{
     public static final int DISTANCE = 31;
     public static final int LIKE = 32;
 
-    public static final int WAIT_REFRESH = 50;
-    public static final int WAIT_MOREPOSTS = 53;
-    public static final int WAIT_MYLIKELIST = 56;
+    public static final int WAIT_LOGIN = 50;
+    public static final int WAIT_REGISTER = 51;
+    public static final int WAIT_FINDPASS = 52;
+    public static final int WAIT_REFRESH = 53;
+    public static final int WAIT_MOREPOSTS = 54;
+    public static final int WAIT_TOTALLIKE = 55;
+    public static final int WAIT_MYPOSTSLIST = 56;
+    public static final int WAIT_MOREMYPOSTS = 57;
+    public static final int WAIT_MYLIKELIST = 58;
     public static final int WAIT_MOREMYLIKE = 59;
-    public static final int WAIT_MYPOSTSLIST = 62;
-    public static final int WAIT_MOREMYPOSTS = 65;
+    public static final int WAIT_POST = 60;
+    public static final int WAIT_DELETE = 61;
+    public static final int WAIT_LIKE = 62;
+    public static final int WAIT_DISLIKE = 63;
+    public static final int WAIT_UPDATEUSER = 64;
+    public static final int WAIT_GETPOSTLIKEBYPOSTID = 65;
 }

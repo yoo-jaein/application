@@ -169,7 +169,7 @@ public class ClientController{
 	public void login(String id, String pass){
 		startTime = System.currentTimeMillis();
 
-		login = true;
+		cControl.getWaitingList().add(Constants.WAIT_LOGIN);
 
 		message = "#login%";
 		message += id;
@@ -183,7 +183,7 @@ public class ClientController{
 	public void register(String id, String pass){
 		startTime = System.currentTimeMillis();
 
-		register = true;
+		cControl.getWaitingList().add(Constants.WAIT_REGISTER);
 
 		message = "#register%";
 		message += id;
@@ -198,7 +198,7 @@ public class ClientController{
 	public void findPass(String id){
 		startTime = System.currentTimeMillis();
 
-		findPass = true;
+		cControl.getWaitingList().add(Constants.WAIT_FINDPASS);
 
 		message = "#findPass%";
 		message += id;
@@ -254,7 +254,7 @@ public class ClientController{
 	}
 
 	public void totalLike(){
-		totalLike = true;
+		cControl.getWaitingList().add(Constants.WAIT_TOTALLIKE);
 
 		message = "#totalLike";
 
@@ -322,7 +322,7 @@ public class ClientController{
 	public void delete(int index){
 		startTime = System.currentTimeMillis();
 
-		delete = true;
+		cControl.getWaitingList().add(Constants.WAIT_DELETE);
 
 		message = "#delete%";
 		message += index;
@@ -335,7 +335,7 @@ public class ClientController{
 	public void like(int index){
 		startTime = System.currentTimeMillis();
 
-		like = true;
+		cControl.getWaitingList().add(Constants.WAIT_LIKE);
 
 		message = "#like%";
 		message += index;
@@ -348,7 +348,7 @@ public class ClientController{
 	public void dislike(int index){
 		startTime = System.currentTimeMillis();
 
-		dislike = true;
+		cControl.getWaitingList().add(Constants.WAIT_DISLIKE);
 
 		message = "#dislike%";
 		message += index;
@@ -368,7 +368,7 @@ public class ClientController{
 		message = "#getPostsLike%";
 		message += id;
 
-		getLikePosts = true;
+		cControl.getWaitingList().add(Constants.WAIT_GETPOSTLIKEBYPOSTID);
 
 		client.sendToServer(message);
 
@@ -395,7 +395,7 @@ public class ClientController{
 		this.myLikeListHandler = myLikeListHandler;
 	}
 
-	public Handler getMyPageHandler() {
+	 Handler getMyPageHandler() {
 		return myPageHandler;
 	}
 
@@ -419,7 +419,7 @@ public class ClientController{
 		return register;
 	}
 
-	public boolean isFindPass() {
+	 boolean isFindPass() {
 		return findPass;
 	}
 
@@ -435,7 +435,7 @@ public class ClientController{
 		return myLike;
 	}
 
-	public boolean isMyPost() {
+	 boolean isMyPosts() {
 		return myPosts;
 	}
 
@@ -477,10 +477,11 @@ public class ClientController{
 		this.register = register;
 	}
 
-	public void setFindPass(boolean findPass) {
+	 void setFindPass(boolean findPass) {
 		this.findPass = findPass;
 	}
-	 void setRefresh(boolean refresh) {
+
+	void setRefresh(boolean refresh) {
 		this.refresh = refresh;
 	}
 
@@ -492,11 +493,11 @@ public class ClientController{
 		this.myLike = myLike;
 	}
 
-	public boolean isTotalLike() {
+	 boolean isTotalLike() {
 		return totalLike;
 	}
 
-	public void setTotalLike(boolean totalLike) {
+	 void setTotalLike(boolean totalLike) {
 		this.totalLike = totalLike;
 	}
 
@@ -524,10 +525,6 @@ public class ClientController{
 		this.updateUser = updateUser;
 	}
 
-	 boolean isMyPosts() {
-		return myPosts;
-	}
-
 	 void setMyPosts(boolean myPosts) {
 		this.myPosts = myPosts;
 	}
@@ -540,11 +537,11 @@ public class ClientController{
 		this.moreMyPosts = moreMyPosts;
 	}
 
-	public boolean isGetLikePosts() {
+	 boolean isGetLikePosts() {
 		return getLikePosts;
 	}
 
-	public void setGetLikePosts(boolean getLikePosts) {
+	 void setGetLikePosts(boolean getLikePosts) {
 		this.getLikePosts = getLikePosts;
 	}
 
@@ -552,7 +549,7 @@ public class ClientController{
 		return tempLikeCount;
 	}
 
-	public void setTempLikeCount(int tempLikeCount) {
+	 void setTempLikeCount(int tempLikeCount) {
 		this.tempLikeCount = tempLikeCount;
 	}
 
@@ -583,7 +580,7 @@ public class ClientController{
 
 	public ArrayList<Posts> getMoreList(){ return moreList; }
 
-	public ArrayList<Integer> getWaitingList() { return waitingList; }
+	 ArrayList<Integer> getWaitingList() { return waitingList; }
 	/*
        socket connection method
      */

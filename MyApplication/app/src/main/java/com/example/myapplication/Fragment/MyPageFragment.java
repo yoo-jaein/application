@@ -1,6 +1,5 @@
 package com.example.myapplication.Fragment;
 
-import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -182,6 +181,8 @@ public class MyPageFragment extends Fragment {
                 }
             }
         });
+        client.setMyPageHandler(handler);
+        client.myPosts();
 
         return view;
     }
