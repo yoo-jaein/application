@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.location.Location;
 import android.location.LocationManager;
@@ -65,18 +66,19 @@ public class MainActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);*/
 
         client = ClientController.getClientControl();
+        getWindow().setStatusBarColor(Color.parseColor("#516FA5"));
 
         gpsInfo = new GPSInfo(MainActivity.this);
         // GPS 사용유무 가져오기
         if (gpsInfo.isGetLocation()) {
-
             double latitude = gpsInfo.getLatitude();
             double longitude = gpsInfo.getLongitude();
-
         } else {
             // GPS 를 사용할수 없으므로
             gpsInfo.showSettingsAlert();
         }
+
+        client.setGpsInfo(gpsInfo);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -112,23 +114,32 @@ public class MainActivity extends AppCompatActivity{
         });
 
         timeOrderButton = (ImageButton)findViewById(R.id.timeOrderButton);
-        //timeOrderButton.setVisibility(View.INVISIBLE);
+        timeOrderButton.setVisibility(View.GONE);
         timeOrderButton.setAlpha(0f);
         timeOrderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("test", "timeorder button click");
                 client.setTimeLineOrder(Constants.TIME);
-                if(mSectionsPagerAdapter.getTimeLine() != null)
-                    client.setHandler(mSectionsPagerAdapter.getTimeLine().getHandler());
+                if(mSectionsPagerAdapter.getTimeLine() != null) {
+                    if(mSectionsPagerAdapter.getTimeLine().getHandler() == null){
+                        Log.d("handler", "timeline handler is null");
+                    }
+                    else {
+                        Log.d("handler", "timeline handler is not null");
+                        client.setTimeLineHandler(mSectionsPagerAdapter.getTimeLine().getHandler());
+                    }
+                }
                 else
                     Log.d("test", "timeLine is null");
                 client.refresh();
+
+                hideOptionAnim();
             }
         });
 
         distanceOrderButton = (ImageButton)findViewById(R.id.distanceOrderButton);
-        //distanceOrderButton.setVisibility(View.INVISIBLE);
+        distanceOrderButton.setVisibility(View.GONE);
         distanceOrderButton.setAlpha(0f);
         distanceOrderButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,14 +147,16 @@ public class MainActivity extends AppCompatActivity{
                 Log.d("test", "distanceorder button click");
                 client.setTimeLineOrder(Constants.DISTANCE);
                 if(mSectionsPagerAdapter.getTimeLine() != null)
-                    client.setHandler(mSectionsPagerAdapter.getTimeLine().getHandler());
+                    client.setTimeLineHandler(mSectionsPagerAdapter.getTimeLine().getHandler());
                 else
                     Log.d("test", "timeLine is null");
                 client.refresh();
+
+                hideOptionAnim();
             }
         });
         likeOrderButton = (ImageButton)findViewById(R.id.likeOrderButton);
-        //likeOrderButton.setVisibility(View.INVISIBLE);
+        likeOrderButton.setVisibility(View.GONE);
         likeOrderButton.setAlpha(0f);
         likeOrderButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,10 +164,12 @@ public class MainActivity extends AppCompatActivity{
                 Log.d("test", "likeorder button click");
                 client.setTimeLineOrder(Constants.LIKE);
                 if(mSectionsPagerAdapter.getTimeLine() != null)
-                    client.setHandler(mSectionsPagerAdapter.getTimeLine().getHandler());
+                    client.setTimeLineHandler(mSectionsPagerAdapter.getTimeLine().getHandler());
                 else
                     Log.d("test", "timeLine is null");
                 client.refresh();
+
+                hideOptionAnim();
             }
         });
 
@@ -163,6 +178,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 if(!option) {
+
                     showOptionAnim();
                 }
                 else{
@@ -183,6 +199,7 @@ public class MainActivity extends AppCompatActivity{
     private void showOptionAnim(){
         option = true;
 
+        timeOrderButton.setVisibility(View.VISIBLE);
         timeOrderButton.animate().translationY(170).setDuration(500).withLayer();
         timeOrderButton.animate().alpha(1f).setDuration(500).setListener((new AnimatorListenerAdapter() {
             @Override
@@ -193,24 +210,26 @@ public class MainActivity extends AppCompatActivity{
                 timeOrderButton.setAlpha(1f);
             }
         }));
+        distanceOrderButton.setVisibility(View.VISIBLE);
         distanceOrderButton.animate().translationY(280).setDuration(500).withLayer();
         distanceOrderButton.animate().alpha(1000).setDuration(500).setListener((new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                timeOrderButton.setVisibility(View.VISIBLE);
+                distanceOrderButton.setVisibility(View.VISIBLE);
                 //OR
-                timeOrderButton.setAlpha(1f);
+                distanceOrderButton.setAlpha(1f);
             }
-        }));;
+        }));
+        likeOrderButton.setVisibility(View.VISIBLE);
         likeOrderButton.animate().translationY(390).setDuration(500).withLayer();
         likeOrderButton.animate().alpha(1f).setDuration(500).setListener((new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                timeOrderButton.setVisibility(View.VISIBLE);
+                likeOrderButton.setVisibility(View.VISIBLE);
                 //OR
-                timeOrderButton.setAlpha(1f);
+                likeOrderButton.setAlpha(1f);
             }
         }));
     }
@@ -223,7 +242,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                timeOrderButton.setVisibility(View.VISIBLE);
+                timeOrderButton.setVisibility(View.GONE);
                 //OR
                 timeOrderButton.setAlpha(0f);
             }
@@ -233,7 +252,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                distanceOrderButton.setVisibility(View.VISIBLE);
+                distanceOrderButton.setVisibility(View.GONE);
                 //OR
                 distanceOrderButton.setAlpha(0f);
             }
@@ -243,7 +262,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                likeOrderButton.setVisibility(View.VISIBLE);
+                likeOrderButton.setVisibility(View.GONE);
                 //OR
                 likeOrderButton.setAlpha(0f);
             }
@@ -315,28 +334,34 @@ public class MainActivity extends AppCompatActivity{
             super(fm);
         }
 
+
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 0:
+                case 0:/*
+                    Log.d("fragment", "timeline selected");
                     if (timeLineFragment == null) {
                         timeLineFragment = new TimeLineFragment();
                         return timeLineFragment;
                     }
-                    else return timeLineFragment;
-
-                case 1:
+                    else return timeLineFragment;*/
+                    return new TimeLineFragment();
+                case 1:/*
+                    Log.d("fragment", "mylikelist selected");
                     if (likeListFragment == null) {
                         likeListFragment = new LikeListFragment();
                         return likeListFragment;
                     }
-                    else return timeLineFragment;
-                case 2:
+                    else return likeListFragment;*/
+                    return new LikeListFragment();
+                case 2:/*
+                    Log.d("fragment", "mypage selected");
                     if (myPageFragment == null) {
                         myPageFragment = new MyPageFragment();
                         return myPageFragment;
                     }
-                    else return timeLineFragment;
+                    else return myPageFragment;*/
+                    return new MyPageFragment();
             }
             return null;
         }
@@ -355,190 +380,4 @@ public class MainActivity extends AppCompatActivity{
           return "";
         }
     }
-
-    /*
-    public void showOptionAnim(){
-        option = true;
-
-        timeOrderButton.setVisibility(View.VISIBLE);
-        distanceOrderButton.setVisibility(View.VISIBLE);
-        likeOrderButton.setVisibility(View.VISIBLE);
-
-        Log.d("test", "show time pos : " + optionButton.getLeft() + ", " + optionButton.getTop() +
-                " ==> " + optionButton.getLeft() + ", " + (optionButton.getTop() + 150));
-        TranslateAnimation animTime = new TranslateAnimation(optionButton.getLeft(), optionButton.getLeft(), optionButton.getTop(), optionButton.getTop() + 150);
-        //animTime.setFillAfter(true);
-        animTime.setFillEnabled(true);
-        animTime.setDuration(1000);
-        animTime.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                Log.d("test", "show time layout : " + timeOrderButton.getLeft() + ", " + (timeOrderButton.getTop() + 160) +
-                        " / " + timeOrderButton.getRight() + ", " + (timeOrderButton.getBottom() + 160));
-                timeOrderButton.layout(timeOrderButton.getLeft(), timeOrderButton.getTop() + 160, timeOrderButton.getRight(), timeOrderButton.getBottom() + 160);
-                timeOrderButton.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        Log.d("test", "show distance pos : " + optionButton.getLeft() + ", " +  optionButton.getTop() + " " +
-                "==> " + optionButton.getLeft() + ", " + (optionButton.getTop() + 270));
-        TranslateAnimation animDistance = new TranslateAnimation(optionButton.getLeft(), optionButton.getLeft(), optionButton.getTop(), optionButton.getTop() + 270);
-        //animDistance.setFillAfter(true);
-        animDistance.setFillEnabled(true);
-        animDistance.setDuration(1000);
-        animDistance.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                Log.d("test", "show distance layout : " + distanceOrderButton.getLeft() + "," + (distanceOrderButton.getTop() + 270) +
-                        " / " + distanceOrderButton.getRight() + "," + (distanceOrderButton.getBottom() + 270));
-                distanceOrderButton.layout(distanceOrderButton.getLeft(), distanceOrderButton.getTop() + 270, distanceOrderButton.getRight(), distanceOrderButton.getBottom() + 250);
-                distanceOrderButton.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        Log.d("test", "show like pos : " + optionButton.getLeft() + "," + optionButton.getTop() +
-                " ==> " + optionButton.getLeft() + "," + (optionButton.getTop() + 380));
-        TranslateAnimation animLike = new TranslateAnimation(optionButton.getLeft(), optionButton.getLeft(), optionButton.getTop(), optionButton.getTop() + 380);
-        //animLike.setFillAfter(true);
-        animLike.setFillEnabled(true);
-        animLike.setDuration(1000);
-        animLike.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                Log.d("test", "show like layout : " + likeOrderButton.getLeft() + "," + (likeOrderButton.getTop() + 380) +
-                        " / " + likeOrderButton.getRight() + "," + (likeOrderButton.getBottom() + 380));
-                likeOrderButton.layout(likeOrderButton.getLeft(), likeOrderButton.getTop() + 380, likeOrderButton.getRight(), likeOrderButton.getBottom() + 380);
-                likeOrderButton.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        long time = AnimationUtils.currentAnimationTimeMillis();
-
-        timeOrderButton.invalidate();
-        distanceOrderButton.invalidate();
-        likeOrderButton.invalidate();
-
-        animTime.setStartTime(time);
-        animDistance.setStartTime(time);
-        animLike.setStartTime(time);
-
-        timeOrderButton.setAnimation(animTime);
-        distanceOrderButton.setAnimation(animDistance);
-        likeOrderButton.setAnimation(animLike);
-    }
-
-    public void hideOptionAnim(){
-        option = false;
-
-        Log.d("test", "hide time pos : " + optionButton.getX() + ", " + timeOrderButton.getY() + " ==> " + optionButton.getX() + ", " + optionButton.getY());
-        TranslateAnimation animTime = new TranslateAnimation(optionButton.getX(), optionButton.getX(), timeOrderButton.getY(), optionButton.getY());
-        //animTime.setFillAfter(true);
-        animTime.setFillEnabled(true);
-        animTime.setDuration(1000);
-        animTime.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                timeOrderButton.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        Log.d("test", "hide time pos : " + optionButton.getX() + "," + distanceOrderButton.getY() + " ==> " + optionButton.getX() + "," + optionButton.getY());
-        TranslateAnimation animDistance = new TranslateAnimation(optionButton.getX(), optionButton.getX(), distanceOrderButton.getY(), optionButton.getY());
-        //animDistance.setFillAfter(true);
-        animDistance.setFillEnabled(true);
-        animDistance.setDuration(1000);
-        animDistance.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                distanceOrderButton.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        Log.d("test", "hide time pos : " + optionButton.getX() + "," + likeOrderButton.getY() + " ==> " + optionButton.getX() + "," + optionButton.getY());
-        TranslateAnimation animLike = new TranslateAnimation(optionButton.getX(), optionButton.getX(), likeOrderButton.getY(), optionButton.getY());
-        //animLike.setFillAfter(true);
-        animLike.setFillEnabled(true);
-        animLike.setDuration(1000);
-        animLike.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                likeOrderButton.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        long time = AnimationUtils.currentAnimationTimeMillis();
-
-        timeOrderButton.invalidate();
-        distanceOrderButton.invalidate();
-        likeOrderButton.invalidate();
-
-        animTime.setStartTime(time);
-        animDistance.setStartTime(time);
-        animLike.setStartTime(time);
-
-        timeOrderButton.setAnimation(animTime);
-        distanceOrderButton.setAnimation(animDistance);
-        likeOrderButton.setAnimation(animLike);
-    }
-*/
 }

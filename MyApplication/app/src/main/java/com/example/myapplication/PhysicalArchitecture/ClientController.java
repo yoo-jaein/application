@@ -1,7 +1,5 @@
 package com.example.myapplication.PhysicalArchitecture;
 
-import android.content.Context;
-import android.location.LocationManager;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -32,6 +30,9 @@ public class ClientController{
 	private int timeLineOrder = Constants.TIME;
 
 	// for change mainthread UI
+	private Handler timeLineHandler = null;
+	private Handler myLikeListHandler = null;
+	private Handler myPageHandler = null;
 	private Handler handler = null;
 	private Handler distanceOrderHandler = null;
 	private GPSInfo gpsInfo = null;
@@ -84,12 +85,13 @@ public class ClientController{
 			@Override
 			public void handleMessage(Message msg) {
 				if(msg.what == Constants.RECEIVE_SUCCESSS){
-                    Log.d("test", "receive GPS inform");
+                    Log.d("GPS", "receive GPS inform");
 					locationContentIdList = (ArrayList<Integer>)(msg.obj);
 					level = 0;
 				}
 				else if(msg.what == Constants.RECEIVE_FAILED){
 					// TODO when received falled
+					Log.d("GPS", "receive GPS inform");
 					if(gpsInfo!= null){
 						gpsInfo.getLocation(level++);
 					}
@@ -225,6 +227,9 @@ public class ClientController{
 				case Constants.TIME: message += "time";
 					break;
 				case Constants.DISTANCE: message += "distance";
+					if(locationContentIdList.size() <= 0) {
+						// TODO
+					}
 					for(Integer locationContentId : locationContentIdList)
 						message += "%" + locationContentId;
 					break;
@@ -404,24 +409,45 @@ public class ClientController{
    /*
       get and set method
     */
-   public Handler getHandler() { return handler;}
+
+	public Handler getTimeLineHandler() {
+		return timeLineHandler;
+	}
+
+	public void setTimeLineHandler(Handler timeLineHandler) {
+		this.timeLineHandler = timeLineHandler;
+	}
+
+	public Handler getMyLikeListHandler() {
+		return myLikeListHandler;
+	}
+
+	public void setMyLikeListHandler(Handler myLikeListHandler) {
+		this.myLikeListHandler = myLikeListHandler;
+	}
+
+	public Handler getMyPageHandler() {
+		return myPageHandler;
+	}
+
+	public void setMyPageHandler(Handler myPageHandler) {
+		this.myPageHandler = myPageHandler;
+	}
+
+	public Handler getHandler() {
+		return handler;
+	}
 
 	public void setHandler(Handler handler) {
-		if(this.handler == null) {
-			this.handler = handler;
-		}
+		this.handler = handler;
 	}
 
-	public void setHandlerNull(){
-		this.handler = null;
-	}
-
-    boolean isWaiting() {
+	boolean isWaiting() {
 		return waiting;
 	}
 
 	 void setWaiting(boolean waiting) {
-		this.waiting = waiting;
+		this                                                                                                                                                                                                                                                                                                                                                                                                                                         .waiting = waiting;
 	}
 
 	 boolean isLogin() {
@@ -562,7 +588,6 @@ public class ClientController{
 	public User getMe() {
 		return me;
 	}
-
 
 	/*
        get data

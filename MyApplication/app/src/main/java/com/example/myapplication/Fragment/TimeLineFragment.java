@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 public class TimeLineFragment extends Fragment {
 
-    private static Handler handler;
+    private Handler handler;
     private ClientController client = null;
 
     private ArrayList<Posts> postsArrayList;
@@ -38,6 +38,8 @@ public class TimeLineFragment extends Fragment {
     private ListView timeline;
     private ListAdapter adapter;
 
+    private View view;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,25 +50,13 @@ public class TimeLineFragment extends Fragment {
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                client.setHandlerNull();
+                Log.d("handler", "received message in handler");
+                client.setHandler(null);
                 if (msg.what == Constants.RECEIVE_REFRESH) {
-
-                    Log.d("test", "TimeLineFragment: thread start");
-                    int cnt = 0;
                     postsArrayList = client.getTimeLine();
-                    Log.d("test", "TimeLineFragment: client.getTimeLine =" + postsArrayList);
-
                     adapter = new CustomAdapter(postsArrayList,client.getMe());
-
                     timeline.setAdapter(adapter);
-
-                    // TODO 게시물을 더 받아왔을 경우 리스트뷰 갱신. 테스트 필요함.
-                    timeline.getAdapter().registerDataSetObserver(new DataSetObserver() {
-                        @Override
-                        public void onChanged() {
-                            timeline.deferNotifyDataSetChanged();
-                        }
-                    });
+                    timeline.deferNotifyDataSetChanged();
                 } else if(msg.what == Constants.RECEIVE_MORE){
                     // 게시물을 더 받아왔을 경우 더 받아온 포스트를 현재 ArrayList에 더함.
                     // client.getMoreList는 타임라인이든 내게시물이든 내가 좋아요 누른 게시물이든 더 받은 포스트가 들어있다.
@@ -77,23 +67,25 @@ public class TimeLineFragment extends Fragment {
                 }
             }
         };
+        client.setTimeLineHandler(handler);
+        client.refresh();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view;
+
         view = inflater.inflate(R.layout.fragment_time_line, container, false);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_layout);
+
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 client.setHandler(handler);
+                client.morePosts();
             }
         });
 
-        client.setHandler(handler);
-        client.refresh();
 
         timeline = (ListView) view.findViewById(R.id.timeline);
 

@@ -11,10 +11,12 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.PhysicalArchitecture.ClientController;
 import com.example.myapplication.ProblemDomain.Constants;
@@ -53,6 +55,8 @@ public class WritingNewPostActivity extends AppCompatActivity {
     private EditText postingOpinionText;
     private Posts posts = new Posts();
 
+    Bitmap selPhoto = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,9 +69,10 @@ public class WritingNewPostActivity extends AppCompatActivity {
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
+                client.setHandler(null);
+
                 if(msg.what== Constants.RECEIVE_SUCCESSS){
                     Log.d("test", "post handler");
-                    client.setHandlerNull();
                     finish();
                 }
                 else if(msg.what==Constants.RECEIVE_ERROR){
@@ -84,6 +89,11 @@ public class WritingNewPostActivity extends AppCompatActivity {
         finButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(selPhoto == null) {
+                    Toast.makeText(getApplicationContext(), "사진을 첨부하세요", Toast.LENGTH_SHORT).show();
+                    postingPictureButton.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake));
+                    return;
+                }
 
                 posts.setLocationInfo(location);
                 posts.setMusic(music);
@@ -149,7 +159,7 @@ public class WritingNewPostActivity extends AppCompatActivity {
             if (requestCode == Constants.GET_PICTURE_URI) {
                 try {
                     Uri selPhotoUri = data.getData();
-                    Bitmap selPhoto = MediaStore.Images.Media.getBitmap( getContentResolver(), selPhotoUri );
+                    selPhoto = MediaStore.Images.Media.getBitmap( getContentResolver(), selPhotoUri );
 
                     byte[] image=bitmapToByteArray(selPhoto);
                     posts.setIImage(image);

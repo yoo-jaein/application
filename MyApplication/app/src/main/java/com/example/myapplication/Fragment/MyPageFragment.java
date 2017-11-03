@@ -1,9 +1,9 @@
 package com.example.myapplication.Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,7 +30,6 @@ import com.example.myapplication.ProblemDomain.Constants;
 import com.example.myapplication.ProblemDomain.Posts;
 import com.example.myapplication.R;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -65,8 +64,6 @@ public class MyPageFragment extends Fragment {
     }
 
 
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(client == null)
@@ -76,7 +73,7 @@ public class MyPageFragment extends Fragment {
             @Override
             public void handleMessage(Message msg){
 
-                client.setHandlerNull();
+                client.setMyPageHandler(null);
 
                 if(msg.what== Constants.RECEIVE_REFRESH){
                     myPostsList = client.getMyPostsList();
@@ -86,7 +83,7 @@ public class MyPageFragment extends Fragment {
                     }
                     client.setMyLikeCount(totalCnt);
                     client.getMe().setTotalLike(totalCnt);
-                    client.setHandler(this);
+                    client.setMyPageHandler(this);
                     client.totalLike();
                     mylist.setAdapter(new CustomAdapter(myPostsList,client.getMe()));
                 }else if(msg.what==Constants.RECEIVE_SUCCESSS){
@@ -97,9 +94,8 @@ public class MyPageFragment extends Fragment {
                 }
             }
         };
-        client.setHandler(handler);
+        client.setMyPageHandler(handler);
         client.myPosts();
-
     }
 
     @Override
@@ -192,19 +188,21 @@ public class MyPageFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("test", "select picture");
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.GET_PICTURE_URI) {
+            Log.d("test", "select picture2");
             try {
                 ContentResolver resolver = getActivity().getContentResolver();
                 Uri selPhotoUri = data.getData();
                 Bitmap selPhoto = MediaStore.Images.Media.getBitmap(resolver, selPhotoUri);
 
-                byte[] image = bitmapToByteArray(selPhoto);
+                byte[] image = ImageController.bitmapToByteArray(selPhoto, 50);
 
                 client.getMe().setIImage(image);
                 profileImage.setImageBitmap(selPhoto);
 
-                client.setHandler(handler);
+                client.setMyPageHandler(handler);
                 client.updateUser(client.getMe());
 
             } catch (FileNotFoundException e) {
@@ -215,10 +213,5 @@ public class MyPageFragment extends Fragment {
         }
     }
 
-        public byte[] bitmapToByteArray( Bitmap bitmap ) {
-            ByteArrayOutputStream stream = new ByteArrayOutputStream() ;
-            bitmap.compress( Bitmap.CompressFormat.JPEG, 100, stream) ;
-            byte[] byteArray = stream.toByteArray() ;
-            return byteArray ;
-        }
+
 }

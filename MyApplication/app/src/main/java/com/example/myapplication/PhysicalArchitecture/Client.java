@@ -163,17 +163,17 @@ class clientRead extends Thread
                             Log.d("CLIENT", "refresh");
                             cControl.setRefresh(false);
                             if(((String)temp).compareTo("#err")==0) {
-                                cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
+                                cControl.getTimeLineHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
                             }
                         }
 						else if(cControl.isTotalLike()){
 							Log.d("CLIENT", "totalLike");
 							cControl.setTotalLike(false);
 							if(((String)temp).compareTo("#err")==0) {
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
+								cControl.getMyPageHandler().sendEmptyMessage(Constants.RECEIVE_ERROR);
 							}
 							else {
-								cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
+								cControl.getMyPageHandler().sendEmptyMessage(Constants.RECEIVE_SUCCESSS);
 								cControl.setMyLikeCount(Integer.parseInt(((String)temp)));
 								cControl.getMe().setTotalLike(Integer.parseInt(((String)temp)));
 							}
@@ -264,40 +264,39 @@ class clientRead extends Thread
 							cControl.setMorePosts(false);
 							cControl.addTimeLine((PostsList)temp);
 							cControl.setMoreList((PostsList)temp);
-							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_MORE);
+							cControl.getTimeLineHandler().sendEmptyMessage(Constants.RECEIVE_MORE);
 						}
 						else if(cControl.isRefresh()){
 							Log.d("CLIENT", "refresh");
 							cControl.setRefresh(false);
 							cControl.setTimeLine((PostsList)temp);
-							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_REFRESH);
+							cControl.getTimeLineHandler().sendEmptyMessage(Constants.RECEIVE_REFRESH);
 						}
 						else if(cControl.isMyPosts()){
 							Log.d("CLIENT", "myPosts");
 							cControl.setMyPosts(false);
 							cControl.setMyPostsList((PostsList)temp);
-							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_REFRESH);
+							cControl.getMyPageHandler().sendEmptyMessage(Constants.RECEIVE_REFRESH);
 						}
 						else if(cControl.isMoreMyPosts()){
 							Log.d("CLIENT", "moreMyPosts");
 							cControl.setMoreMyPosts(false);
 							cControl.addMyPostsList((PostsList)temp);
 							cControl.setMoreList((PostsList)temp);
-							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_MORE);
+							cControl.getMyPageHandler().sendEmptyMessage(Constants.RECEIVE_MORE);
 						}
 						else if(cControl.isMyLike()){
 							Log.d("CLIENT", "myLike");
 							cControl.setMyLike(false);
 							cControl.setMyLikeList((PostsList)temp);
-							cControl.setMoreList((PostsList)temp);
-							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_REFRESH);
+							cControl.getMyLikeListHandler().sendEmptyMessage(Constants.RECEIVE_REFRESH);
 						}
 						else if(cControl.isMoreMyLike()){
 							Log.d("CLIENT", "moreMyLike");
 							cControl.setMoreMyLike(false);
 							cControl.addMyLikeList((PostsList)temp);
 							cControl.setMoreList((PostsList)temp);
-							cControl.getHandler().sendEmptyMessage(Constants.RECEIVE_MORE);
+							cControl.getMyLikeListHandler().sendEmptyMessage(Constants.RECEIVE_MORE);
 						}
 						Log.d("CLIENT", temp.toString());
 						cControl.setWaiting(false);
@@ -364,7 +363,7 @@ class clientWrite extends Thread
 					sendToReadyPosts = false;
 				}
 				while (sendToReadyUser) {
-					out.writeObject(postsConsole);
+					out.writeObject(userConsole);
                     Log.d("CLIENT", "write complete");
 					sendToReadyUser = false;
 				}

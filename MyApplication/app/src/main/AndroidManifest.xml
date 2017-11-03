@@ -59,7 +59,11 @@
         <service
             android:name=".Service.GPSInfo"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.myapplication.Service.GPSInfo"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
